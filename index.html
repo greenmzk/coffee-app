@@ -653,6 +653,8 @@
     .bug-report-dot{width:6px;height:6px;border-radius:50%;background:var(--cream);opacity:.78}
     .bug-report-arrow{font-size:12px;line-height:1;opacity:.72}
 
+  
+    .gear-meta-label{color:rgba(255,250,242,.86);font-weight:750}
   </style>
 </head>
 <body>
@@ -719,7 +721,7 @@
         all:"すべて", gearList:"器具一覧", searchGear:"器具名・メーカー名・品番で検索",
         addMissingGear:"＋ リストにない器具を追加する", showing:"表示中", items:"件",
         noGearTitle:"該当する器具がありません", noGearBody:"検索条件を変更するか、器具を追加してください。",
-        sku:"品番", sizeCapacity:"サイズ・容量", compatible:"対応", custom:"CUSTOM",
+        brand:"ブランド", gearType:"器具タイプ", sku:"品番・SKU", sizeCapacity:"サイズ・容量", compatible:"対応フィルター・対応器具", methodMaterial:"方式・材質", custom:"CUSTOM",
         deleteThisGear:"この器具を削除",
         settings:"設定", settingsIntro:"レシピ、追加した器具、カスタムミルクはこの端末の LocalStorage に保存されます。",
         savedRecipes:"保存レシピ", recordedDays:"記録した日", customGear:"カスタム器具", customMilk:"カスタムミルク",
@@ -822,7 +824,7 @@
         all:"All", gearList:"Gear Library", searchGear:"Search gear, maker, or SKU",
         addMissingGear:"+ Add gear not in the list", showing:"Showing", items:"items",
         noGearTitle:"No matching gear", noGearBody:"Change your search or add a custom item.",
-        sku:"SKU", sizeCapacity:"Size / capacity", compatible:"Compatible with", custom:"CUSTOM",
+        brand:"Brand", gearType:"Gear Type", sku:"SKU", sizeCapacity:"Size / Capacity", compatible:"Compatible Filters / Gear", methodMaterial:"Method / Material", custom:"CUSTOM",
         deleteThisGear:"Delete gear",
         settings:"Settings", settingsIntro:"Recipes, custom gear and custom milk are stored in LocalStorage on this device.",
         savedRecipes:"Saved recipes", recordedDays:"Brew days", customGear:"Custom gear", customMilk:"Custom milk",
@@ -834,7 +836,7 @@
         deleteAllRecipes:"Delete All",
         bugReport:"Report a Bug", bugReportHelp:"Send bugs or improvement requests through the Google Form.", pwaAbout:"About PWA",
         pwaHelp:"This single-file edition includes mobile optimization for Safari / Chrome, home-screen metadata and a dynamic Manifest. Full offline caching requires a separate Service Worker file due to browser security rules.",
-        selectCategory:"Category", maker:"Maker", productName:"Product name", material:"Method / material",
+        selectCategory:"Gear Type", maker:"Brand / Maker", productName:"Product Name", material:"Method / Material",
         addGear:"Add Gear", addGearTitle:"Add Gear",
         makerPlaceholder:"e.g. Timemore", gearNamePlaceholder:"Enter gear name",
         optional:"Optional", sizePlaceholder:"e.g. 1–2 cups", compatiblePlaceholder:"Optional",
@@ -1035,7 +1037,29 @@ OREA,ペーパーフィルター,,O1 Filter OREA Flat Type G,Small・155,OREA O1
 OREA,ペーパーフィルター,,O2/V4 Filter OREA Wave,Large・185,OREA O2・V4,ウェーブ型
 OREA,ペーパーフィルター,,O2/V4 Filter OREA Flat Type G,Large・185,OREA O2・V4,フラット型
 OREA,ペーパーフィルター,,Z1 Filter Sibarist FAST 50 sheets,50枚,OREA Z1,専用フラット型
-OREA,ペーパーフィルター,,Big Boy Filter WAVE 100 sheets,100枚,OREA Big Boy,専用ウェーブ型`;
+OREA,ペーパーフィルター,,Big Boy Filter WAVE 100 sheets,100枚,OREA Big Boy,専用ウェーブ型
+TIMEMORE,コーヒーミル,C5,Chestnut C5,豆25g,,手挽き・42mm S2C-042-IIIステンレスコニカル刃
+TIMEMORE,コーヒーミル,C5 PRO,Chestnut C5 Pro,豆25g,,手挽き・42mm S2C-042-IIIステンレスコニカル刃
+TIMEMORE,コーヒーミル,C5 ESP PRO,Chestnut C5 ESP Pro,豆25g,,手挽き・エスプレッソ対応・42mm S2C-042-IIIステンレスコニカル刃
+TIMEMORE,コーヒーミル,C3S,Chestnut C3S,,,手挽き・S2Cステンレスコニカル刃
+TIMEMORE,コーヒーミル,C3S PRO,Chestnut C3S Pro,,,手挽き・S2Cステンレスコニカル刃・折りたたみ式ハンドル
+TIMEMORE,コーヒーミル,C3 ESP PRO,Chestnut C3 ESP Pro,,,手挽き・エスプレッソ対応・S2Cステンレスコニカル刃
+TIMEMORE,コーヒーミル,C3 MAX,Chestnut C3 Max,豆約30g,,手挽き・S2Cステンレスコニカル刃
+TIMEMORE,コーヒーミル,C3S MAX PRO,Chestnut C3S Max Pro,,,手挽き・S2Cステンレスコニカル刃・折りたたみ式ハンドル
+TIMEMORE,コーヒーミル,S3,Chestnut S3,,,手挽き・S2C890ステンレスコニカル刃・外部調整
+TIMEMORE,コーヒーミル,NANO3,Chestnut NANO3,豆約15g,,手挽き・S2C660ステンレスコニカル刃・折りたたみ式ハンドル
+TIMEMORE,コーヒーミル,M01,Timemore × Millab M01,,,手挽き・SUS420ステンレスコニカル刃・外部100段階調整
+TIMEMORE,コーヒーミル,WHIRLY 01S,Whirly 01S,豆最大45g,,充電式電動・S2C-042-EIステンレスコニカル刃
+TIMEMORE,コーヒーミル,BRICKS 01S,Bricks 01S,,,電動
+TIMEMORE,コーヒーミル,SCULPTOR 064S,Sculptor 064S,,,電動・64mmフラット刃・ポアオーバー／エスプレッソ
+TIMEMORE,コーヒーミル,SCULPTOR 078,Sculptor 078,,,電動・78mmターボ刃・ポアオーバー
+TIMEMORE,コーヒーミル,SCULPTOR 078S,Sculptor 078S,,,電動・78mmフラット刃・ポアオーバー／エスプレッソ
+COMANDANTE,コーヒーミル,C40 MK4,C40 MK4 Nitro Blade,豆約40g,,手挽き・NITRO BLADEステンレスコニカル刃
+COMANDANTE,コーヒーミル,C60,C60 Baracuda,,,手挽き・BARACUDAステンレスコニカル刃
+COMANDANTE,コーヒーミル,X25,X25 Trailmaster,,,手挽き・ステンレスコニカル刃
+COMANDANTE,コーヒーミル,C40 LAB NB,C40 LAB Series Nitro Blade,,,手挽き・NITRO BLADEステンレスコニカル刃
+COMANDANTE,コーヒーミル,C40 LAB HH,C40 LAB Series Hammerhead,,,手挽き・HAMMERHEADステンレスコニカル刃
+COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き・TIGERSHARKステンレスコニカル刃`;
 
     function parseCSV(text){
       const lines=text.trim().split(/\r?\n/);lines.shift();
@@ -1079,7 +1103,7 @@ OREA,ペーパーフィルター,,Big Boy Filter WAVE 100 sheets,100枚,OREA Big
       if(!id)return null;
       return allEquipment().find(x=>equipId(x)===id||legacyEquipId(x)===id||x.id===id)||null;
     }
-    function equipmentName(id){return equipmentItem(id)?.name||""}
+    function equipmentName(id){const item=equipmentItem(id);return item?localizeGearName(item.name):""}
 
     function isoToday(){
       const d=new Date(),off=d.getTimezoneOffset();
@@ -1142,6 +1166,135 @@ OREA,ペーパーフィルター,,Big Boy Filter WAVE 100 sheets,100枚,OREA Big
     function milkLabel(v){return MILK_KEYS[v]?t(MILK_KEYS[v]):v}
     function typeToCategory(type){return {dripper:"ドリッパー",filter:"ペーパーフィルター",mill:"コーヒーミル"}[type]||"ドリッパー"}
 
+
+    function localizeGearName(value){
+      const name=String(value||"");
+      if(state.lang!=="en")return name;
+      const exact={
+        "浸漬式ドリッパー スイッチ":"Immersion Dripper SWITCH",
+        "浸漬式ドリッパー スイッチ360":"Immersion Dripper SWITCH 360",
+        "V60 1回抽出ドリッパー MUGEN":"V60 One Pour Dripper MUGEN",
+        "V60 ドリッパー SUIREN":"V60 Dripper SUIREN",
+        "V60メタルドリッパー シルバー":"V60 Metal Dripper Silver",
+        "コーヒーミル・セラミックスリム":"Coffee Mill Ceramic Slim",
+        "セラミックコーヒーミル・スケルトン N":"Ceramic Coffee Mill Skeleton N",
+        "コーヒーミル・スマートG":"Coffee Mill Smart G",
+        "コーヒーミル・スマートG PRO":"Coffee Mill Smart G PRO",
+        "コーヒーミル・ドーム":"Coffee Mill Dome",
+        "V60 電動コーヒーグラインダーコンパクトN":"V60 Electric Coffee Grinder Compact N",
+        "電動コーヒーミル・スイッチ":"Electric Coffee Mill SWITCH",
+        "クラシックミル NA":"Classic Mill NA",
+        "ダイヤミルN ブラック":"Diamond Mill N Black",
+        "セラミックミル C-90 ブラック":"Ceramic Mill C-90 Black",
+        "CM-50 ブラック":"CM-50 Black",
+        "KPG-40 ブラック":"KPG-40 Black"
+      };
+      if(exact[name])return exact[name];
+      return name
+        .replace(/V60透過ドリッパー/g,"V60 Dripper ")
+        .replace(/V60 ドリッパー NEO/g,"V60 Dripper NEO")
+        .replace(/ペガサス ドリッパー/g,"Pegasus Dripper ")
+        .replace(/V60ペーパーフィルター/g,"V60 Paper Filter ")
+        .replace(/ペガサス コーヒーペーパーフィルター/g,"Pegasus Coffee Paper Filter ")
+        .replace(/ウェーブドリッパー/g,"Wave Dripper ")
+        .replace(/ ドリッパー サンドブラック/g," Dripper Sand Black")
+        .replace(/NK(\d+)ロシ ホワイト (\d+)枚/g,"NK$1 Filter White $2 sheets")
+        .replace(/電動コーヒーミル/g,"Electric Coffee Mill")
+        .replace(/コーヒーミル/g,"Coffee Mill")
+        .replace(/ペーパーフィルター/g,"Paper Filter")
+        .replace(/ ドリッパー/g," Dripper")
+        .replace(/サンドブラック/g,"Sand Black")
+        .replace(/ブラック/g,"Black")
+        .replace(/ホワイト/g,"White")
+        .replace(/クリア/g,"Clear")
+        .replace(/セラミックW/g,"Ceramic White")
+        .replace(/シルバー/g,"Silver")
+        .replace(/・/g," ")
+        .replace(/\s{2,}/g," ")
+        .trim();
+    }
+
+    function localizeGearText(value){
+      const raw=String(value||"");
+      if(state.lang!=="en"||!raw)return raw;
+      let s=raw;
+      const replacements=[
+        [/豆最大\s*([0-9.]+)g/g,"Beans up to $1 g"],
+        [/豆約\s*([0-9.]+)g/g,"Beans approx. $1 g"],
+        [/豆\s*([0-9.]+)g/g,"Beans $1 g"],
+        [/(\d+)～(\d+)杯用/g,"$1–$2 cups"],
+        [/(\d+)～(\d+)杯/g,"$1–$2 cups"],
+        [/(\d+)～(\d+)人用/g,"For $1–$2 people"],
+        [/([0-9A-Za-z]+)・(\d+)枚/g,"$1 · $2 sheets"],
+        [/(\d+)枚/g,"$1 sheets"],
+        [/充電式電動/g,"Rechargeable electric"],
+        [/手挽き/g,"Manual"],
+        [/電動/g,"Electric"],
+        [/エスプレッソ対応/g,"Espresso-capable"],
+        [/折りたたみ式ハンドル/g,"Folding handle"],
+        [/外部100段階調整/g,"100-step external adjustment"],
+        [/外部調整/g,"External adjustment"],
+        [/42mm S2C-042-IIIステンレスコニカル刃/g,"42 mm S2C-042-III stainless-steel conical burrs"],
+        [/S2C-042-EIステンレスコニカル刃/g,"S2C-042-EI stainless-steel conical burrs"],
+        [/S2C890ステンレスコニカル刃/g,"S2C890 stainless-steel conical burrs"],
+        [/S2C660ステンレスコニカル刃/g,"S2C660 stainless-steel conical burrs"],
+        [/SUS420ステンレスコニカル刃/g,"SUS420 stainless-steel conical burrs"],
+        [/S2Cステンレスコニカル刃/g,"S2C stainless-steel conical burrs"],
+        [/NITRO BLADEステンレスコニカル刃/g,"NITRO BLADE stainless-steel conical burrs"],
+        [/BARACUDAステンレスコニカル刃/g,"BARACUDA stainless-steel conical burrs"],
+        [/HAMMERHEADステンレスコニカル刃/g,"HAMMERHEAD stainless-steel conical burrs"],
+        [/TIGERSHARKステンレスコニカル刃/g,"TIGERSHARK stainless-steel conical burrs"],
+        [/ステンレスコニカル刃/g,"Stainless-steel conical burrs"],
+        [/64mmフラット刃/g,"64 mm flat burrs"],
+        [/78mmターボ刃/g,"78 mm turbo burrs"],
+        [/78mmフラット刃/g,"78 mm flat burrs"],
+        [/ポアオーバー／エスプレッソ/g,"Pour-over / espresso"],
+        [/ポアオーバー/g,"Pour-over"],
+        [/セラミック臼/g,"Ceramic burrs"],
+        [/101ドリッパー/g,"101 Dripper"],
+        [/102ドリッパー/g,"102 Dripper"],
+        [/103ドリッパー/g,"103 Dripper"],
+        [/セラミック/g,"Ceramic"],
+        [/ステンレス臼/g,"Stainless-steel burrs"],
+        [/臼式/g,"Burr grinder"],
+        [/プロペラ式/g,"Blade grinder"],
+        [/耐熱ガラス/g,"Heat-resistant glass"],
+        [/美濃焼/g,"Mino ware"],
+        [/AS樹脂/g,"AS resin"],
+        [/PCT樹脂/g,"PCT resin"],
+        [/樹脂/g,"Resin"],
+        [/磁器/g,"Porcelain"],
+        [/陶器/g,"Ceramic"],
+        [/ガラス/g,"Glass"],
+        [/ステンレス/g,"Stainless steel"],
+        [/銅/g,"Copper"],
+        [/ゼロバイパス/g,"Zero-bypass"],
+        [/浸漬式/g,"Immersion"],
+        [/高速抽出型/g,"Fast-flow"],
+        [/大容量/g,"High-capacity"],
+        [/専用フラット型/g,"Dedicated flat"],
+        [/専用ウェーブ型/g,"Dedicated wave"],
+        [/フラット型/g,"Flat "],
+        [/ウェーブ型/g,"Wave "],
+        [/円すい型/g,"Cone "],
+        [/台形型/g,"Trapezoid "],
+        [/平底/g,"Flat-bottom"],
+        [/三つ穴/g,"Three-hole"],
+        [/ホワイト/g,"White"],
+        [/ペガサス/g,"Pegasus "],
+        [/ウェーブ/g,"Wave "],
+        [/ロシ/g," filter"],
+        [/・/g," · "]
+      ];
+      replacements.forEach(([pattern,replacement])=>{s=s.replace(pattern,replacement)});
+      return s.replace(/\s+·\s+·\s+/g," · ").replace(/\s{2,}/g," ").trim();
+    }
+
+    function localizedGearSearchText(x){
+      return [x.maker,localizeGearName(x.name),categoryLabel(x.category),x.sku,localizeGearText(x.size),localizeGearText(x.compatible),localizeGearText(x.material)].join(" ").toLowerCase();
+    }
+    function gearSeparator(){return state.lang==="ja"?"：":": "}
+
     /* ---------- Helpers ---------- */
     function escapeHTML(v){
       return String(v??"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]));
@@ -1174,7 +1327,7 @@ OREA,ペーパーフィルター,,Big Boy Filter WAVE 100 sheets,100枚,OREA Big
       return String(b.updatedAt||b.createdAt||b.id||"").localeCompare(String(a.updatedAt||a.createdAt||a.id||""));
     }
     function totalWater(r){return (r.pours||[]).reduce((s,p)=>s+(Number(p.water)||0),0)}
-    function equipmentLabel(x){return x?`${x.maker} · ${x.name}${x.source==="custom"?" · CUSTOM":""}`:t("none")}
+    function equipmentLabel(x){return x?`${x.maker} · ${localizeGearName(x.name)}${x.source==="custom"?" · CUSTOM":""}`:t("none")}
 
     function shell(content,active="home",bar=""){
       return `<section class="screen">${bar}<div class="page-body scroll">${content}</div>${bottomNav(active)}<div class="toast" id="toast"></div><div id="modalHost"></div></section>`;
@@ -1440,7 +1593,7 @@ OREA,ペーパーフィルター,,Big Boy Filter WAVE 100 sheets,100枚,OREA Big
           <div class="form-label">${escapeHTML(label)}</div>
           ${item?`<div class="subline">${escapeHTML(item.maker)}${item.source==="custom"?" · CUSTOM":""}${item.sku?" · "+escapeHTML(item.sku):""}</div>`:""}
         </div>
-        <div style="display:flex;align-items:center;min-width:0"><span class="form-value">${escapeHTML(item?.name||t("select"))}</span><span class="chev">›</span></div>
+        <div style="display:flex;align-items:center;min-width:0"><span class="form-value">${escapeHTML(item?localizeGearName(item.name):t("select"))}</span><span class="chev">›</span></div>
       </div></button>`;
     }
 
@@ -1487,7 +1640,7 @@ OREA,ペーパーフィルター,,Big Boy Filter WAVE 100 sheets,100枚,OREA Big
         <div class="detail-hero">
           <div class="detail-date">${formatDate(r.date)} · ${(r.beverageType||"Hot")==="Ice"?"ICE":"HOT"}</div>
           <h1>${escapeHTML(r.beanName||t("unnamedCoffee"))}</h1>
-          <div class="detail-tools">${escapeHTML(dr?`${dr.maker} · ${dr.name}`:t("dripperNotSelected"))}</div>
+          <div class="detail-tools">${escapeHTML(dr?`${dr.maker} · ${localizeGearName(dr.name)}`:t("dripperNotSelected"))}</div>
           <div class="beans" style="margin-top:10px">${ratingHTML(Number(r.rating)||0)}</div>
         </div>
 
@@ -1577,7 +1730,7 @@ OREA,ペーパーフィルター,,Big Boy Filter WAVE 100 sheets,100枚,OREA Big
       return allEquipment().filter(x=>{
         const cat=state.gearCategory==="all"||x.category===state.gearCategory;
         const maker=state.gearMaker==="all"||x.maker===state.gearMaker;
-        const text=[x.maker,x.category,x.sku,x.name,x.size,x.compatible,x.material].join(" ").toLowerCase();
+        const text=[x.maker,x.category,x.sku,x.name,x.size,x.compatible,x.material,localizedGearSearchText(x)].join(" ").toLowerCase();
         return cat&&maker&&(!q||text.includes(q));
       });
     }
@@ -1614,14 +1767,16 @@ OREA,ペーパーフィルター,,Big Boy Filter WAVE 100 sheets,100枚,OREA Big
     function gearItemHTML(x){
       return `<article class="gear-item">
         <div class="gear-top">
-          <div class="gear-name">${escapeHTML(x.name)}</div>
+          <div class="gear-name">${escapeHTML(localizeGearName(x.name))}</div>
           ${x.source==="custom"?`<span class="custom-badge">${escapeHTML(t("custom"))}</span>`:`<span class="maker-badge">${escapeHTML(categoryLabel(x.category))}</span>`}
         </div>
         <div class="gear-meta">
-          ${x.sku?`${escapeHTML(t("sku"))}：<span class="sku">${escapeHTML(x.sku)}</span><br>`:""}
-          ${x.size?`${escapeHTML(t("sizeCapacity"))}：${escapeHTML(x.size)}<br>`:""}
-          ${x.compatible?`${escapeHTML(t("compatible"))}：${escapeHTML(x.compatible)}<br>`:""}
-          ${x.material?escapeHTML(x.material):""}
+          <span class="gear-meta-label">${escapeHTML(t("brand"))}</span>${gearSeparator()}${escapeHTML(x.maker)}<br>
+          <span class="gear-meta-label">${escapeHTML(t("gearType"))}</span>${gearSeparator()}${escapeHTML(categoryLabel(x.category))}<br>
+          ${x.sku?`<span class="gear-meta-label">${escapeHTML(t("sku"))}</span>${gearSeparator()}<span class="sku">${escapeHTML(x.sku)}</span><br>`:""}
+          ${x.size?`<span class="gear-meta-label">${escapeHTML(t("sizeCapacity"))}</span>${gearSeparator()}${escapeHTML(localizeGearText(x.size))}<br>`:""}
+          ${x.compatible?`<span class="gear-meta-label">${escapeHTML(t("compatible"))}</span>${gearSeparator()}${escapeHTML(localizeGearText(x.compatible))}<br>`:""}
+          ${x.material?`<span class="gear-meta-label">${escapeHTML(t("methodMaterial"))}</span>${gearSeparator()}${escapeHTML(localizeGearText(x.material))}`:""}
         </div>
         ${x.source==="custom"?`<div class="gear-actions"><button class="mini-danger" data-delete-custom="${escapeAttr(x.id)}">${escapeHTML(t("deleteThisGear"))}</button></div>`:""}
       </article>`;
@@ -1791,7 +1946,7 @@ OREA,ペーパーフィルター,,Big Boy Filter WAVE 100 sheets,100枚,OREA Big
       const items=allEquipment().filter(x=>{
         const catOk=x.category===cat;
         const makerOk=state.modal.maker==="all"||x.maker===state.modal.maker;
-        const text=[x.maker,x.name,x.sku,x.size,x.compatible,x.material].join(" ").toLowerCase();
+        const text=[x.maker,x.name,x.sku,x.size,x.compatible,x.material,localizedGearSearchText(x)].join(" ").toLowerCase();
         return catOk&&makerOk&&(!q||text.includes(q));
       });
       const current=state.draft[state.modal.type];
@@ -1809,8 +1964,8 @@ OREA,ペーパーフィルター,,Big Boy Filter WAVE 100 sheets,100枚,OREA Big
           ${items.length?groupByMaker(items).map(([maker,list])=>`
             <div class="sheet-maker-heading">${escapeHTML(maker)}</div>
             ${list.map(x=>`<button class="choice ${equipId(x)===current?"selected-choice":""}" data-choice="${escapeAttr(equipId(x))}">
-              <strong>${escapeHTML(x.name)}${x.source==="custom"?" · CUSTOM":""}</strong>
-              <span>${x.sku?escapeHTML(x.sku)+" · ":""}${x.size?escapeHTML(x.size)+" · ":""}${escapeHTML(x.material||"")}</span>
+              <strong>${escapeHTML(localizeGearName(x.name))}${x.source==="custom"?" · CUSTOM":""}</strong>
+              <span>${x.sku?escapeHTML(x.sku)+" · ":""}${x.size?escapeHTML(localizeGearText(x.size))+" · ":""}${x.compatible?escapeHTML(localizeGearText(x.compatible))+" · ":""}${escapeHTML(localizeGearText(x.material||""))}</span>
             </button>`).join("")}
           `).join(""):`<div class="sheet-empty">${escapeHTML(t("noMatchingGear"))}</div>`}
         </div>
