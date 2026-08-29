@@ -317,19 +317,20 @@
     .calendar-list-title{margin:20px 0 10px;font-size:12.5px;font-weight:800}
 
     /* Equipment */
-    .tabs,.maker-tabs{display:flex;gap:7px;overflow:auto;scrollbar-width:none}
-    .tabs::-webkit-scrollbar,.maker-tabs::-webkit-scrollbar{display:none}
-    .tabs{padding:3px 0 10px}.maker-tabs{padding:0 0 12px}
+    .tabs{display:flex;gap:7px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;padding:3px 0 10px}
+    .tabs::-webkit-scrollbar{display:none}
+    .maker-tabs{display:flex;flex-wrap:wrap;gap:7px;padding:0 0 16px;position:relative;z-index:1}
     .tab,.maker-tab{
       flex:0 0 auto;border:1px solid var(--line);background:transparent;color:var(--cream);
-      border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap;
+      min-height:32px;border-radius:999px;font-size:10px;font-weight:800;line-height:1;white-space:nowrap;
+      display:inline-flex;align-items:center;justify-content:center;
     }
-    .tab{padding:8px 11px}.maker-tab{padding:7px 10px}
+    .tab{padding:0 11px}.maker-tab{padding:0 10px}
     .tab.active,.maker-tab.active{background:var(--cream);color:var(--blue-deep);border-color:var(--cream)}
     .search{position:relative;margin-bottom:11px}
     .search input{padding-left:38px}
     .search svg{position:absolute;left:12px;top:11px;width:20px;height:20px;color:var(--muted)}
-    .toolbar{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+    .toolbar{display:flex;gap:8px;align-items:center;clear:both;margin:4px 0 12px}
     .toolbar .secondary{min-height:43px;font-size:11px}
     .count-badge{
       display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:999px;
@@ -467,7 +468,7 @@
       background:white;color:var(--ink);border-color:#d2dce5;
     }
     .sheet .text-input::placeholder,.sheet .textarea::placeholder{color:#8a9baa}
-    .sheet .maker-tabs{padding:0 15px 10px}
+    .sheet .maker-tabs{padding:0 15px 14px;margin-bottom:4px}
     .sheet .maker-tab{color:#526b82;border-color:#d5dfe7;background:white}
     .sheet .maker-tab.active{background:#0b4f9c;color:white;border-color:#0b4f9c}
     .sheet-list{padding:0 12px 18px;overflow:auto;-webkit-overflow-scrolling:touch}
@@ -1136,7 +1137,7 @@
         none:"—", unselected:"Not selected", clearSelection:"Clear selection",
         calendarTitle:"Calendar", recordsOnDate:"records",
         noDayRecipesTitle:"No brews on this date", noDayRecipesBody:"Tap + in the top-right corner to add a recipe.",
-        all:"All", gearList:"Gear Library", searchGear:"Search gear, maker, or SKU",
+        all:"All", gearList:"Gear List", searchGear:"Search gear, maker, or SKU",
         addMissingGear:"Add a gear not in the list", showing:"Showing", items:"items",
         noGearTitle:"No matching gear", noGearBody:"Change your search or add a custom item.",
         brand:"Brand", gearType:"Gear Type", sku:"SKU", sizeCapacity:"Size / Capacity", compatible:"Compatible Filters / Gear", methodMaterial:"Method / Material", custom:"CUSTOM",
