@@ -795,7 +795,13 @@
         radial-gradient(circle at 88% 2%,rgba(218,183,106,.16),transparent 38%),
         linear-gradient(145deg,rgba(255,255,255,.055),rgba(184,141,60,.035));
     }
-    .premium-card:after{content:"✦";position:absolute;right:15px;top:11px;color:#d8b66f;font-size:20px;opacity:.62}
+    .premium-corner-action{
+      position:absolute;right:10px;top:8px;z-index:1;width:42px;height:42px;border:0;border-radius:999px;
+      display:flex;align-items:center;justify-content:center;background:transparent;color:#8fa1b1;font-size:25px;opacity:.72;
+    }
+    .premium-corner-action:not(:disabled):active{background:rgba(255,255,255,.08);transform:scale(.94)}
+    .premium-corner-action.active{color:#d8b66f;opacity:1;text-shadow:0 0 16px rgba(216,182,111,.34)}
+    .premium-corner-action:disabled{cursor:default}
     .premium-kicker{font-size:8px;letter-spacing:.2em;color:#d9bd83;font-weight:900;margin-bottom:5px}
     .premium-button{
       min-height:39px;margin-top:13px;padding:0 14px;border:1px solid rgba(255,250,242,.88);border-radius:10px;
@@ -2512,6 +2518,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         </div>
 
         <div class="profile-card premium-card">
+          <button class="premium-corner-action ${state.isPremium?"active":""}" ${state.isPremium?"disabled":"data-action=\"premium\""} aria-label="${escapeAttr(state.isPremium?t("premiumActive"):t("premiumTitle"))}">✦</button>
           <div class="premium-kicker">BREW DAY</div>
           <div class="settings-row">
             <div class="copy">
