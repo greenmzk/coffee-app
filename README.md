@@ -28,6 +28,16 @@ Create a **Workers & Pages → Pages → Upload assets** project, then upload th
 
 No build command is required. Set the build output directory to `.` if Cloudflare asks.
 
+### Git-based Pages deployments
+
+For a project connected to GitHub or GitLab, create it under the **Pages** tab (not the Workers tab) and use these build settings:
+
+- Framework preset: `None`
+- Build command: leave blank (or use `exit 0`)
+- Build output directory: `.`
+
+Do **not** configure `npx wrangler deploy` as a deploy command. Pages uploads the build-output directory itself; `wrangler deploy` is a Workers command and expects a Worker entry point or an `assets` directory.
+
 ## Custom domain
 
 After the first deployment, open the Pages project's **Custom domains** settings in Cloudflare and add your domain. Cloudflare will show the required DNS record if it is managed elsewhere.

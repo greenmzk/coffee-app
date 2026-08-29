@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Brew Day</title>
+  <rect width="512" height="512" rx="112" fill="#0b4f9c"/>
+  <path d="M132 154h248l-40 190H172z" fill="none" stroke="#fffaf2" stroke-linejoin="round" stroke-width="26"/>
+  <path d="M184 382h144M145 422h222" fill="none" stroke="#fffaf2" stroke-linecap="round" stroke-width="24"/>
+  <path d="M203 180l35 113M256 180v113M309 180l-35 113" fill="none" stroke="#fffaf2" stroke-linecap="round" stroke-width="15"/>
+  <path d="M183 110c0 21-18 31-18 52M256 92c0 21-18 31-18 52M329 110c0 21-18 31-18 52" fill="none" stroke="#fffaf2" stroke-linecap="round" stroke-width="18"/>
+</svg>

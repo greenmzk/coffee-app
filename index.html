@@ -14,9 +14,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
-  <link id="manifestLink" rel="manifest">
-  <link id="faviconLink" rel="icon">
-  <link id="appleTouchIcon" rel="apple-touch-icon">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="app-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="app-icon.svg">
   <style>
     :root{
       --display-serif:"Cormorant Garamond", Georgia, "Times New Roman", serif;
@@ -1030,8 +1030,9 @@
         premiumPurchaseDemo:"購入機能はデモ版では接続されていません。設定のテスト用トグルでPlus状態を確認できます。",
         premiumRestoreDemo:"復元機能はデモ版では接続されていません。",
         premiumDialogClose:"閉じる",
-        bugReport:"バグの報告", bugReportHelp:"不具合や改善してほしい点をGoogleフォームから送信できます。", pwaAbout:"PWAについて",
-        pwaHelp:"Safari / Chrome向けのモバイル最適化、ホーム画面表示用メタ情報、動的Manifestを含む1ファイル版です。完全なオフラインキャッシュには、ブラウザ仕様上別ファイルのService Workerが必要です。",
+        bugReport:"バグの報告", bugReportHelp:"不具合や改善してほしい点をGoogleフォームから送信できます。", pwaAbout:"アプリについて",
+        pwaHelp:"このアプリはインストールしてホーム画面から開けます。一度開くと、オフラインでもレシピの閲覧・記録を続けられます。Safariでは共有メニューから「ホーム画面に追加」を選択してください。",
+        installApp:"アプリをインストール", installedApp:"アプリはインストール済みです", installUnavailable:"ブラウザのメニューから「ホーム画面に追加」を選択してください。",
         selectCategory:"カテゴリー", maker:"メーカー", productName:"商品名", material:"方式・材質",
         addGear:"器具を追加", addGearTitle:"器具を追加",
         makerPlaceholder:"例：Timemore", gearNamePlaceholder:"器具名を入力",
@@ -1164,8 +1165,9 @@
         premiumPurchaseDemo:"Purchases are not connected in this demo. Use the Plus test switch in Settings to test the Plus state.",
         premiumRestoreDemo:"Purchase restore is not connected in this demo.",
         premiumDialogClose:"Close",
-        bugReport:"Report a Bug", bugReportHelp:"Send bugs or improvement requests through the Google Form.", pwaAbout:"About PWA",
-        pwaHelp:"This single-file edition includes mobile optimization for Safari / Chrome, home-screen metadata and a dynamic Manifest. Full offline caching requires a separate Service Worker file due to browser security rules.",
+        bugReport:"Report a Bug", bugReportHelp:"Send bugs or improvement requests through the Google Form.", pwaAbout:"About this app",
+        pwaHelp:"Install Brew Day to launch it from your home screen. After the first visit, you can keep viewing and recording recipes while offline. On Safari, use Share → Add to Home Screen.",
+        installApp:"Install app", installedApp:"App installed", installUnavailable:"Choose “Add to Home Screen” from your browser menu.",
         selectCategory:"Gear Type", maker:"Brand / Maker", productName:"Product Name", material:"Method / Material",
         addGear:"Add Gear", addGearTitle:"Add Gear",
         makerPlaceholder:"e.g. Timemore", gearNamePlaceholder:"Enter gear name",
@@ -1218,43 +1220,6 @@
       document.documentElement.lang = state.lang;
       document.title = "Brew Day — " + (state.lang === "ja" ? "コーヒーレシピ記録" : "Coffee Recipe Log");
       document.querySelector('meta[name="theme-color"]')?.setAttribute("content","#0b4f9c");
-    }
-
-    /* ---------- PWA metadata ---------- */
-    function makeIconDataURL(size=512){
-      try{
-        const c=document.createElement("canvas");
-        c.width=c.height=size;
-        const x=c.getContext("2d");
-        x.fillStyle="#0b4f9c";x.fillRect(0,0,size,size);
-        x.strokeStyle="#fffaf2";x.fillStyle="#fffaf2";
-        x.lineWidth=size*.045;x.lineJoin="round";x.lineCap="round";
-        x.beginPath();x.moveTo(size*.26,size*.36);x.lineTo(size*.74,size*.36);
-        x.lineTo(size*.64,size*.59);x.lineTo(size*.36,size*.59);x.closePath();x.stroke();
-        x.beginPath();x.moveTo(size*.39,size*.65);x.lineTo(size*.61,size*.65);
-        x.moveTo(size*.31,size*.72);x.lineTo(size*.69,size*.72);x.stroke();
-        x.lineWidth=size*.026;
-        [[.40,.41,.46,.53],[.50,.40,.50,.54],[.60,.41,.54,.53]].forEach(p=>{
-          x.beginPath();x.moveTo(size*p[0],size*p[1]);x.lineTo(size*p[2],size*p[3]);x.stroke();
-        });
-        return c.toDataURL("image/png");
-      }catch(_){return ""}
-    }
-    const appIcon=makeIconDataURL(512);
-    if(appIcon){
-      document.getElementById("faviconLink").href=appIcon;
-      document.getElementById("appleTouchIcon").href=appIcon;
-      try{
-        const manifest={
-          name:"Brew Day",short_name:"Brew Day",
-          description:"Coffee recipe journal / コーヒーレシピ記録",
-          start_url:location.href.split("#")[0],scope:"./",display:"standalone",orientation:"portrait",
-          background_color:"#0b4f9c",theme_color:"#0b4f9c",
-          icons:[{src:appIcon,sizes:"512x512",type:"image/png",purpose:"any maskable"}]
-        };
-        const blob=new Blob([JSON.stringify(manifest)],{type:"application/manifest+json"});
-        document.getElementById("manifestLink").href=URL.createObjectURL(blob);
-      }catch(_){}
     }
 
     const icon = name => {
@@ -2472,6 +2437,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         <div class="profile-card">
           <h3>${escapeHTML(t("pwaAbout"))}</h3>
           <p>${escapeHTML(t("pwaHelp"))}</p>
+          ${isInstalledPWA()?`<button class="outline-btn" type="button" disabled>${escapeHTML(t("installedApp"))}</button>`:`<button class="cream-btn" type="button" data-action="install-app">${escapeHTML(t("installApp"))}</button>`}
         </div>
       `,"profile",topbar(t("settingsTitle"),{back:true}));
       bindGlobal();
@@ -2910,6 +2876,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           state.screen="profile";render();break;
         case "export":exportData();break;
         case "import":document.getElementById("importFile")?.click();break;
+        case "install-app":promptInstall();break;
         case "clear-recipes":
           confirmBox(t("deleteAllTitle"),t("deleteAllMessage"),()=>{
             state.recipes=[];saveRecipes();renderProfile();toast(t("recipesDeleted"));
@@ -3021,6 +2988,34 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       const el=document.getElementById("toast");if(!el)return;
       el.textContent=message;el.classList.add("show");
       clearTimeout(toast._timer);toast._timer=setTimeout(()=>el.classList.remove("show"),1750);
+    }
+
+    /* ---------- Progressive Web App ---------- */
+    let deferredInstallPrompt=null;
+    function isInstalledPWA(){
+      return window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone===true;
+    }
+    function promptInstall(){
+      if(!deferredInstallPrompt)return toast(t("installUnavailable"));
+      deferredInstallPrompt.prompt();
+      deferredInstallPrompt.userChoice.finally(()=>{
+        deferredInstallPrompt=null;
+        if(state.screen==="profile")renderProfile();
+      });
+    }
+    window.addEventListener("beforeinstallprompt",event=>{
+      event.preventDefault();
+      deferredInstallPrompt=event;
+      if(state.screen==="profile")renderProfile();
+    });
+    window.addEventListener("appinstalled",()=>{
+      deferredInstallPrompt=null;
+      if(state.screen==="profile")renderProfile();
+    });
+    if("serviceWorker" in navigator){
+      window.addEventListener("load",()=>{
+        navigator.serviceWorker.register("./service-worker.js",{scope:"./"}).catch(()=>{});
+      });
     }
 
     render();
