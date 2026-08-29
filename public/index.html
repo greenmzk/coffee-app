@@ -232,6 +232,7 @@
       width:100%;border:1px solid var(--line-strong);background:rgba(255,255,255,.052);color:var(--white);
       border-radius:10px;outline:none;transition:border-color .15s,background .15s,box-shadow .15s;
     }
+    .text-input[type="date"]{-webkit-appearance:auto;appearance:auto}
     .text-input:focus,.select-input:focus,.textarea:focus,.inline-input:focus{
       border-color:rgba(255,255,255,.64);background:rgba(255,255,255,.075);box-shadow:0 0 0 3px rgba(255,255,255,.055);
     }
@@ -282,6 +283,26 @@
     .rating button{border:0;background:transparent;color:var(--cream);padding:2px;opacity:.23;min-width:26px;min-height:34px}
     .rating button.on{opacity:1}
     .rating .bean{width:14px;height:19px}
+
+    .taste-profile{margin:2px 2px 14px;padding:12px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.025)}
+    .taste-profile-grid{display:grid;grid-template-columns:minmax(132px,.85fr) minmax(0,1fr);gap:12px;align-items:center}
+    .taste-radar{display:block;width:100%;overflow:visible}
+    .radar-grid,.radar-axis{fill:none;stroke:rgba(255,255,255,.18);stroke-width:.8}
+    .radar-shape{fill:rgba(247,242,234,.2);stroke:var(--cream);stroke-width:1.6}
+    .radar-point{fill:var(--cream);stroke:var(--blue-deep);stroke-width:.8}
+    .radar-label{fill:rgba(255,255,255,.84);font-size:7px;font-weight:800;letter-spacing:.02em}
+    .taste-score-list{display:grid;gap:7px}
+    .taste-score-row{display:grid;grid-template-columns:minmax(58px,1fr) auto;align-items:center;gap:7px;font-size:10px;color:var(--muted);font-weight:760}
+    .taste-score-actions{display:flex;gap:3px}
+    .taste-score-actions button{width:23px;min-width:23px;height:25px;border:1px solid var(--line-strong);border-radius:7px;background:transparent;color:var(--muted);font:800 10px/1 var(--sans)}
+    .taste-score-actions button.on{border-color:var(--cream);background:var(--cream);color:var(--blue-deep)}
+    .taste-radar-detail{max-width:250px;margin:0 auto 14px}
+    .taste-radar-detail .radar-label{font-size:7px}
+
+    @media(max-width:355px){
+      .taste-profile-grid{grid-template-columns:1fr}
+      .taste-radar-wrap{max-width:210px;margin:0 auto}
+    }
 
     .milk-custom-wrap{padding:0 2px 12px}
     .milk-add-wrap{padding:0 2px 12px}
@@ -984,6 +1005,8 @@
         customMilkHint:"保存時にこのミルク名も登録され、次回から選択肢に表示されます。",
         tastingNotes:"味の感想",
         tastingPlaceholder:"香り、酸味、甘さ、後味、次回調整したいことなど",
+        tasteProfile:"テイストプロファイル", acidity:"酸味", aftertaste:"後味", aroma:"香り", balance:"バランス", body:"ボディ",
+        tasteScoreAria:(axis,n)=>`${axis} ${n}/5`,
         update:"更新する", saveRecipe:"保存する",
         satisfactionAria:n=>`満足度 ${n}`,
         recipeDetail:"レシピ詳細", beanSection:"Bean", equipmentSection:"Equipment",
@@ -1119,6 +1142,8 @@
         customMilkHint:"This milk name will be saved and available as a choice next time.",
         tastingNotes:"Tasting Notes",
         tastingPlaceholder:"Aroma, acidity, sweetness, finish, and what to adjust next time",
+        tasteProfile:"Taste Profile", acidity:"Acidity", aftertaste:"Aftertaste", aroma:"Aroma", balance:"Balance", body:"Body",
+        tasteScoreAria:(axis,n)=>`${axis} ${n}/5`,
         update:"Update", saveRecipe:"Save Recipe",
         satisfactionAria:n=>`Rating ${n}`,
         recipeDetail:"Recipe Detail", beanSection:"Bean", equipmentSection:"Equipment",
@@ -1223,6 +1248,7 @@
       const value = I18N[state.lang]?.[key] ?? I18N.ja[key] ?? key;
       return typeof value === "function" ? value(...args) : value;
     };
+    const TASTE_AXES = ["acidity","aftertaste","aroma","balance","body"];
 
     function updateDocumentLanguage(){
       document.documentElement.lang = state.lang;
@@ -1433,7 +1459,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         waterTemp:92,iceWeight:"",
         bloomWater:30,bloomTime:"0:30",
         pours:[{water:70,time:"0:45"},{water:70,time:"1:30"},{water:70,time:"2:15"}],
-        brewTime:"",milk:"なし",customMilk:"",rating:4,notes:""
+        brewTime:"",milk:"なし",customMilk:"",rating:4,tasteScores:normalizedTasteScores(null,4),notes:""
       };
     }
     function normalizeRecipe(r){
@@ -1455,6 +1481,8 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         }
       }
       if(!base.pours.length)base.pours=[{water:70,time:"0:45"}];
+      base.tasteScores=normalizedTasteScores(r.tasteScores,base.rating);
+      base.rating=overallTasteRating(base.tasteScores);
       return base;
     }
     function loadRecipes(){
@@ -1755,6 +1783,43 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
     function ratingButtons(n){
       return Array.from({length:5},(_,i)=>`<button type="button" class="${i<n?"on":""}" data-rating="${i+1}" aria-label="${escapeAttr(t("satisfactionAria",i+1))}"><i class="bean"></i></button>`).join("");
     }
+    function clampTasteScore(value,fallback=3){
+      const score=Math.round(Number(value));
+      return Number.isFinite(score)?Math.max(1,Math.min(5,score)):fallback;
+    }
+    function normalizedTasteScores(scores,legacyRating=3){
+      const fallback=clampTasteScore(legacyRating,3);
+      return Object.fromEntries(TASTE_AXES.map(axis=>[axis,clampTasteScore(scores?.[axis],fallback)]));
+    }
+    function overallTasteRating(scores){
+      const values=TASTE_AXES.map(axis=>clampTasteScore(scores?.[axis]));
+      return Math.round(values.reduce((sum,value)=>sum+value,0)/values.length);
+    }
+    function radarPoint(value,index,radius=58,cx=90,cy=82){
+      const angle=-Math.PI/2+(Math.PI*2*index/TASTE_AXES.length);
+      const distance=radius*(value/5);
+      return `${(cx+Math.cos(angle)*distance).toFixed(1)},${(cy+Math.sin(angle)*distance).toFixed(1)}`;
+    }
+    function tasteRadar(scores){
+      const normalized=normalizedTasteScores(scores);
+      const polygon=level=>TASTE_AXES.map((_,index)=>radarPoint(level,index)).join(" ");
+      const labels=TASTE_AXES.map((axis,index)=>{
+        const [x,y]=radarPoint(5,index,77).split(",");
+        return `<text class="radar-label" x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle">${escapeHTML(t(axis))}</text>`;
+      }).join("");
+      const values=TASTE_AXES.map((axis,index)=>radarPoint(normalized[axis],index)).join(" ");
+      return `<svg class="taste-radar" viewBox="0 0 180 164" role="img" aria-label="${escapeAttr(t("tasteProfile"))}">
+        ${[1,2,3,4,5].map(level=>`<polygon class="radar-grid" points="${polygon(level)}"></polygon>`).join("")}
+        ${TASTE_AXES.map((_,index)=>{const [x,y]=radarPoint(5,index).split(",");return `<line class="radar-axis" x1="90" y1="82" x2="${x}" y2="${y}"></line>`}).join("")}
+        <polygon class="radar-shape" points="${values}"></polygon>
+        ${TASTE_AXES.map((axis,index)=>{const [x,y]=radarPoint(normalized[axis],index).split(",");return `<circle class="radar-point" cx="${x}" cy="${y}" r="2.3"></circle>`}).join("")}
+        ${labels}
+      </svg>`;
+    }
+    function tasteScoreControls(scores){
+      const normalized=normalizedTasteScores(scores);
+      return TASTE_AXES.map(axis=>`<div class="taste-score-row"><span>${escapeHTML(t(axis))}</span><div class="taste-score-actions" role="group" aria-label="${escapeAttr(t(axis))}">${[1,2,3,4,5].map(score=>`<button type="button" class="${normalized[axis]===score?"on":""}" data-taste-axis="${axis}" data-taste-score="${score}" aria-label="${escapeAttr(t("tasteScoreAria",t(axis),score))}">${score}</button>`).join("")}</div></div>`).join("");
+    }
     function recipeSort(a,b){
       const c=String(b.date||"").localeCompare(String(a.date||""));
       if(c)return c;
@@ -1953,7 +2018,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           <div class="field-grid">
             <div class="field-card" style="grid-column:1/-1"><label>${escapeHTML(t("beanOrigin"))}</label><input class="text-input" data-field="beanOrigin" value="${escapeAttr(d.beanOrigin)}" placeholder="${escapeAttr(t("beanOriginPlaceholder"))}"></div>
             <div class="field-card"><label>${escapeHTML(t("roasterName"))}</label><input class="text-input" data-field="roasterName" value="${escapeAttr(d.roasterName)}" placeholder="${escapeAttr(t("roasterNamePlaceholder"))}"></div>
-            <div class="field-card"><label>${escapeHTML(t("roastDate"))}</label><input class="text-input" type="text" inputmode="numeric" autocomplete="off" data-roast-date value="${escapeAttr(formatRoastDate(d.roastDate))}" placeholder="${escapeAttr(t("roastDatePlaceholder"))}"></div>
+            <div class="field-card"><label>${escapeHTML(t("roastDate"))}</label><input class="text-input" type="date" autocomplete="off" data-roast-date value="${escapeAttr(d.roastDate)}"></div>
           </div>
         </div>
 
@@ -2012,10 +2077,10 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         </div>
 
         <div class="form-section" style="padding:12px 2px 16px">
-          <div class="form-row" style="grid-template-columns:34px 1fr auto">
+          <div class="form-row" style="grid-template-columns:34px 1fr">
             <div class="form-icon">${icon("notebookPen")}</div><div class="form-label">${escapeHTML(t("tastingNotes"))}</div>
-            <div class="rating" id="rating">${ratingButtons(Number(d.rating)||0)}</div>
           </div>
+          <div class="taste-profile"><div class="taste-profile-grid"><div class="taste-radar-wrap">${tasteRadar(d.tasteScores)}</div><div class="taste-score-list">${tasteScoreControls(d.tasteScores)}</div></div></div>
           <textarea class="textarea" data-field="notes" placeholder="${escapeAttr(t("tastingPlaceholder"))}">${escapeHTML(d.notes)}</textarea>
         </div>
 
@@ -2137,6 +2202,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
 
         <section class="detail-card">
           <div class="detail-card-title">${escapeHTML(t("tastingSection"))}</div>
+          <div class="taste-radar-detail">${tasteRadar(r.tasteScores)}</div>
           <div class="notes-box">${escapeHTML(r.notes||t("noMemo"))}</div>
         </section>
 
@@ -2757,13 +2823,12 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       app.querySelectorAll("[data-roast-date]").forEach(el=>{
         el.addEventListener("change",()=>{
           const parsed=parseRoastDate(el.value);
-          if(parsed===null){toast(t("invalidRoastDate"));el.value=formatRoastDate(state.draft.roastDate);return;}
+          if(parsed===null){toast(t("invalidRoastDate"));el.value=state.draft.roastDate||"";return;}
           state.draft.roastDate=parsed;
-          el.value=formatRoastDate(parsed);
         });
         el.addEventListener("blur",()=>{
           const parsed=parseRoastDate(el.value);
-          if(parsed!==null){state.draft.roastDate=parsed;el.value=formatRoastDate(parsed);}
+          if(parsed!==null){state.draft.roastDate=parsed;}
         });
       });
       app.querySelectorAll("[data-temp-field]").forEach(el=>{
@@ -2791,8 +2856,13 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         syncVisibleFields();state.draft.pours.splice(Number(btn.dataset.removePour),1);renderEditor();
       }));
 
-      app.querySelectorAll("[data-rating]").forEach(btn=>btn.addEventListener("click",()=>{
-        syncVisibleFields();state.draft.rating=Number(btn.dataset.rating);renderEditor();
+      app.querySelectorAll("[data-taste-score]").forEach(btn=>btn.addEventListener("click",()=>{
+        syncVisibleFields();
+        const scores=normalizedTasteScores(state.draft.tasteScores,state.draft.rating);
+        scores[btn.dataset.tasteAxis]=Number(btn.dataset.tasteScore);
+        state.draft.tasteScores=scores;
+        state.draft.rating=overallTasteRating(scores);
+        renderEditor();
       }));
 
       app.querySelector("[data-milk-select]")?.addEventListener("change",e=>{
@@ -2959,6 +3029,8 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         d.milk=name;d.customMilk="";
       }
       if(d.beverageType!=="Ice")d.iceWeight="";
+      d.tasteScores=normalizedTasteScores(d.tasteScores,d.rating);
+      d.rating=overallTasteRating(d.tasteScores);
 
       const recipe=JSON.parse(JSON.stringify(d));
       recipe.beanWeight=toNumberOrString(recipe.beanWeight);
