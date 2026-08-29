@@ -202,9 +202,7 @@
     .bean:after{content:"";position:absolute;left:4.5px;top:1px;width:1px;height:11px;background:currentColor;border-radius:50%;transform:rotate(13deg)}
     .bean.off{opacity:.19}
     .recipe-tool{display:flex;align-items:center;justify-content:center}
-    .dripper-icon{width:27px;height:28px;position:relative}
-    .dripper-icon:before{content:"";position:absolute;left:3px;right:3px;top:2px;height:16px;border:2px solid currentColor;border-top-width:1px;clip-path:polygon(0 0,100% 0,72% 100%,28% 100%)}
-    .dripper-icon:after{content:"";position:absolute;left:8px;right:8px;bottom:3px;height:2px;background:currentColor;box-shadow:0 -6px 0 currentColor;border-radius:2px}
+    .recipe-tool .stroke{width:28px;height:28px;stroke-width:1.9}
     .view-all{width:100%;border:0;background:transparent;color:var(--cream);font-size:13px;font-weight:800;padding:15px 5px 10px;text-align:right}
     .empty{
       border:1px dashed var(--line-strong);border-radius:16px;padding:28px 18px;text-align:center;color:var(--muted);
@@ -1281,6 +1279,8 @@
         water:`<svg class="stroke" viewBox="0 0 24 24"><path d="M12 2s7 7.5 7 13a7 7 0 1 1-14 0c0-5.5 7-13 7-13z"/></svg>`,
         grind:`<svg class="stroke" viewBox="0 0 24 24"><path d="M6 4h12l-2 6H8zM9 10h6l1 9H8zM7 19h10v2H7z"/></svg>`,
         clock:`<svg class="stroke" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg>`,
+        coffee:`<svg class="stroke" viewBox="0 0 24 24"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>`,
+        glassWater:`<svg class="stroke" viewBox="0 0 24 24"><path d="M5.116 4.104A1 1 0 0 1 6.11 3h11.78a1 1 0 0 1 .994 1.105L17.19 20.21A2 2 0 0 1 15.2 22H8.8a2 2 0 0 1-2-1.79z"/><path d="M6 12a5 5 0 0 1 6 0 5 5 0 0 0 6 0"/></svg>`,
         milk:`<svg class="stroke" viewBox="0 0 24 24"><path d="M8 2h8"/><path d="M9 2v6.5a2.5 2.5 0 0 1-1 2l-3 2.5A2.5 2.5 0 0 0 4 15v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a2.5 2.5 0 0 0-1-2l-3-2.5a2.5 2.5 0 0 1-1-2V2"/><path d="M4 15h16"/></svg>`,
         note:`<svg class="stroke" viewBox="0 0 24 24"><path d="M4 3h16v18H4zM8 8h8M8 12h8M8 16h5"/></svg>`,
         notebookPen:`<svg class="stroke" viewBox="0 0 24 24"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4M2 10h4M2 14h4M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>`,
@@ -2054,6 +2054,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       const d=new Date((r.date||isoToday())+"T00:00:00");
       const dr=equipmentName(r.dripper)||t("dripperNotSelected");
       const type=(r.beverageType||"Hot")==="Ice"?"ICE":"HOT";
+      const recipeIcon=(r.beverageType||"Hot")==="Ice"?"glassWater":"coffee";
       return `<button class="recipe-card" data-detail="${escapeAttr(r.id)}">
         <div class="date-block"><span class="month">${d.getMonth()+1}</span><span class="day">${d.getDate()}</span><span class="dow">${escapeHTML(t("dayNames")[d.getDay()])}</span></div>
         <div class="recipe-main">
@@ -2061,7 +2062,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           <div class="recipe-sub">${escapeHTML(shortTool(dr))} / ${num(r.beanWeight)} g / ${escapeHTML(grindLabel(r.grind||""))}</div>
           <div class="recipe-tags"><span class="recipe-tag">${type}</span><div class="beans">${ratingHTML(Number(r.rating)||0)}</div></div>
         </div>
-        <div class="recipe-tool"><span class="dripper-icon"></span></div>
+        <div class="recipe-tool" aria-hidden="true">${icon(recipeIcon)}</div>
       </button>`;
     }
 
