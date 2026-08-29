@@ -1,0 +1,7 @@
+.git
+.wrangler
+.DS_Store
+README.md
+wrangler.toml
+_headers
+index.txt

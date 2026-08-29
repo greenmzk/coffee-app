@@ -1,6 +1,6 @@
 # Brew Day
 
-Static coffee-recipe log, ready to deploy on Cloudflare Pages. Recipes and preferences are stored locally in the visitor's browser; there is no server-side account or shared database.
+Static coffee-recipe log, ready to deploy as a Cloudflare Worker with static assets. Recipes and preferences are stored locally in the visitor's browser; there is no server-side account or shared database.
 
 ## Deploy
 
@@ -10,34 +10,26 @@ Static coffee-recipe log, ready to deploy on Cloudflare Pages. Recipes and prefe
    npx wrangler login
    ```
 
-2. Create the Pages project and upload this directory:
+2. Deploy the static-assets Worker:
 
    ```sh
-   npx wrangler pages deploy . --project-name brew-day --force
+   npx wrangler deploy
    ```
 
-   Confirm the deployment when Wrangler asks whether to create the project. The `--force` flag keeps the current Wrangler CLI on its direct Cloudflare Pages upload path for this asset-only site. For subsequent releases, run the same command again.
+   For subsequent releases, run the same command again.
 
-## Cloudflare dashboard alternative
+## Cloudflare Workers Git deployment
 
-Create a **Workers & Pages → Pages → Upload assets** project, then upload these files together:
+When connecting this repository in Cloudflare, create a project from the **Workers** tab and use:
 
-- `index.html`
-- `brewday_seaotter.png`
-- `_headers`
+- Build command: leave blank
+- Deploy command: `npx wrangler deploy`
+- Root directory: `.`
 
-No build command is required. Set the build output directory to `.` if Cloudflare asks.
+`wrangler.toml` configures Workers Static Assets and `not_found_handling = "single-page-application"`, so the app needs no Worker entry point, build step, or framework.
 
-### Git-based Pages deployments
-
-For a project connected to GitHub or GitLab, create it under the **Pages** tab (not the Workers tab) and use these build settings:
-
-- Framework preset: `None`
-- Build command: leave blank (or use `exit 0`)
-- Build output directory: `.`
-
-Do **not** configure `npx wrangler deploy` as a deploy command. Pages uploads the build-output directory itself; `wrangler deploy` is a Workers command and expects a Worker entry point or an `assets` directory.
+Only the browser-facing app files are uploaded; `.assetsignore` prevents source-control and configuration files from being exposed as static assets.
 
 ## Custom domain
 
-After the first deployment, open the Pages project's **Custom domains** settings in Cloudflare and add your domain. Cloudflare will show the required DNS record if it is managed elsewhere.
+After the first deployment, open the Worker's **Settings → Domains & Routes** section in Cloudflare and add your domain. Cloudflare will show the required DNS record if it is managed elsewhere.
