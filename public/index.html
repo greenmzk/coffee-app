@@ -284,6 +284,13 @@
     .rating .bean{width:14px;height:19px}
 
     .milk-custom-wrap{padding:0 2px 12px}
+    .milk-add-wrap{padding:0 2px 12px}
+    .add-milk{
+      width:100%;border:1px solid #cfdbe6;border-radius:16px;background:#f4f8fb;color:#17324d;
+      text-align:left;padding:12px 16px;
+    }
+    .add-milk strong{display:block;color:#0b4f9c;font-size:12.5px;line-height:1.45}
+    .add-milk span{display:block;margin-top:3px;color:#687c8e;font-size:10px;line-height:1.45}
     .hint-box{
       margin:8px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;
       background:rgba(255,255,255,.025);font-size:10px;color:var(--muted);line-height:1.55;
@@ -973,7 +980,7 @@
         bloom:"蒸らし", pourNth:n=>`${n}回目`, addPour:"＋ 注ぎを追加",
         pourUnitNote:"左：湯量 g　右：注ぎ開始の目安時間",
         bloomTime:"蒸らし時間",
-        milkType:"ミルクの種類（ラテの場合）", customMilkPlaceholder:"例：ピスタチオミルク",
+        milkType:"ミルクの種類（ラテの場合）", addMissingMilk:"リストにないミルクを追加する", addMissingMilkHelp:"Brew Day Plusで、自分のミルクを追加してこのレシピに設定できます。", customMilkPlaceholder:"例：ピスタチオミルク",
         customMilkHint:"保存時にこのミルク名も登録され、次回から選択肢に表示されます。",
         tastingNotes:"味の感想",
         tastingPlaceholder:"香り、酸味、甘さ、後味、次回調整したいことなど",
@@ -1108,7 +1115,7 @@
         bloom:"Bloom", pourNth:n=>`Pour ${n}`, addPour:"+ Add Pour",
         pourUnitNote:"Left: yield (g) · Right: pour start time",
         bloomTime:"Bloom Time",
-        milkType:"Milk (for latte)", customMilkPlaceholder:"e.g. Pistachio milk",
+        milkType:"Milk (for latte)", addMissingMilk:"Add milk not in the list", addMissingMilkHelp:"Use Brew Day Plus to add your own milk and set it on this recipe.", customMilkPlaceholder:"e.g. Pistachio milk",
         customMilkHint:"This milk name will be saved and available as a choice next time.",
         tastingNotes:"Tasting Notes",
         tastingPlaceholder:"Aroma, acidity, sweetness, finish, and what to adjust next time",
@@ -1231,7 +1238,7 @@
         calendar:`<svg class="stroke" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M7 14h.01M12 14h.01M17 14h.01M7 18h.01M12 18h.01"/></svg>`,
         gear:`<svg class="stroke" viewBox="0 0 24 24"><path d="M7 4h10l-2 5H9zM9 9l1 7h4l1-7M8 16h8v4H8z"/></svg>`,
         user:`<svg class="stroke" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg>`,
-        settings:`<svg class="stroke" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.86 2.86-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21H9.55v-.1A1.7 1.7 0 0 0 8.5 19.35a1.7 1.7 0 0 0-1.88.34l-.06.06-2.86-2.86.06-.06A1.7 1.7 0 0 0 4.1 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H2.3V9.55h.1A1.7 1.7 0 0 0 3.95 8.5a1.7 1.7 0 0 0-.34-1.88l-.06-.06L6.4 3.7l.06.06A1.7 1.7 0 0 0 8.35 4.1a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V2.3h4.05v.1A1.7 1.7 0 0 0 14.85 3.95a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.86 2.86-.06.06A1.7 1.7 0 0 0 19.25 8.35a1.7 1.7 0 0 0 .6 1 1.7 1.7 0 0 0 1.1.4h.1v4.05h-.1A1.7 1.7 0 0 0 19.4 15z"/></svg>`,
+        settings:`<svg class="stroke" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>`,
         ranking:`<svg class="stroke" viewBox="0 0 24 24"><path d="M5 20V10h4v10zM10 20V4h4v16zM15 20v-7h4v7zM3 20h18"/></svg>`,
         history:`<svg class="stroke" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/><path d="M17 16l3 2-3 2z"/></svg>`,
         beans:`<svg class="stroke" viewBox="0 0 24 24"><path d="M18 4c-5-2-11 2-12 8s3 9 8 8 8-7 6-12c-.5-1.7-1.1-3.1-2-4z"/><path d="M16 5c-1 5-5 6-8 10"/></svg>`,
@@ -1240,8 +1247,9 @@
         water:`<svg class="stroke" viewBox="0 0 24 24"><path d="M12 2s7 7.5 7 13a7 7 0 1 1-14 0c0-5.5 7-13 7-13z"/></svg>`,
         grind:`<svg class="stroke" viewBox="0 0 24 24"><path d="M6 4h12l-2 6H8zM9 10h6l1 9H8zM7 19h10v2H7z"/></svg>`,
         clock:`<svg class="stroke" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg>`,
-        milk:`<svg class="stroke" viewBox="0 0 24 24"><path d="M9 3h6v4l2 3v10H7V10l2-3zM9 7h6"/></svg>`,
+        milk:`<svg class="stroke" viewBox="0 0 24 24"><path d="M8 2h8"/><path d="M9 2v6.5a2.5 2.5 0 0 1-1 2l-3 2.5A2.5 2.5 0 0 0 4 15v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a2.5 2.5 0 0 0-1-2l-3-2.5a2.5 2.5 0 0 1-1-2V2"/><path d="M4 15h16"/></svg>`,
         note:`<svg class="stroke" viewBox="0 0 24 24"><path d="M4 3h16v18H4zM8 8h8M8 12h8M8 16h5"/></svg>`,
+        notebookPen:`<svg class="stroke" viewBox="0 0 24 24"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4M2 10h4M2 14h4M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>`,
         search:`<svg class="stroke" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>`,
         ice:`<svg class="stroke" viewBox="0 0 24 24"><path d="M7 4h10l3 5-2 11H6L4 9zM8 9l3-3 3 3 3-2M8 14l3 3 4-5"/></svg>`,
         cup:`<svg class="stroke" viewBox="0 0 24 24"><path d="M5 7h12v8a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5zM17 9h2a3 3 0 0 1 0 6h-2M4 4h14"/></svg>`,
@@ -1994,6 +2002,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
 
         <div class="form-section">
           ${selectRow("milk",t("milkType"),"milk",d.milk,milkOptions,true)}
+          <div class="milk-add-wrap"><button class="add-milk" type="button" data-action="add-custom-milk"><strong>✦ ${escapeHTML(t("addMissingMilk"))}</strong><span>${escapeHTML(t("addMissingMilkHelp"))}</span></button></div>
           ${d.milk==="__custom__"?`
             <div class="milk-custom-wrap">
               <input class="text-input" data-field="customMilk" value="${escapeAttr(d.customMilk)}" placeholder="${escapeAttr(t("customMilkPlaceholder"))}">
@@ -2004,7 +2013,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
 
         <div class="form-section" style="padding:12px 2px 16px">
           <div class="form-row" style="grid-template-columns:34px 1fr auto">
-            <div class="form-icon">${icon("note")}</div><div class="form-label">${escapeHTML(t("tastingNotes"))}</div>
+            <div class="form-icon">${icon("notebookPen")}</div><div class="form-label">${escapeHTML(t("tastingNotes"))}</div>
             <div class="rating" id="rating">${ratingButtons(Number(d.rating)||0)}</div>
           </div>
           <textarea class="textarea" data-field="notes" placeholder="${escapeAttr(t("tastingPlaceholder"))}">${escapeHTML(d.notes)}</textarea>
@@ -2787,6 +2796,11 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       }));
 
       app.querySelector("[data-milk-select]")?.addEventListener("change",e=>{
+        if(e.target.value==="__custom__"&&!state.isPremium){
+          e.target.value=state.draft.milk;
+          openPremiumModal();
+          return;
+        }
         state.draft.milk=e.target.value;if(state.draft.milk!=="__custom__")state.draft.customMilk="";renderEditor();
       });
 
@@ -2869,6 +2883,11 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         case "save-recipe":saveRecipe();break;
         case "pick-date":openDateModal();break;
         case "add-pour":syncVisibleFields();state.draft.pours.push({water:"",time:""});renderEditor();break;
+        case "add-custom-milk":
+          requirePremium(()=>{
+            syncVisibleFields();state.draft.milk="__custom__";state.draft.customMilk="";renderEditor();
+          });
+          break;
         case "edit-current":editRecipe(state.detailId);break;
         case "delete-current":deleteCurrent();break;
         case "troubleshoot-current":
