@@ -2164,6 +2164,15 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       `,"home",topbar(state.editingId?t("editRecipe"):t("newRecipe"),{back:true,save:true,bordered:true}));
       bindGlobal();
     }
+    function rerenderEditorPreservingScroll(){
+      const scrollTop=app.querySelector(".page-body")?.scrollTop||0;
+      renderEditor();
+      const restore=()=>{
+        const page=app.querySelector(".page-body");
+        if(page)page.scrollTop=scrollTop;
+      };
+      restore();requestAnimationFrame(restore);
+    }
 
     function clickRow(ic,label,value,field){
       return `<button class="row-btn" data-action="pick-${field}"><div class="form-row">
@@ -2643,7 +2652,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         openCustomEquipmentForm({category:typeToCategory(type),returnToSelector:true,selectorType:type});
       });
       host.querySelectorAll("[data-choice]").forEach(btn=>btn.addEventListener("click",()=>{
-        state.draft[state.modal.type]=btn.dataset.choice;state.modal=null;renderEditor();
+        state.draft[state.modal.type]=btn.dataset.choice;state.modal=null;rerenderEditorPreservingScroll();
       }));
       host.querySelectorAll("[data-modal-maker]").forEach(btn=>btn.addEventListener("click",()=>{
         state.modal.maker=btn.dataset.modalMaker;drawEquipmentModal();
@@ -2717,7 +2726,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       customEquipment.push(item);saveCustomEquipment();
       const m=state.modal;
       if(m.returnToSelector&&m.selectorType){
-        state.draft[m.selectorType]=equipId(item);state.modal=null;renderEditor();toast(t("gearAddedSelected"));
+        state.draft[m.selectorType]=equipId(item);state.modal=null;rerenderEditorPreservingScroll();toast(t("gearAddedSelected"));
       }else{state.modal=null;renderGear();toast(t("gearAdded"))}
     }
 
@@ -2875,7 +2884,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         </div>
       </div></div>`;
       host.querySelectorAll("[data-close-date]").forEach(btn=>btn.addEventListener("click",()=>{host.innerHTML=""}));
-      host.querySelector("[data-apply-date]")?.addEventListener("click",()=>{state.draft.date=document.getElementById("datePicker").value||isoToday();renderEditor()});
+      host.querySelector("[data-apply-date]")?.addEventListener("click",()=>{state.draft.date=document.getElementById("datePicker").value||isoToday();rerenderEditorPreservingScroll()});
     }
 
     function confirmBox(title,message,onOk){
@@ -2920,7 +2929,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       app.querySelectorAll("[data-brew-style]").forEach(btn=>btn.addEventListener("click",()=>{
         syncVisibleFields();state.draft.beverageType=btn.dataset.brewStyle;
         if(state.draft.beverageType==="Hot")state.draft.iceWeight="";
-        renderEditor();
+        rerenderEditorPreservingScroll();
       }));
 
       app.querySelectorAll("[data-pour-water]").forEach(el=>el.addEventListener("input",()=>{
@@ -2930,7 +2939,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       app.querySelectorAll("[data-pour-time]").forEach(el=>el.addEventListener("input",()=>{state.draft.pours[Number(el.dataset.pourTime)].time=el.value}));
       app.querySelectorAll("[data-remove-pour]").forEach(btn=>btn.addEventListener("click",()=>{
         if(state.draft.pours.length<=1)return toast(t("pourMinimum"));
-        syncVisibleFields();state.draft.pours.splice(Number(btn.dataset.removePour),1);renderEditor();
+        syncVisibleFields();state.draft.pours.splice(Number(btn.dataset.removePour),1);rerenderEditorPreservingScroll();
       }));
 
       app.querySelectorAll("[data-taste-score]").forEach(btn=>btn.addEventListener("click",()=>{
@@ -2939,7 +2948,12 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         scores[btn.dataset.tasteAxis]=Number(btn.dataset.tasteScore);
         state.draft.tasteScores=scores;
         state.draft.rating=overallTasteRating(scores);
-        renderEditor();
+        const profile=btn.closest(".taste-profile");
+        const radar=profile?.querySelector(".taste-radar-wrap");
+        if(radar)radar.innerHTML=tasteRadar(scores);
+        profile?.querySelectorAll("[data-taste-score]").forEach(scoreButton=>{
+          scoreButton.classList.toggle("on",scoreButton.dataset.tasteAxis===btn.dataset.tasteAxis&&Number(scoreButton.dataset.tasteScore)===scores[btn.dataset.tasteAxis]);
+        });
       }));
 
       app.querySelector("[data-milk-select]")?.addEventListener("change",e=>{
@@ -2948,7 +2962,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           openPremiumModal();
           return;
         }
-        state.draft.milk=e.target.value;if(state.draft.milk!=="__custom__")state.draft.customMilk="";renderEditor();
+        state.draft.milk=e.target.value;if(state.draft.milk!=="__custom__")state.draft.customMilk="";rerenderEditorPreservingScroll();
       });
 
       app.querySelectorAll("[data-cal]").forEach(btn=>btn.addEventListener("click",()=>{
@@ -3029,10 +3043,10 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         case "back":handleBack();break;
         case "save-recipe":saveRecipe();break;
         case "pick-date":openDateModal();break;
-        case "add-pour":syncVisibleFields();state.draft.pours.push({water:"",time:""});renderEditor();break;
+        case "add-pour":syncVisibleFields();state.draft.pours.push({water:"",time:""});rerenderEditorPreservingScroll();break;
         case "add-custom-milk":
           requirePremium(()=>{
-            syncVisibleFields();state.draft.milk="__custom__";state.draft.customMilk="";renderEditor();
+            syncVisibleFields();state.draft.milk="__custom__";state.draft.customMilk="";rerenderEditorPreservingScroll();
           });
           break;
         case "edit-current":editRecipe(state.detailId);break;
