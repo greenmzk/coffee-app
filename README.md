@@ -13,10 +13,10 @@ Static coffee-recipe log, ready to deploy on Cloudflare Pages. Recipes and prefe
 2. Create the Pages project and upload this directory:
 
    ```sh
-   npx wrangler pages deploy . --project-name brew-day
+   npx wrangler pages deploy . --project-name brew-day --force
    ```
 
-   Confirm the deployment when Wrangler asks whether to create the project. For subsequent releases, run the same command again.
+   Confirm the deployment when Wrangler asks whether to create the project. The `--force` flag keeps the current Wrangler CLI on its direct Cloudflare Pages upload path for this asset-only site. For subsequent releases, run the same command again.
 
 ## Cloudflare dashboard alternative
 
