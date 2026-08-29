@@ -2,6 +2,18 @@
 
 Static coffee-recipe log, ready to deploy as a Cloudflare Worker with static assets. Recipes and preferences are stored locally in the visitor's browser; there is no server-side account or shared database.
 
+## Run locally
+
+Start Cloudflare's local development server from the project directory:
+
+```sh
+npx wrangler dev
+```
+
+Open the localhost URL printed in the terminal (normally `http://localhost:8787`). This serves the same static-assets configuration used in production and allows the service worker to run.
+
+The browser-facing app files live in `public/`; Wrangler watches that directory, so its generated `.wrangler` files cannot trigger a reload loop.
+
 ## Deploy
 
 1. Log in to Cloudflare from this project:

@@ -1002,7 +1002,7 @@
         calendarTitle:"カレンダー", recordsOnDate:"の記録",
         noDayRecipesTitle:"この日の記録はありません", noDayRecipesBody:"右上の＋からレシピを追加できます。",
         all:"すべて", gearList:"器具一覧", searchGear:"器具名・メーカー名・品番で検索",
-        addMissingGear:"＋ リストにない器具を追加する · Plus", showing:"表示中", items:"件",
+        addMissingGear:"リストにない器具を追加する", showing:"表示中", items:"件",
         noGearTitle:"該当する器具がありません", noGearBody:"検索条件を変更するか、器具を追加してください。",
         brand:"ブランド", gearType:"器具タイプ", sku:"品番・SKU", sizeCapacity:"サイズ・容量", compatible:"対応フィルター・対応器具", methodMaterial:"方式・材質", custom:"CUSTOM",
         deleteThisGear:"この器具を削除",
@@ -1042,7 +1042,7 @@
         cancel:"キャンセル", add:"追加する",
         selectEquipment:cat=>`${cat}を選択`,
         searchEquipment:"器具名・メーカー名でリアルタイム検索",
-        addMissingGearSelector:"＋ リストにない器具を追加する · Plus",
+        addMissingGearSelector:"リストにない器具を追加する",
         addMissingGearSelectorSub:"Brew Day Plusで、自分の器具を追加してこのレシピに設定できます。",
         noMatchingGear:"該当する器具がありません",
         chooseDate:"淹れた日付", useThisDate:"この日付にする",
@@ -1137,7 +1137,7 @@
         calendarTitle:"Calendar", recordsOnDate:"records",
         noDayRecipesTitle:"No brews on this date", noDayRecipesBody:"Tap + in the top-right corner to add a recipe.",
         all:"All", gearList:"Gear Library", searchGear:"Search gear, maker, or SKU",
-        addMissingGear:"+ Add gear not in the list · Plus", showing:"Showing", items:"items",
+        addMissingGear:"Add a gear not in the list", showing:"Showing", items:"items",
         noGearTitle:"No matching gear", noGearBody:"Change your search or add a custom item.",
         brand:"Brand", gearType:"Gear Type", sku:"SKU", sizeCapacity:"Size / Capacity", compatible:"Compatible Filters / Gear", methodMaterial:"Method / Material", custom:"CUSTOM",
         deleteThisGear:"Delete gear",
@@ -1177,7 +1177,7 @@
         cancel:"Cancel", add:"Add",
         selectEquipment:cat=>`Select ${cat}`,
         searchEquipment:"Search gear or maker in real time",
-        addMissingGearSelector:"+ Add gear not in the list · Plus",
+        addMissingGearSelector:"Add a gear not in the list",
         addMissingGearSelectorSub:"Use Brew Day Plus to add your own gear and set it on this recipe.",
         noMatchingGear:"No matching gear",
         chooseDate:"Brew date", useThisDate:"Use this date",
@@ -2206,7 +2206,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           ${["all",...makers].map(m=>`<button class="maker-tab ${state.gearMaker===m?"active":""}" data-gear-maker="${escapeAttr(m)}">${escapeHTML(m==="all"?t("all"):m)}</button>`).join("")}
         </div>
         <div class="search">${icon("search")}<input class="text-input" id="gearSearch" value="${escapeAttr(state.gearQuery)}" placeholder="${escapeAttr(t("searchGear"))}"></div>
-        <div class="toolbar"><button class="secondary" data-action="add-custom-equipment">${state.isPremium?"":"✦ "}${escapeHTML(t("addMissingGear"))}</button></div>
+        <div class="toolbar"><button class="secondary" data-action="add-custom-equipment">✦ ${escapeHTML(t("addMissingGear"))}</button></div>
         <div class="mini-note" style="margin:0 2px 9px">${escapeHTML(t("showing"))} <span class="count-badge" id="gearCount">${filtered.length}</span> ${escapeHTML(t("items"))}</div>
         <div id="gearList">${renderGearGroups(filtered)}</div>
       `,"gear",topbar(t("gearList")));
@@ -2468,7 +2468,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           ${["all",...makers].map(m=>`<button class="maker-tab ${state.modal.maker===m?"active":""}" data-modal-maker="${escapeAttr(m)}">${escapeHTML(m==="all"?t("all"):m)}</button>`).join("")}
         </div>
         <div class="sheet-list">
-          <button class="choice add-choice" data-add-from-selector><strong>${state.isPremium?"":"✦ "}${escapeHTML(t("addMissingGearSelector"))}</strong><span>${escapeHTML(t("addMissingGearSelectorSub"))}</span></button>
+          <button class="choice add-choice" data-add-from-selector><strong>✦ ${escapeHTML(t("addMissingGearSelector"))}</strong><span>${escapeHTML(t("addMissingGearSelectorSub"))}</span></button>
           <button class="choice ${!current?"selected-choice":""}" data-choice=""><strong>${escapeHTML(t("unselected"))}</strong><span>${escapeHTML(t("clearSelection"))}</span></button>
           ${items.length?groupByMaker(items).map(([maker,list])=>`
             <div class="sheet-maker-heading">${escapeHTML(maker)}</div>
