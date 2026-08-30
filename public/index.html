@@ -729,7 +729,8 @@
     }
     .home-rank-copy strong{
       display:block;font-family:var(--display-serif);font-size:15px;line-height:1.35;
-      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      overflow:hidden;overflow-wrap:anywhere;word-break:break-word;
+      display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;
     }
     .home-rank-copy small{display:block;margin-top:7px;color:var(--muted);font-size:9px}
     .home-ranking-empty{min-height:170px;margin-top:10px;padding:20px}
