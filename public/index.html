@@ -475,6 +475,8 @@
     .outline-btn{border:1px solid var(--line-strong);background:transparent;color:var(--cream)}
     .cream-btn{border:0;background:var(--cream);color:var(--blue-deep)}
     .danger-btn{border:1px solid rgba(255,221,215,.44);background:transparent;color:var(--danger)}
+    .account-status{flex:0 0 auto;padding:5px 8px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:8.5px;font-weight:850}
+    .account-status.connected{color:#f4d28a;border-color:rgba(218,183,106,.42);background:rgba(218,183,106,.08)}
 
     /* Modal / Sheets */
     .modal{
@@ -521,6 +523,13 @@
     .sheet-footer button{flex:1;min-height:46px;border-radius:12px;font-weight:850}
     .sheet-cancel{border:1px solid #cfdae4;background:white;color:#324e68}
     .sheet-save{border:0;background:#0b4f9c;color:white}
+    .account-sheet{padding-bottom:max(16px,env(safe-area-inset-bottom))}
+    .account-sheet .sheet-head{padding-bottom:6px}
+    .account-sheet-copy{margin:0;padding:0 17px 14px;color:#61778a;font-size:11px;line-height:1.6}
+    .account-providers{display:grid;gap:9px;padding:0 17px}
+    .account-provider-btn{min-height:48px;border:1px solid #cdd9e4;border-radius:12px;background:#fff;color:#193c63;font-size:12px;font-weight:850}
+    .account-provider-btn.apple{background:#19344f;color:#fff}
+    .account-future-note{margin:13px 17px 0;padding:10px 11px;border-radius:10px;background:#eef4f8;color:#63788a;font-size:9.5px;line-height:1.55}
 
     .confirm{
       position:absolute;inset:0;z-index:40;background:rgba(2,18,38,.64);display:flex;align-items:center;justify-content:center;padding:27px;
@@ -971,6 +980,7 @@
     const LANG_KEY = "brewday_language_v1";
     const TEMP_UNIT_KEY = "brewday_temperature_unit_v1";
     const PREMIUM_KEY = "brewday_is_premium_v1";
+    const ACCOUNT_KEY = "brewday_account_provider_v1";
 
     const I18N = {
       ja: {
@@ -1045,6 +1055,7 @@
         deleteThisGear:"この器具を削除",
         settings:"設定", settingsIntro:"レシピ、カスタム器具・ミルクはこの端末の LocalStorage に保存されます。",
         savedRecipes:"保存レシピ", recordedDays:"記録した日", customGear:"カスタム器具", customMilk:"カスタムミルク",
+        account:"アカウント", accountHelp:"将来、Google または Apple のアカウントでログインしてデータを同期できるようになります。", signedOut:"未ログイン", signedInWith:provider=>`${provider}でログイン中`, logIn:"ログイン", logOut:"ログアウト", accountDialogTitle:"Brew Dayにログイン", accountDialogHelp:"ログイン方法を選択してください。", continueWithGoogle:"Googleアカウントで続ける", continueWithApple:"Appleアカウントで続ける", accountComingSoon:"Google と Apple のログイン連携は近日公開予定です。", loggedOut:"ログアウトしました。",
         language:"言語", languageHelp:"アプリ内の表示言語を切り替えます。設定はこの端末に保存されます。",
         japanese:"日本語", english:"English",
         temperatureUnit:"温度単位", temperatureUnitHelp:"レシピ入力と詳細表示で使用する温度単位を選択します。",
@@ -1183,6 +1194,7 @@
         deleteThisGear:"Delete gear",
         settings:"Settings", settingsIntro:"Recipes, custom gear and custom milk are stored in LocalStorage on this device.",
         savedRecipes:"Saved recipes", recordedDays:"Brew days", customGear:"Custom gear", customMilk:"Custom milk",
+        account:"Account", accountHelp:"Google and Apple sign-in will let you sync your data in a future update.", signedOut:"Not signed in", signedInWith:provider=>`Signed in with ${provider}`, logIn:"Log in", logOut:"Log out", accountDialogTitle:"Log in to Brew Day", accountDialogHelp:"Choose how you would like to sign in.", continueWithGoogle:"Continue with Google account", continueWithApple:"Continue with Apple account", accountComingSoon:"Google and Apple sign-in will be available soon.", loggedOut:"Logged out.",
         language:"Language", languageHelp:"Switch the app interface language. Your choice is saved on this device.",
         japanese:"日本語", english:"English",
         temperatureUnit:"Temperature Unit", temperatureUnitHelp:"Choose the temperature unit used in recipe entry and detail views.",
@@ -1508,11 +1520,14 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
     const savedTempUnit=localStorage.getItem(TEMP_UNIT_KEY);
     const initialTempUnit=savedTempUnit==="F"?"F":"C";
     const initialPremium=localStorage.getItem(PREMIUM_KEY)==="1";
+    const savedAccountProvider=localStorage.getItem(ACCOUNT_KEY);
+    const initialAccountProvider=["Google","Apple"].includes(savedAccountProvider)?savedAccountProvider:null;
 
     const state={
       lang:initialLang,
       tempUnit:initialTempUnit,
       isPremium:initialPremium,
+      accountProvider:initialAccountProvider,
       screen:localStorage.getItem(WELCOME_KEY)?"home":"welcome",
       recipes:loadRecipes(),editingId:null,detailId:null,backTarget:"home",settingsOrigin:"home",
       selectedCalendar:isoToday(),calendarCursor:new Date(),
@@ -2528,6 +2543,14 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           </div>
         </div>
 
+        <div class="profile-card">
+          <div class="settings-row">
+            <div class="copy"><h3>${escapeHTML(t("account"))}</h3><p>${escapeHTML(t("accountHelp"))}</p></div>
+            <span class="account-status ${state.accountProvider?"connected":""}">${escapeHTML(state.accountProvider?t("signedInWith",state.accountProvider):t("signedOut"))}</span>
+          </div>
+          <div class="button-row"><button class="${state.accountProvider?"outline-btn":"cream-btn"}" data-action="${state.accountProvider?"account-logout":"account-login"}">${escapeHTML(state.accountProvider?t("logOut"):t("logIn"))}</button></div>
+        </div>
+
         <div class="profile-card premium-card">
           <button class="premium-corner-action ${state.isPremium?"active":""}" ${state.isPremium?"disabled":"data-action=\"premium\""} aria-label="${escapeAttr(state.isPremium?t("premiumActive"):t("premiumTitle"))}">✦</button>
           <div class="premium-kicker">BREW DAY</div>
@@ -2747,6 +2770,28 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       if(!modal){host.innerHTML="";return}
       modal.classList.add("closing");
       window.setTimeout(()=>{if(host.querySelector(".premium-modal")===modal)host.innerHTML=""},190);
+    }
+
+    function openAccountModal(){
+      const host=document.getElementById("modalHost");if(!host)return;
+      host.innerHTML=`<div class="modal" role="dialog" aria-modal="true" aria-labelledby="accountModalTitle">
+        <div class="sheet account-sheet">
+          <div class="sheet-handle"></div>
+          <div class="sheet-head"><h3 id="accountModalTitle">${escapeHTML(t("accountDialogTitle"))}</h3><button class="close-btn" data-close-account aria-label="${escapeAttr(t("cancel"))}">×</button></div>
+          <p class="account-sheet-copy">${escapeHTML(t("accountDialogHelp"))}</p>
+          <div class="account-providers">
+            <button class="account-provider-btn" data-account-provider="Google">${escapeHTML(t("continueWithGoogle"))}</button>
+            <button class="account-provider-btn apple" data-account-provider="Apple">${escapeHTML(t("continueWithApple"))}</button>
+          </div>
+          <p class="account-future-note">${escapeHTML(t("accountComingSoon"))}</p>
+        </div>
+      </div>`;
+      host.querySelector("[data-close-account]")?.addEventListener("click",()=>{host.innerHTML=""});
+      host.querySelectorAll("[data-account-provider]").forEach(button=>button.addEventListener("click",()=>toast(t("accountComingSoon"))));
+    }
+
+    function logOut(){
+      state.accountProvider=null;localStorage.removeItem(ACCOUNT_KEY);renderProfile();toast(t("loggedOut"));
     }
 
     function openPremiumModal(){
@@ -3059,6 +3104,8 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           break;
         case "add-custom-equipment":requirePremium(()=>openCustomEquipmentForm());break;
         case "premium":state.isPremium?toast(t("premiumFeatureUnlocked")):openPremiumModal();break;
+        case "account-login":openAccountModal();break;
+        case "account-logout":logOut();break;
         case "settings":
           state.settingsOrigin=state.screen==="profile"?"home":state.screen;
           state.screen="profile";render();break;
