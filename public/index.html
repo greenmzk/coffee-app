@@ -114,7 +114,7 @@
 
     .bottom-nav{
       height:calc(var(--nav-h) + env(safe-area-inset-bottom));padding:8px 8px calc(8px + env(safe-area-inset-bottom));
-      display:grid;grid-template-columns:repeat(4,1fr);flex:0 0 auto;border-top:1px solid var(--line);
+      display:grid;grid-template-columns:repeat(5,1fr);flex:0 0 auto;border-top:1px solid var(--line);
       background:rgba(5,44,91,.47);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
     }
     .nav-btn{
@@ -126,6 +126,38 @@
     .nav-btn.active{color:var(--cream)}
     .nav-dot{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:0}
     .nav-btn.active .nav-dot{opacity:1}
+
+    /* Settings reference layout */
+    .settings-screen{background:#fffdf9;color:#111820}
+    .settings-screen .topbar{background:#fffdf9;border-bottom-color:transparent}
+    .settings-screen .topbar-title{color:#101820;font-size:19px;font-weight:850}
+    .settings-screen .icon-btn{color:#101820}
+    .settings-screen .page-body{padding:20px 24px 28px;background:#fffdf9}
+    .settings-screen .bottom-nav{background:#fffdf9;border-top-color:#e8e4de;backdrop-filter:none;-webkit-backdrop-filter:none}
+    .settings-screen .nav-btn{color:#77818c}.settings-screen .nav-btn.active{color:#0f68cb}
+    .settings-page{padding:0 0 24px}
+    .settings-group{margin:0 0 34px}
+    .settings-group-title{margin:0 0 14px;color:#111820;font-size:17px;line-height:1.35;font-weight:850;letter-spacing:.01em}
+    .settings-list-card{border:1px solid #e4e2de;border-radius:19px;overflow:hidden;background:#fff;box-shadow:0 1px 1px rgba(20,33,44,.02)}
+    .settings-choice{width:100%;min-height:76px;padding:0 17px;border:0;border-bottom:1px solid #e8e5e1;background:#fff;color:#111820;display:flex;align-items:center;justify-content:space-between;font-size:16px;font-weight:730;text-align:left}
+    .settings-choice:last-child{border-bottom:0}
+    .settings-choice-indicator{width:27px;height:27px;border:2px solid #aeb5bd;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:15px}
+    .settings-choice.active .settings-choice-indicator{border-color:#1976da;background:#1976da}
+    .settings-simple-row{min-height:82px;padding:0 17px;display:flex;align-items:center;gap:16px;color:#111820}
+    .settings-simple-row svg{width:29px;height:29px;color:#6e7781;flex:0 0 auto}
+    .settings-simple-row span{font-size:16px;font-weight:760}
+    .settings-toggle{margin-left:auto;width:54px;height:32px;padding:4px;border:0;border-radius:999px;background:#b6bdc5;display:flex;justify-content:flex-start;transition:background .2s}
+    .settings-toggle i{display:block;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.16);transition:transform .2s}
+    .settings-toggle.active{background:#1976da}.settings-toggle.active i{transform:translateX(22px)}
+    .settings-report-row{width:100%;min-height:84px;padding:0 17px;border:0;background:#fff;color:#111820;display:grid;grid-template-columns:30px 1fr 18px;align-items:center;gap:16px;text-decoration:none;text-align:left}
+    .settings-report-row svg{width:29px;height:29px;color:#6e7781}.settings-report-row span{font-size:16px;font-weight:760}.settings-report-row b{font-size:28px;font-weight:400;line-height:1}
+    .settings-version{text-align:center;color:#7d8791;font-size:11px;margin:-4px 0 34px}
+    .settings-screen .profile-card{border-color:#e4e2de;background:#fff;color:#111820;box-shadow:none}
+    .settings-screen .profile-card p,.settings-screen .profile-card label{color:#6f7882}
+    .settings-screen .field-card{border-color:#e4e2de;background:#fff}
+    .settings-screen .outline-btn{border-color:#cfd5db;color:#31506d}.settings-screen .cream-btn{background:#1976da;color:#fff}
+    .settings-screen .language-switch{border-color:#e1e4e7;background:#f6f8fa}.settings-screen .language-option{color:#5e6d7b}.settings-screen .language-option.active{background:#1976da;color:#fff}
+    .settings-screen .compact-danger{color:#c24f4a;border-color:#e8c5c1}
 
     svg.stroke{stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
@@ -981,6 +1013,7 @@
     const TEMP_UNIT_KEY = "brewday_temperature_unit_v1";
     const PREMIUM_KEY = "brewday_is_premium_v1";
     const ACCOUNT_KEY = "brewday_account_provider_v1";
+    const NOTIFICATIONS_KEY = "brewday_notifications_enabled_v1";
 
     const I18N = {
       ja: {
@@ -1055,6 +1088,7 @@
         deleteThisGear:"この器具を削除",
         settings:"設定", settingsIntro:"レシピ、カスタム器具・ミルクはこの端末の LocalStorage に保存されます。",
         savedRecipes:"保存レシピ", recordedDays:"記録した日", customGear:"カスタム器具", customMilk:"カスタムミルク",
+        languageSettings:"言語設定", notificationSettings:"通知設定", pushNotifications:"プッシュ通知", report:"報告", reportIssue:"問題を報告する", appVersion:"アプリバージョン 1.0.0",
         account:"アカウント", accountHelp:"将来、Google または Apple のアカウントでログインしてデータを同期できるようになります。", signedOut:"未ログイン", signedInWith:provider=>`${provider}でログイン中`, logIn:"ログイン", logOut:"ログアウト", accountDialogTitle:"Brew Dayにログイン", accountDialogHelp:"ログイン方法を選択してください。", continueWithGoogle:"Googleアカウントで続ける", continueWithApple:"Appleアカウントで続ける", accountComingSoon:"Google と Apple のログイン連携は近日公開予定です。", loggedOut:"ログアウトしました。",
         language:"言語", languageHelp:"アプリ内の表示言語を切り替えます。設定はこの端末に保存されます。",
         japanese:"日本語", english:"English",
@@ -1194,6 +1228,7 @@
         deleteThisGear:"Delete gear",
         settings:"Settings", settingsIntro:"Recipes, custom gear and custom milk are stored in LocalStorage on this device.",
         savedRecipes:"Saved recipes", recordedDays:"Brew days", customGear:"Custom gear", customMilk:"Custom milk",
+        languageSettings:"Language", notificationSettings:"Notifications", pushNotifications:"Push notifications", report:"Report", reportIssue:"Report an issue", appVersion:"App version 1.0.0",
         account:"Account", accountHelp:"Google and Apple sign-in will let you sync your data in a future update.", signedOut:"Not signed in", signedInWith:provider=>`Signed in with ${provider}`, logIn:"Log in", logOut:"Log out", accountDialogTitle:"Log in to Brew Day", accountDialogHelp:"Choose how you would like to sign in.", continueWithGoogle:"Continue with Google account", continueWithApple:"Continue with Apple account", accountComingSoon:"Google and Apple sign-in will be available soon.", loggedOut:"Logged out.",
         language:"Language", languageHelp:"Switch the app interface language. Your choice is saved on this device.",
         japanese:"日本語", english:"English",
@@ -1286,6 +1321,8 @@
         settings:`<svg class="stroke" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>`,
         ranking:`<svg class="stroke" viewBox="0 0 24 24"><path d="M5 20V10h4v10zM10 20V4h4v16zM15 20v-7h4v7zM3 20h18"/></svg>`,
         history:`<svg class="stroke" viewBox="0 0 24 24"><path d="M16 13v2.2l1.6 1"/><path d="M3 12h3.458M3 19h3.832M3 5h18"/><circle cx="16" cy="15" r="6"/></svg>`,
+        bell:`<svg class="stroke" viewBox="0 0 24 24"><path d="M10.3 21a2 2 0 0 0 3.4 0"/><path d="M3.3 15.7A2.4 2.4 0 0 0 5 19h14a2.4 2.4 0 0 0 1.7-3.3C19.8 13.8 18 12 18 8a6 6 0 0 0-12 0c0 4.1-1.8 5.8-2.7 7.7"/></svg>`,
+        mail:`<svg class="stroke" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>`,
         beans:`<svg class="stroke" viewBox="0 0 24 24"><path d="M18 4c-5-2-11 2-12 8s3 9 8 8 8-7 6-12c-.5-1.7-1.1-3.1-2-4z"/><path d="M16 5c-1 5-5 6-8 10"/></svg>`,
         thermometer:`<svg class="stroke" viewBox="0 0 24 24"><path d="M10 14.5V5a2 2 0 0 1 4 0v9.5a4 4 0 1 1-4 0z"/><path d="M12 7v9"/></svg>`,
         scale:`<svg class="stroke" viewBox="0 0 24 24"><path d="M6 5h12l2 16H4z"/><circle cx="12" cy="10" r="3"/><path d="M12 10l2-1"/></svg>`,
@@ -1522,12 +1559,14 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
     const initialPremium=localStorage.getItem(PREMIUM_KEY)==="1";
     const savedAccountProvider=localStorage.getItem(ACCOUNT_KEY);
     const initialAccountProvider=["Google","Apple"].includes(savedAccountProvider)?savedAccountProvider:null;
+    const initialNotifications=localStorage.getItem(NOTIFICATIONS_KEY)!==="0";
 
     const state={
       lang:initialLang,
       tempUnit:initialTempUnit,
       isPremium:initialPremium,
       accountProvider:initialAccountProvider,
+      notificationsEnabled:initialNotifications,
       screen:localStorage.getItem(WELCOME_KEY)?"home":"welcome",
       recipes:loadRecipes(),editingId:null,detailId:null,backTarget:"home",settingsOrigin:"home",
       selectedCalendar:isoToday(),calendarCursor:new Date(),
@@ -1938,7 +1977,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
     function equipmentLabel(x){return x?`${x.maker} · ${localizeGearName(x.name)}${x.source==="custom"?" · CUSTOM":""}`:t("none")}
 
     function shell(content,active="home",bar=""){
-      return `<section class="screen">${bar}<div class="page-body scroll">${content}</div>${bottomNav(active)}<div class="toast" id="toast"></div><div id="modalHost"></div></section>`;
+      return `<section class="screen ${active==="profile"?"settings-screen":""}">${bar}<div class="page-body scroll">${content}</div>${bottomNav(active)}<div class="toast" id="toast"></div><div id="modalHost"></div></section>`;
     }
     function topbar(title,opts={}){
       const left=opts.back
@@ -1953,7 +1992,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
     function bottomNav(active){
       const items=[
         ["home",t("navHome"),"home"],["calendar",t("navCalendar"),"calendar"],
-        ["gear",t("navGear"),"gear"],["history",t("navHistory"),"history"]
+        ["gear",t("navGear"),"gear"],["history",t("navHistory"),"history"],["profile",t("settings"),"settings"]
       ];
       return `<nav class="bottom-nav">${items.map(([s,label,ic])=>`<button class="nav-btn ${active===s?"active":""}" data-nav="${s}">${icon(ic)}<span>${escapeHTML(label)}</span><i class="nav-dot"></i></button>`).join("")}</nav>`;
     }
@@ -2510,28 +2549,26 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
     }
 
     function renderProfile(){
-      const count=state.recipes.length,days=new Set(state.recipes.map(r=>r.date)).size;
       app.innerHTML=shell(`
-        <div class="profile-card">
-          <h3>Brew Day</h3>
-          <p class="${state.lang==="ja"?"ja-single-line":""}" ${state.lang==="ja"?'data-fit-one-line="storage"':""}>${escapeHTML(t("settingsIntro"))}</p>
-          <div class="field-grid" style="margin-bottom:0">
-            <div class="field-card"><label>${escapeHTML(t("savedRecipes"))}</label><strong>${count}</strong></div>
-            <div class="field-card"><label>${escapeHTML(t("recordedDays"))}</label><strong>${days}</strong></div>
-            <div class="field-card"><label>${escapeHTML(t("customGear"))}</label><strong>${customEquipment.length}</strong></div>
-            <div class="field-card"><label>${escapeHTML(t("customMilk"))}</label><strong>${customMilks.length}</strong></div>
-          </div>
-        </div>
+        <main class="settings-page">
+          <section class="settings-group">
+            <h2 class="settings-group-title">${escapeHTML(t("languageSettings"))}</h2>
+            <div class="settings-list-card" role="group" aria-label="${escapeAttr(t("languageSettings"))}">
+              <button class="settings-choice ${state.lang==="ja"?"active":""}" data-lang="ja"><span>${escapeHTML(t("japanese"))}</span><i class="settings-choice-indicator">${state.lang==="ja"?"✓":""}</i></button>
+              <button class="settings-choice ${state.lang==="en"?"active":""}" data-lang="en"><span>${escapeHTML(t("english"))}</span><i class="settings-choice-indicator">${state.lang==="en"?"✓":""}</i></button>
+            </div>
+          </section>
 
-        <div class="profile-card">
-          <div class="settings-row">
-            <div class="copy"><h3>${escapeHTML(t("language"))}</h3><p class="${state.lang==="en"?"en-single-line":"ja-single-line"}" data-fit-one-line="${state.lang==="en"?"language":"jaLanguage"}">${escapeHTML(t("languageHelp"))}</p></div>
-          </div>
-          <div class="language-switch" role="group" aria-label="${escapeAttr(t("language"))}">
-            <button class="language-option ${state.lang==="ja"?"active":""}" data-lang="ja">${escapeHTML(t("japanese"))}</button>
-            <button class="language-option ${state.lang==="en"?"active":""}" data-lang="en">${escapeHTML(t("english"))}</button>
-          </div>
-        </div>
+          <section class="settings-group">
+            <h2 class="settings-group-title">${escapeHTML(t("notificationSettings"))}</h2>
+            <div class="settings-list-card"><div class="settings-simple-row">${icon("bell")}<span>${escapeHTML(t("pushNotifications"))}</span><button class="settings-toggle ${state.notificationsEnabled?"active":""}" data-notifications-toggle role="switch" aria-checked="${state.notificationsEnabled?"true":"false"}" aria-label="${escapeAttr(t("pushNotifications"))}"><i></i></button></div></div>
+          </section>
+
+          <section class="settings-group">
+            <h2 class="settings-group-title">${escapeHTML(t("report"))}</h2>
+            <div class="settings-list-card"><a class="settings-report-row" href="https://forms.google.com/your-form-url" target="_blank" rel="noopener noreferrer">${icon("mail")}<span>${escapeHTML(t("reportIssue"))}</span><b aria-hidden="true">›</b></a></div>
+          </section>
+          <div class="settings-version">${escapeHTML(t("appVersion"))}</div>
 
         <div class="profile-card">
           <div class="settings-row">
@@ -2626,6 +2663,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           <p>${escapeHTML(t("pwaHelp"))}</p>
           ${isInstalledPWA()?`<button class="outline-btn" type="button" disabled>${escapeHTML(t("installedApp"))}</button>`:`<button class="cream-btn" type="button" data-action="install-app">${escapeHTML(t("installApp"))}</button>`}
         </div>
+        </main>
       `,"profile",topbar(t("settingsTitle"),{back:true}));
       bindGlobal();
     }
@@ -3036,6 +3074,12 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         if(unit!=="C"&&unit!=="F")return;
         state.tempUnit=unit;localStorage.setItem(TEMP_UNIT_KEY,unit);render();
       }));
+
+      app.querySelector("[data-notifications-toggle]")?.addEventListener("click",()=>{
+        state.notificationsEnabled=!state.notificationsEnabled;
+        localStorage.setItem(NOTIFICATIONS_KEY,state.notificationsEnabled?"1":"0");
+        renderProfile();
+      });
 
       app.querySelector("[data-premium-toggle]")?.addEventListener("click",()=>{
         state.isPremium=!state.isPremium;
