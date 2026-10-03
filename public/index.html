@@ -1078,7 +1078,7 @@
         premiumPurchaseDemo:"購入機能はデモ版では接続されていません。設定のテスト用トグルでPlus状態を確認できます。",
         premiumRestoreDemo:"復元機能はデモ版では接続されていません。",
         premiumDialogClose:"閉じる",
-        bugReport:"バグの報告", bugReportHelp:"不具合や改善してほしい点をGoogleフォームから送信できます。", pwaAbout:"アプリについて",
+        bugReport:"バグを報告・リクエストの送信", bugReportHelp:"不具合や改善してほしい点をGoogleフォームから送信できます。", pwaAbout:"アプリについて",
         pwaHelp:"このアプリはインストールしてホーム画面から開けます。一度開くと、オフラインでもレシピの閲覧・記録を続けられます。Safariでは共有メニューから「ホーム画面に追加」を選択してください。",
         installApp:"アプリをインストール", installedApp:"アプリはインストール済みです", installUnavailable:"ブラウザのメニューから「ホーム画面に追加」を選択してください。",
         selectCategory:"カテゴリー", maker:"メーカー", productName:"商品名", material:"方式・材質",
@@ -2624,7 +2624,9 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         <div class="profile-card">
           <h3>${escapeHTML(t("pwaAbout"))}</h3>
           <p>${escapeHTML(t("pwaHelp"))}</p>
-          ${isInstalledPWA()?`<button class="outline-btn" type="button" disabled>${escapeHTML(t("installedApp"))}</button>`:`<button class="cream-btn" type="button" data-action="install-app">${escapeHTML(t("installApp"))}</button>`}
+          <div class="button-row">
+            ${isInstalledPWA()?`<button class="outline-btn" type="button" disabled>${escapeHTML(t("installedApp"))}</button>`:`<button class="cream-btn" type="button" data-action="install-app">${escapeHTML(t("installApp"))}</button>`}
+          </div>
         </div>
       `,"profile",topbar(t("settingsTitle"),{back:true}));
       bindGlobal();
