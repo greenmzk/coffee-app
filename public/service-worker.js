@@ -1,10 +1,15 @@
-const CACHE_NAME = "brew-day-shell-v1";
+const CACHE_NAME = "brew-day-shell-v4";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./app-icon.svg",
-  "./brewday_seaotter.png"
+  "./brewday_seaotter.png",
+  "./coffee-icons-20-transparent/01-coffee-bean.png",
+  "./coffee-icons-20-transparent/02-hot-mug.png",
+  "./coffee-icons-20-transparent/04-dripper.png",
+  "./coffee-icons-20-transparent/05-paper-filter.png",
+  "./coffee-icons-20-transparent/07-coffee-grinder.png"
 ];
 
 self.addEventListener("install", event => {

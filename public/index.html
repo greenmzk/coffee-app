@@ -123,7 +123,9 @@
       font-size:9.5px;font-weight:750;padding:0;min-height:54px;
     }
     .nav-btn svg{width:23px;height:23px}
+    .nav-btn .coffee-set-icon{width:23px;height:23px;opacity:.61}
     .nav-btn.active{color:var(--cream)}
+    .nav-btn.active .coffee-set-icon{opacity:1}
     .nav-dot{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:0}
     .nav-btn.active .nav-dot{opacity:1}
 
@@ -730,7 +732,17 @@
       display:flex;align-items:center;justify-content:center;color:var(--cream);
       background:rgba(255,255,255,.035);
     }
-    .home-rank-icon svg{width:20px;height:20px}
+    .coffee-set-icon{
+      display:block;width:28px;height:28px;flex:0 0 auto;
+      background-repeat:no-repeat;background-size:contain;background-position:center;
+      filter:invert(1) contrast(1.18);mix-blend-mode:screen;
+    }
+    .coffee-set-icon.beans{background-image:url("./coffee-icons-20-transparent/01-coffee-bean.png")}
+    .coffee-set-icon.mug{background-image:url("./coffee-icons-20-transparent/02-hot-mug.png")}
+    .coffee-set-icon.dripper{background-image:url("./coffee-icons-20-transparent/04-dripper.png")}
+    .coffee-set-icon.filter{background-image:url("./coffee-icons-20-transparent/05-paper-filter.png")}
+    .coffee-set-icon.mill{background-image:url("./coffee-icons-20-transparent/07-coffee-grinder.png")}
+    .ranking-empty-bean.realistic .coffee-set-icon{width:70px;height:70px}
     .home-rank-copy{min-width:0;margin-top:14px}
     .home-rank-copy span{
       display:block;color:var(--muted);font-size:8.5px;font-weight:800;letter-spacing:.03em;
@@ -1955,7 +1967,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         ["home",t("navHome"),"home"],["calendar",t("navCalendar"),"calendar"],
         ["gear",t("navGear"),"gear"],["history",t("navHistory"),"history"]
       ];
-      return `<nav class="bottom-nav">${items.map(([s,label,ic])=>`<button class="nav-btn ${active===s?"active":""}" data-nav="${s}">${icon(ic)}<span>${escapeHTML(label)}</span><i class="nav-dot"></i></button>`).join("")}</nav>`;
+      return `<nav class="bottom-nav">${items.map(([s,label,ic])=>`<button class="nav-btn ${active===s?"active":""}" data-nav="${s}">${s==="home"?coffeeSetIcon("mug"):icon(ic)}<span>${escapeHTML(label)}</span><i class="nav-dot"></i></button>`).join("")}</nav>`;
     }
 
     /* ---------- Screens ---------- */
@@ -1999,10 +2011,14 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       return rows.length?rows[0]:null;
     }
 
+    function coffeeSetIcon(name){
+      return `<i class="coffee-set-icon ${escapeAttr(name)}" aria-hidden="true"></i>`;
+    }
+
     function homeRankingTile(title,kind,iconName){
       const top=getTopUsage(kind);
       return `<section class="home-rank-card">
-        <div class="home-rank-icon">${icon(iconName)}</div>
+        <div class="home-rank-icon">${coffeeSetIcon(iconName)}</div>
         <div class="home-rank-copy">
           <span>${escapeHTML(title)}</span>
           <strong>${escapeHTML(top?top.name:t("noData"))}</strong>
@@ -2022,40 +2038,16 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
 
           <div class="home-ranking-grid">
             ${homeRankingTile(t("rankBeans"),"bean","beans")}
-            ${homeRankingTile(t("rankDripper"),"dripper","cup")}
-            ${homeRankingTile(t("rankFilter"),"filter","water")}
-            ${homeRankingTile(t("rankMill"),"mill","grind")}
+            ${homeRankingTile(t("rankDripper"),"dripper","dripper")}
+            ${homeRankingTile(t("rankFilter"),"filter","filter")}
+            ${homeRankingTile(t("rankMill"),"mill","mill")}
           </div>
 
           ${state.recipes.length===0?`
             <div class="ranking-empty home-ranking-empty">
               <div class="ranking-empty-bean realistic">
-              <svg viewBox="0 0 120 120" aria-hidden="true">
-                <defs>
-                  <linearGradient id="beanShellHome" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stop-color="#fffaf2"/>
-                    <stop offset="45%" stop-color="#e7ded2"/>
-                    <stop offset="100%" stop-color="#b8aa9b"/>
-                  </linearGradient>
-                  <filter id="beanShadowHome" x="-30%" y="-30%" width="160%" height="160%">
-                    <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#001b3b" flood-opacity=".22"/>
-                  </filter>
-                </defs>
-                <g filter="url(#beanShadowHome)" transform="rotate(24 60 60)">
-                  <path d="M62 13C88 14 103 36 99 61c-4 24-24 46-49 46-24 0-39-18-37-40 2-25 21-55 49-54z"
-                        fill="url(#beanShellHome)" stroke="rgba(255,250,242,.82)" stroke-width="2"/>
-                  <path d="M60 16c-8 16-8 30-3 43 5 14 3 28-11 43"
-                        fill="none" stroke="#73665a" stroke-width="4.2" stroke-linecap="round"/>
-                  <path d="M66 15c7 13 7 24 2 35-4 9-4 18 1 29"
-                        fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2.2" stroke-linecap="round"/>
-                  <path d="M28 36c12-14 32-21 48-16 14 4 23 14 27 27"
-                        fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3" stroke-linecap="round"/>
-                  <path d="M27 84c12 14 31 20 47 14 10-3 19-10 24-18"
-                        fill="none" stroke="rgba(80,67,56,.35)" stroke-width="3" stroke-linecap="round"/>
-                  <ellipse cx="37" cy="42" rx="8" ry="15" fill="rgba(255,255,255,.12)" transform="rotate(-18 37 42)"/>
-                </g>
-              </svg>
-            </div>
+                ${coffeeSetIcon("beans")}
+              </div>
               <strong>${escapeHTML(t("rankingEmpty"))}</strong>
               <span class="${state.lang==="en"?"en-single-line":""}" ${state.lang==="en"?'data-fit-one-line="empty"':""}>${escapeHTML(t("rankingEmptySub"))}</span>
             </div>
