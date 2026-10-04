@@ -39,7 +39,7 @@
       --radius-sm:13px;
       --danger:#ffddd7;
       --success:#dff7e7;
-      --nav-h:76px;
+      --nav-h:60px;
       --max-w:440px;
     }
 
@@ -113,17 +113,17 @@
     .mini-note{font-size:10px;line-height:1.55;color:var(--muted)}
 
     .bottom-nav{
-      height:calc(var(--nav-h) + env(safe-area-inset-bottom));padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+      height:calc(var(--nav-h) + env(safe-area-inset-bottom));padding:4px 8px calc(4px + env(safe-area-inset-bottom));
       display:grid;grid-template-columns:repeat(4,1fr);flex:0 0 auto;border-top:1px solid var(--line);
       background:rgba(5,44,91,.47);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
     }
     .nav-btn{
       border:0;background:transparent;color:rgba(255,255,255,.61);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-      font-size:9.5px;font-weight:750;padding:0;min-height:54px;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+      padding:0;min-height:44px;
     }
-    .nav-btn svg{width:23px;height:23px}
-    .nav-btn .coffee-set-icon{width:23px;height:23px;opacity:.61}
+    .nav-btn svg{width:31px;height:31px}
+    .nav-btn .coffee-set-icon{width:31px;height:31px;opacity:.61}
     .nav-btn.active{color:var(--cream)}
     .nav-btn.active .coffee-set-icon{opacity:1}
     .nav-dot{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:0}
@@ -220,6 +220,7 @@
     }
     .form-row.tall{align-items:start;padding-top:13px;padding-bottom:13px}
     .form-row.date-row .form-label{text-align:left}
+    .form-row.equipment-row .field-stack{text-align:left}
     .form-icon{display:flex;align-items:center;justify-content:center;color:var(--cream)}
     .form-icon svg{width:21px;height:21px}
     .form-coffee-icon{
@@ -228,6 +229,7 @@
       filter:invert(1) contrast(1.18);mix-blend-mode:screen;
     }
     .form-coffee-icon.beans{background-image:url("./coffee-icons-20-transparent/01-coffee-bean.png")}
+    .form-coffee-icon.notebook{background-image:url("./coffee-icons-20-transparent/12-recipe-notebook.png")}
     .form-coffee-icon.dripper{background-image:url("./coffee-icons-20-transparent/04-dripper.png")}
     .form-coffee-icon.kettle{background-image:url("./coffee-icons-20-transparent/06-gooseneck-kettle.png")}
     .form-coffee-icon.grinder{background-image:url("./coffee-icons-20-transparent/07-coffee-grinder.png")}
@@ -2017,7 +2019,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         ["home",t("navHome"),"home"],["calendar",t("navCalendar"),"calendar"],
         ["gear",t("navGear"),"gear"],["history",t("navHistory"),"history"]
       ];
-      return `<nav class="bottom-nav">${items.map(([s,label,ic])=>`<button class="nav-btn ${active===s?"active":""}" data-nav="${s}">${s==="home"?coffeeSetIcon("aroma"):s==="calendar"?coffeeSetIcon("calendar"):s==="gear"?coffeeSetIcon("dripper"):s==="history"?coffeeSetIcon("history"):icon(ic)}<span>${escapeHTML(label)}</span><i class="nav-dot"></i></button>`).join("")}</nav>`;
+      return `<nav class="bottom-nav">${items.map(([s,label,ic])=>`<button class="nav-btn ${active===s?"active":""}" data-nav="${s}" aria-label="${escapeAttr(label)}"${active===s?' aria-current="page"':""}>${s==="home"?coffeeSetIcon("aroma"):s==="calendar"?coffeeSetIcon("calendar"):s==="gear"?coffeeSetIcon("dripper"):s==="history"?coffeeSetIcon("history"):icon(ic)}<i class="nav-dot"></i></button>`).join("")}</nav>`;
     }
 
     /* ---------- Screens ---------- */
@@ -2141,8 +2143,8 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
 
         <div class="form-section">
           <div class="form-row tall">
-            <div class="form-icon">${formCoffeeIcon("dripper")}</div>
-            <div class="field-stack"><div class="form-label">${escapeHTML(t("equipmentUsed"))}</div><div class="subline">${escapeHTML(t("equipmentHelp"))}</div></div><span></span>
+            <div class="form-icon">${formCoffeeIcon("notebook")}</div>
+            <div class="field-stack"><div class="form-label">${escapeHTML(t("equipmentUsed"))}</div></div><span></span>
           </div>
           ${equipmentRow(t("dripper"),"dripper",d.dripper)}
           ${equipmentRow(t("paperFilter"),"filter",d.filter)}
@@ -2152,7 +2154,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         <div class="form-section">
           <div class="form-row tall">
             <div class="form-icon">${formCoffeeIcon("beans")}</div>
-            <div class="field-stack"><div class="form-label">${escapeHTML(t("beanType"))}</div><div class="subline">${escapeHTML(t("beanHelp"))}</div></div><span></span>
+            <div class="field-stack"><div class="form-label">${escapeHTML(t("beanType"))}</div></div><span></span>
           </div>
           <div class="field-grid">
             <div class="field-card" style="grid-column:1/-1"><label>${escapeHTML(t("beanOrigin"))}</label><input class="text-input" data-field="beanOrigin" value="${escapeAttr(d.beanOrigin)}" placeholder="${escapeAttr(t("beanOriginPlaceholder"))}"></div>
@@ -2246,11 +2248,11 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
 
     function equipmentRow(label,type,id){
       const item=equipmentItem(id);
-      return `<button class="row-btn" data-equipment="${type}"><div class="form-row" style="padding-left:36px">
+      return `<button class="row-btn" data-equipment="${type}"><div class="form-row equipment-row">
         <div></div>
         <div class="field-stack">
           <div class="form-label">${escapeHTML(label)}</div>
-          ${item&&!item.special?`<div class="subline">${escapeHTML(item.maker)}${item.source==="custom"?" · CUSTOM":""}${item.sku?" · "+escapeHTML(item.sku):""}</div>`:""}
+          ${item&&!item.special&&(item.source==="custom"||item.sku)?`<div class="subline">${item.source==="custom"?"CUSTOM":""}${item.source==="custom"&&item.sku?" · ":""}${item.sku?escapeHTML(item.sku):""}</div>`:""}
         </div>
         <div style="display:flex;align-items:center;min-width:0"><span class="form-value">${escapeHTML(item?localizeGearName(item.name):t("select"))}</span><span class="chev">›</span></div>
       </div></button>`;
