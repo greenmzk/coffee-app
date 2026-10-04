@@ -221,6 +221,15 @@
     .form-row.tall{align-items:start;padding-top:13px;padding-bottom:13px}
     .form-icon{display:flex;align-items:center;justify-content:center;color:var(--cream)}
     .form-icon svg{width:21px;height:21px}
+    .form-coffee-icon{
+      display:block;width:25px;height:25px;flex:0 0 auto;
+      background-repeat:no-repeat;background-size:contain;background-position:center;
+      filter:invert(1) contrast(1.18);mix-blend-mode:screen;
+    }
+    .form-coffee-icon.beans{background-image:url("./coffee-icons-20-transparent/01-coffee-bean.png")}
+    .form-coffee-icon.dripper{background-image:url("./coffee-icons-20-transparent/04-dripper.png")}
+    .form-coffee-icon.scale{background-image:url("./coffee-icons-20-transparent/08-coffee-scale.png")}
+    .form-coffee-icon.milk{background-image:url("./coffee-icons-20-transparent/16-milk-carton.png")}
     .form-label{font-size:13.5px;font-weight:800;line-height:1.4}
     .form-value{font-size:12px;text-align:right;color:var(--cream);max-width:184px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .field-stack{display:flex;flex-direction:column;gap:3px;min-width:0}
@@ -2015,6 +2024,10 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       return `<i class="coffee-set-icon ${escapeAttr(name)}" aria-hidden="true"></i>`;
     }
 
+    function formCoffeeIcon(name){
+      return `<i class="form-coffee-icon ${escapeAttr(name)}" aria-hidden="true"></i>`;
+    }
+
     function homeRankingTile(title,kind,iconName){
       const top=getTopUsage(kind);
       return `<section class="home-rank-card">
@@ -2087,7 +2100,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
 
         <div class="form-section">
           <div class="form-row tall">
-            <div class="form-icon">${icon("gear")}</div>
+            <div class="form-icon">${formCoffeeIcon("dripper")}</div>
             <div class="field-stack"><div class="form-label">${escapeHTML(t("equipmentUsed"))}</div><div class="subline">${escapeHTML(t("equipmentHelp"))}</div></div><span></span>
           </div>
           ${equipmentRow(t("dripper"),"dripper",d.dripper)}
@@ -2097,7 +2110,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
 
         <div class="form-section">
           <div class="form-row tall">
-            <div class="form-icon">${icon("beans")}</div>
+            <div class="form-icon">${formCoffeeIcon("beans")}</div>
             <div class="field-stack"><div class="form-label">${escapeHTML(t("beanType"))}</div><div class="subline">${escapeHTML(t("beanHelp"))}</div></div><span></span>
           </div>
           <div class="field-grid">
@@ -2123,7 +2136,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         </div>
 
         <div class="form-section">
-          ${inputRow("scale",t("beanAmount"),"beanWeight",d.beanWeight,"g","number",0.1)}
+          ${inputRow("scale",t("beanAmount"),"beanWeight",d.beanWeight,"g","number",0.1,"",true)}
           ${selectRow("grind",t("grindSize"),"grind",d.grind,grindOptions.map(v=>({value:v,label:grindLabel(v)})))}
           ${temperatureRow(d.waterTemp)}
         </div>
@@ -2151,7 +2164,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         </div>
 
         <div class="form-section">
-          ${selectRow("milk",t("milkType"),"milk",d.milk,milkOptions,true)}
+          ${selectRow("milk",t("milkType"),"milk",d.milk,milkOptions,true,true)}
           <div class="milk-add-wrap"><button class="add-milk" type="button" data-action="add-custom-milk"><strong>✦ ${escapeHTML(t("addMissingMilk"))}</strong><span>${escapeHTML(t("addMissingMilkHelp"))}</span></button></div>
           ${d.milk==="__custom__"?`
             <div class="milk-custom-wrap">
@@ -2202,9 +2215,9 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       </div></button>`;
     }
 
-    function inputRow(ic,label,field,value,unit,type="text",step=1,placeholder=""){
+    function inputRow(ic,label,field,value,unit,type="text",step=1,placeholder="",useCoffeeIcon=false){
       return `<div class="form-row">
-        <div class="form-icon">${icon(ic)}</div><div class="form-label">${escapeHTML(label)}</div>
+        <div class="form-icon">${useCoffeeIcon?formCoffeeIcon(ic):icon(ic)}</div><div class="form-label">${escapeHTML(label)}</div>
         <div style="display:flex;align-items:center;gap:6px">
           <input class="inline-input" ${type==="number"?'inputmode="decimal"':""} type="${type}" step="${step}" data-field="${field}" value="${escapeAttr(value)}" placeholder="${escapeAttr(placeholder)}">
           ${unit?`<span class="form-value">${escapeHTML(unit)}</span>`:""}
@@ -2222,9 +2235,9 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       </div>`;
     }
 
-    function selectRow(ic,label,field,value,options,isMilk=false){
+    function selectRow(ic,label,field,value,options,isMilk=false,useCoffeeIcon=false){
       return `<div class="form-row">
-        <div class="form-icon">${icon(ic)}</div><div class="form-label">${escapeHTML(label)}</div>
+        <div class="form-icon">${useCoffeeIcon?formCoffeeIcon(ic):icon(ic)}</div><div class="form-label">${escapeHTML(label)}</div>
         <select class="select-input" style="width:154px" data-field="${field}" ${isMilk?'data-milk-select="1"':""}>
           ${options.map(o=>{
             const val=typeof o==="object"?o.value:o;
