@@ -228,6 +228,8 @@
     }
     .form-coffee-icon.beans{background-image:url("./coffee-icons-20-transparent/01-coffee-bean.png")}
     .form-coffee-icon.dripper{background-image:url("./coffee-icons-20-transparent/04-dripper.png")}
+    .form-coffee-icon.kettle{background-image:url("./coffee-icons-20-transparent/06-gooseneck-kettle.png")}
+    .form-coffee-icon.grinder{background-image:url("./coffee-icons-20-transparent/07-coffee-grinder.png")}
     .form-coffee-icon.scale{background-image:url("./coffee-icons-20-transparent/08-coffee-scale.png")}
     .form-coffee-icon.milk{background-image:url("./coffee-icons-20-transparent/16-milk-carton.png")}
     .form-label{font-size:13.5px;font-weight:800;line-height:1.4}
@@ -265,8 +267,14 @@
     .segment{
       min-height:42px;border:0;border-radius:10px;background:transparent;color:var(--muted);
       font-weight:820;font-size:12px;letter-spacing:.02em;
+      display:flex;align-items:center;justify-content:center;
     }
     .segment.active{background:var(--cream);color:var(--blue-deep);box-shadow:0 7px 15px rgba(0,0,0,.1)}
+    .brew-style-icon{
+      display:block;width:34px;height:34px;object-fit:contain;pointer-events:none;
+      filter:invert(1) contrast(1.18);mix-blend-mode:screen;
+    }
+    .segment.active .brew-style-icon{filter:none;mix-blend-mode:normal}
 
     .pour-wrap{padding:13px 2px 16px}
     .pour-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
@@ -363,6 +371,13 @@
       display:inline-flex;align-items:center;justify-content:center;
     }
     .tab{padding:0 11px}.maker-tab{padding:0 10px}
+    .tab.category-icon-tab{width:46px;padding:0}
+    .category-icon{
+      display:block;width:25px;height:25px;object-fit:contain;
+      filter:invert(1) contrast(1.18);mix-blend-mode:screen;
+      pointer-events:none;
+    }
+    .tab.category-icon-tab.active .category-icon{filter:none;mix-blend-mode:normal}
     .tab.active,.maker-tab.active{background:var(--cream);color:var(--blue-deep);border-color:var(--cream)}
     .search{position:relative;margin-bottom:11px}
     .search input{padding-left:38px}
@@ -388,6 +403,11 @@
       flex:0 0 auto;font-size:8px;padding:4px 7px;border:1px solid var(--line);border-radius:999px;white-space:nowrap;
     }
     .custom-badge{background:var(--cream);color:var(--blue-deep);border-color:var(--cream)}
+    .gear-badges{display:flex;align-items:center;gap:7px;flex:0 0 auto}
+    .gear-category-icon{
+      display:block;width:29px;height:29px;object-fit:contain;
+      filter:invert(1) contrast(1.18);mix-blend-mode:screen;
+    }
     .gear-meta{font-size:10.5px;color:var(--muted);line-height:1.58;margin-top:7px}
     .sku{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
     .gear-actions{display:flex;justify-content:flex-end;margin-top:8px}
@@ -483,6 +503,8 @@
     .notes-box{white-space:pre-wrap;line-height:1.7;font-size:12px;color:rgba(255,255,255,.9)}
     .profile-card h3{margin:0 0 7px;font-size:14px}.profile-card p{margin:0;color:var(--muted);font-size:11px;line-height:1.65}
     .button-row{display:flex;gap:8px;margin-top:13px}.button-row button{flex:1;min-height:42px;border-radius:10px;font-weight:800;font-size:11px}
+    .plus-only-backup .button-row button{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+    .plus-only-backup .button-row svg{width:16px;height:16px;flex:0 0 16px}
     .outline-btn{border:1px solid var(--line-strong);background:transparent;color:var(--cream)}
     .cream-btn{border:0;background:var(--cream);color:var(--blue-deep)}
     .danger-btn{border:1px solid rgba(255,221,215,.44);background:transparent;color:var(--danger)}
@@ -748,6 +770,9 @@
     }
     .coffee-set-icon.beans{background-image:url("./coffee-icons-20-transparent/01-coffee-bean.png")}
     .coffee-set-icon.mug{background-image:url("./coffee-icons-20-transparent/02-hot-mug.png")}
+    .coffee-set-icon.aroma{background-image:url("./coffee-icons-20-transparent/15-aroma.png")}
+    .coffee-set-icon.calendar{background-image:url("./coffee-icons-20-transparent/13-calendar.png")}
+    .coffee-set-icon.history{background-image:url("./coffee-icons-20-transparent/18-history.png")}
     .coffee-set-icon.dripper{background-image:url("./coffee-icons-20-transparent/04-dripper.png")}
     .coffee-set-icon.filter{background-image:url("./coffee-icons-20-transparent/05-paper-filter.png")}
     .coffee-set-icon.mill{background-image:url("./coffee-icons-20-transparent/07-coffee-grinder.png")}
@@ -1564,6 +1589,11 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       "ペーパーフィルター":"categoryFilter",
       "コーヒーミル":"categoryGrinder"
     };
+    const CATEGORY_ICON_PATHS={
+      "ドリッパー":"./coffee-icons-20-transparent/04-dripper.png",
+      "ペーパーフィルター":"./coffee-icons-20-transparent/05-paper-filter.png",
+      "コーヒーミル":"./coffee-icons-20-transparent/07-coffee-grinder.png"
+    };
     const GRIND_KEYS={
       "極細挽き":"grindExtraFine","細挽き":"grindFine","中細挽き":"grindMediumFine",
       "中挽き":"grindMedium","中粗挽き":"grindMediumCoarse","粗挽き":"grindCoarse"
@@ -1976,7 +2006,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         ["home",t("navHome"),"home"],["calendar",t("navCalendar"),"calendar"],
         ["gear",t("navGear"),"gear"],["history",t("navHistory"),"history"]
       ];
-      return `<nav class="bottom-nav">${items.map(([s,label,ic])=>`<button class="nav-btn ${active===s?"active":""}" data-nav="${s}">${s==="home"?coffeeSetIcon("mug"):icon(ic)}<span>${escapeHTML(label)}</span><i class="nav-dot"></i></button>`).join("")}</nav>`;
+      return `<nav class="bottom-nav">${items.map(([s,label,ic])=>`<button class="nav-btn ${active===s?"active":""}" data-nav="${s}">${s==="home"?coffeeSetIcon("aroma"):s==="calendar"?coffeeSetIcon("calendar"):s==="gear"?coffeeSetIcon("dripper"):s==="history"?coffeeSetIcon("history"):icon(ic)}<span>${escapeHTML(label)}</span><i class="nav-dot"></i></button>`).join("")}</nav>`;
     }
 
     /* ---------- Screens ---------- */
@@ -2122,12 +2152,12 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
 
         <div class="form-section">
           <div class="form-row tall">
-            <div class="form-icon">${icon("cup")}</div>
-            <div class="field-stack"><div class="form-label">${escapeHTML(t("brewStyle"))}</div><div class="subline">${escapeHTML(t("brewStyleHelp"))}</div></div><span></span>
+            <div class="form-icon">${formCoffeeIcon("kettle")}</div>
+            <div class="field-stack"><div class="form-label">${escapeHTML(t("brewStyle"))}</div></div><span></span>
           </div>
           <div class="segmented">
-            <button class="segment ${d.beverageType==="Hot"?"active":""}" data-brew-style="Hot">HOT</button>
-            <button class="segment ${d.beverageType==="Ice"?"active":""}" data-brew-style="Ice">ICE</button>
+            <button class="segment ${d.beverageType==="Hot"?"active":""}" data-brew-style="Hot" aria-label="${escapeAttr(t("hot"))}" title="${escapeAttr(t("hot"))}"><img class="brew-style-icon" src="./coffee-icons-20-transparent/02-hot-mug.png" alt=""></button>
+            <button class="segment ${d.beverageType==="Ice"?"active":""}" data-brew-style="Ice" aria-label="${escapeAttr(t("ice"))}" title="${escapeAttr(t("ice"))}"><img class="brew-style-icon" src="./coffee-icons-20-transparent/17-iced-coffee.png" alt=""></button>
           </div>
           ${d.beverageType==="Ice"?`
             <div class="hint-box">${escapeHTML(t("iceHint"))}</div>
@@ -2137,7 +2167,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
 
         <div class="form-section">
           ${inputRow("scale",t("beanAmount"),"beanWeight",d.beanWeight,"g","number",0.1,"",true)}
-          ${selectRow("grind",t("grindSize"),"grind",d.grind,grindOptions.map(v=>({value:v,label:grindLabel(v)})))}
+          ${selectRow("grinder",t("grindSize"),"grind",d.grind,grindOptions.map(v=>({value:v,label:grindLabel(v)})),false,true)}
           ${temperatureRow(d.waterTemp)}
         </div>
 
@@ -2383,7 +2413,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       const categories=["all","ドリッパー","ペーパーフィルター","コーヒーミル"];
       app.innerHTML=shell(`
         <div class="tabs">
-          ${categories.map(c=>`<button class="tab ${state.gearCategory===c?"active":""}" data-gear-cat="${escapeAttr(c)}">${escapeHTML(categoryLabel(c))}</button>`).join("")}
+          ${categories.map(gearCategoryTab).join("")}
         </div>
         <div class="maker-tabs">
           ${["all",...makers].map(m=>`<button class="maker-tab ${state.gearMaker===m?"active":""}" data-gear-maker="${escapeAttr(m)}">${escapeHTML(m==="all"?t("all"):m)}</button>`).join("")}
@@ -2396,6 +2426,19 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       bindGlobal();
     }
 
+    function gearCategoryTab(category){
+      const active=state.gearCategory===category?"active":"";
+      const label=categoryLabel(category);
+      if(category==="all")return `<button class="tab ${active}" data-gear-cat="all">${escapeHTML(label)}</button>`;
+      const iconPath=CATEGORY_ICON_PATHS[category];
+      return `<button class="tab category-icon-tab ${active}" data-gear-cat="${escapeAttr(category)}" aria-label="${escapeAttr(label)}" title="${escapeAttr(label)}"><img class="category-icon" src="${iconPath}" alt=""></button>`;
+    }
+
+    function gearCategoryIcon(category){
+      const label=categoryLabel(category),iconPath=CATEGORY_ICON_PATHS[category];
+      return `<img class="gear-category-icon" src="${escapeAttr(iconPath)}" alt="${escapeAttr(label)}" title="${escapeAttr(label)}">`;
+    }
+
     function renderGearGroups(items){
       if(!items.length)return `<div class="empty"><strong>${escapeHTML(t("noGearTitle"))}</strong>${escapeHTML(t("noGearBody"))}</div>`;
       return groupByMaker(items).map(([maker,list])=>`
@@ -2406,7 +2449,10 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       return `<article class="gear-item">
         <div class="gear-top">
           <div class="gear-name">${escapeHTML(localizeGearName(x.name))}</div>
-          ${x.source==="custom"?`<span class="custom-badge">${escapeHTML(t("custom"))}</span>`:`<span class="maker-badge">${escapeHTML(categoryLabel(x.category))}</span>`}
+          <div class="gear-badges">
+            ${x.source==="custom"?`<span class="custom-badge">${escapeHTML(t("custom"))}</span>`:""}
+            ${gearCategoryIcon(x.category)}
+          </div>
         </div>
         <div class="gear-meta">
           <span class="gear-meta-label">${escapeHTML(t("brand"))}</span>${gearSeparator()}${escapeHTML(x.maker)}<br>
