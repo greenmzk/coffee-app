@@ -1,4 +1,4 @@
-const CACHE_NAME = "brew-day-shell-v9";
+const CACHE_NAME = "brew-day-shell-v10";
 const APP_SHELL = [
   "./",
   "./index.html",
