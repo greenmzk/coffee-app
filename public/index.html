@@ -235,6 +235,7 @@
     .form-coffee-icon.grinder{background-image:url("./coffee-icons-20-transparent/07-coffee-grinder.png")}
     .form-coffee-icon.scale{background-image:url("./coffee-icons-20-transparent/08-coffee-scale.png")}
     .form-coffee-icon.milk{background-image:url("./coffee-icons-20-transparent/16-milk-carton.png")}
+    .form-coffee-icon.ice{background-image:url("./coffee-icons-20-transparent/重なる氷キューブ.png")}
     .form-label{font-size:13.5px;font-weight:800;line-height:1.4}
     .form-value{font-size:12px;text-align:right;color:var(--cream);max-width:184px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .field-stack{display:flex;flex-direction:column;gap:3px;min-width:0}
@@ -772,6 +773,7 @@
       filter:invert(1) contrast(1.18);mix-blend-mode:screen;
     }
     .coffee-set-icon.beans{background-image:url("./coffee-icons-20-transparent/01-coffee-bean.png")}
+    .coffee-set-icon.coffee-tree{background-image:url("./coffee-icons-20-transparent/ミニマルなコーヒーの木アイコン.png")}
     .coffee-set-icon.mug{background-image:url("./coffee-icons-20-transparent/02-hot-mug.png")}
     .coffee-set-icon.aroma{background-image:url("./coffee-icons-20-transparent/15-aroma.png")}
     .coffee-set-icon.calendar{background-image:url("./coffee-icons-20-transparent/13-calendar.png")}
@@ -1053,7 +1055,7 @@
         unnamedCoffee:"名前のないコーヒー", dripperNotSelected:"ドリッパー未選択",
         editRecipe:"レシピを編集", newRecipe:"新しいレシピ",
         brewedDate:"淹れた日付", select:"選択",
-        equipmentUsed:"使用する器具", equipmentHelp:"メーカー・器具名を検索して選択",
+        equipmentHelp:"メーカー・器具名を検索して選択",
         dripper:"ドリッパー", paperFilter:"ペーパーフィルター", grinder:"コーヒーミル",
         beanType:"豆の種類", beanHelp:"豆の産地/名称・焙煎所・焙煎日",
         beanOrigin:"豆の産地/名称", beanOriginPlaceholder:"例：エチオピア / グジ / ウォッシュド",
@@ -1068,7 +1070,7 @@
         bloomTime:"蒸らし時間",
         milkType:"ミルクの種類（ラテの場合）", addMissingMilk:"リストにないミルクを追加する", addMissingMilkHelp:"Brew Day Plusで、自分のミルクを追加してこのレシピに設定できます。", customMilkPlaceholder:"例：ピスタチオミルク",
         customMilkHint:"保存時にこのミルク名も登録され、次回から選択肢に表示されます。",
-        tastingNotes:"味の評価",
+        tastingNotes:"味の感想",
         tastingPlaceholder:"香り、酸味、甘さ、後味、次回調整したいことなど",
         tasteProfile:"テイストプロファイル", acidity:"酸味", aftertaste:"後味", aroma:"アロマ", balance:"バランス", body:"ボディ",
         tasteScoreAria:(axis,n)=>`${axis} ${n}/5`,
@@ -1194,7 +1196,7 @@
         unnamedCoffee:"Unnamed coffee", dripperNotSelected:"No dripper selected",
         editRecipe:"Edit Recipe", newRecipe:"New Recipe",
         brewedDate:"Brew date", select:"Select",
-        equipmentUsed:"Equipment", equipmentHelp:"Search by maker or gear name",
+        equipmentHelp:"Search by maker or gear name",
         dripper:"Dripper", paperFilter:"Paper Filter", grinder:"Coffee Grinder",
         beanType:"Coffee Beans", beanHelp:"Beans origin/name, roaster and roast date",
         beanOrigin:"Beans Origin", beanOriginPlaceholder:"e.g. Ethiopia / Guji / Washed",
@@ -2102,7 +2104,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           ${state.recipes.length===0?`
             <div class="ranking-empty home-ranking-empty">
               <div class="ranking-empty-bean realistic">
-                ${coffeeSetIcon("beans")}
+                ${coffeeSetIcon("coffee-tree")}
               </div>
               <strong>${escapeHTML(t("rankingEmpty"))}</strong>
               <span class="${state.lang==="en"?"en-single-line":""}" ${state.lang==="en"?'data-fit-one-line="empty"':""}>${escapeHTML(t("rankingEmptySub"))}</span>
@@ -2142,10 +2144,6 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         <div class="form-section">${clickRow("calendar",t("brewedDate"),d.date?formatDate(d.date):t("select"),"date")}</div>
 
         <div class="form-section">
-          <div class="form-row tall">
-            <div class="form-icon">${formCoffeeIcon("notebook")}</div>
-            <div class="field-stack"><div class="form-label">${escapeHTML(t("equipmentUsed"))}</div></div><span></span>
-          </div>
           ${equipmentRow(t("dripper"),"dripper",d.dripper)}
           ${equipmentRow(t("paperFilter"),"filter",d.filter)}
           ${equipmentRow(t("grinder"),"mill",d.mill)}
@@ -2174,7 +2172,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           </div>
           ${d.beverageType==="Ice"?`
             <div class="hint-box">${escapeHTML(t("iceHint"))}</div>
-            ${inputRow("ice",t("iceAmount"),"iceWeight",d.iceWeight,"g","number",1)}
+            ${inputRow("ice",t("iceAmount"),"iceWeight",d.iceWeight,"g","number",1,"",true)}
           `:""}
         </div>
 

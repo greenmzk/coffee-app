@@ -1,4 +1,4 @@
-const CACHE_NAME = "brew-day-shell-v11";
+const CACHE_NAME = "brew-day-shell-v13";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -15,6 +15,8 @@ const APP_SHELL = [
   "./coffee-icons-20-transparent/15-aroma.png",
   "./coffee-icons-20-transparent/16-milk-carton.png",
   "./coffee-icons-20-transparent/17-iced-coffee.png",
+  "./coffee-icons-20-transparent/重なる氷キューブ.png",
+  "./coffee-icons-20-transparent/ミニマルなコーヒーの木アイコン.png",
   "./coffee-icons-20-transparent/18-history.png"
 ];
 
