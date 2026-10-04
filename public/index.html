@@ -219,6 +219,7 @@
       min-height:58px;display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:8px;padding:8px 2px;
     }
     .form-row.tall{align-items:start;padding-top:13px;padding-bottom:13px}
+    .form-row.date-row .form-label{text-align:left}
     .form-icon{display:flex;align-items:center;justify-content:center;color:var(--cream)}
     .form-icon svg{width:21px;height:21px}
     .form-coffee-icon{
@@ -1022,7 +1023,7 @@
     const RECIPE_KEY = "brewday_recipes_v2";
     const CUSTOM_EQUIPMENT_KEY = "brewday_custom_equipment_v1";
     const CUSTOM_MILK_KEY = "brewday_custom_milks_v1";
-    const DRIP_BAG_FILTER_ID = "__drip_bag__";
+    const DRIP_BAG_EQUIPMENT_ID = "__drip_bag__";
     const WELCOME_KEY = "brewday_welcome_seen_v1";
     const LANG_KEY = "brewday_language_v1";
     const TEMP_UNIT_KEY = "brewday_temperature_unit_v1";
@@ -1513,7 +1514,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
 
     function equipmentItem(id){
       if(!id)return null;
-      if(id===DRIP_BAG_FILTER_ID)return {id, maker:"", category:"ペーパーフィルター", name:t("useDripBag"), source:"special", special:true};
+      if(id===DRIP_BAG_EQUIPMENT_ID)return {id, maker:"", name:t("useDripBag"), source:"special", special:true};
       const resolvedId=LEGACY_EQUIPMENT_ALIASES[id]||id;
       return allEquipment().find(x=>equipId(x)===resolvedId||legacyEquipId(x)===resolvedId||x.id===resolvedId)||null;
     }
@@ -2237,7 +2238,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
     }
 
     function clickRow(ic,label,value,field){
-      return `<button class="row-btn" data-action="pick-${field}"><div class="form-row">
+      return `<button class="row-btn" data-action="pick-${field}"><div class="form-row ${field==="date"?"date-row":""}">
         <div class="form-icon">${icon(ic)}</div><div class="form-label">${escapeHTML(label)}</div>
         <div style="display:flex;align-items:center"><span class="form-value">${escapeHTML(value)}</span><span class="chev">›</span></div>
       </div></button>`;
@@ -2721,8 +2722,11 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           <button class="choice add-choice" data-add-from-selector><strong>✦ ${escapeHTML(t("addMissingGearSelector"))}</strong><span>${escapeHTML(t("addMissingGearSelectorSub"))}</span></button>
           ${state.modal.type==="filter"?`
             <button class="choice ${!current?"selected-choice":""}" data-choice=""><strong>${escapeHTML(t("doNotSelect"))}</strong><span>${escapeHTML(t("noPaperFilterDescription"))}</span></button>
-            <button class="choice ${current===DRIP_BAG_FILTER_ID?"selected-choice":""}" data-choice="${DRIP_BAG_FILTER_ID}"><strong>${escapeHTML(t("useDripBag"))}</strong><span>${escapeHTML(t("dripBagDescription"))}</span></button>
-          `:`<button class="choice ${!current?"selected-choice":""}" data-choice=""><strong>${escapeHTML(t("unselected"))}</strong><span>${escapeHTML(t("clearSelection"))}</span></button>`}
+            <button class="choice ${current===DRIP_BAG_EQUIPMENT_ID?"selected-choice":""}" data-choice="${DRIP_BAG_EQUIPMENT_ID}"><strong>${escapeHTML(t("useDripBag"))}</strong><span>${escapeHTML(t("dripBagDescription"))}</span></button>
+          `:`
+            <button class="choice ${!current?"selected-choice":""}" data-choice=""><strong>${escapeHTML(t("unselected"))}</strong><span>${escapeHTML(t("clearSelection"))}</span></button>
+            ${["dripper","mill"].includes(state.modal.type)?`<button class="choice ${current===DRIP_BAG_EQUIPMENT_ID?"selected-choice":""}" data-choice="${DRIP_BAG_EQUIPMENT_ID}"><strong>${escapeHTML(t("useDripBag"))}</strong><span>${escapeHTML(t("dripBagDescription"))}</span></button>`:""}
+          `}
           ${items.length?groupByMaker(items).map(([maker,list])=>`
             <div class="sheet-maker-heading">${escapeHTML(maker)}</div>
             ${list.map(x=>`<button class="choice ${equipId(x)===current?"selected-choice":""}" data-choice="${escapeAttr(equipId(x))}">
