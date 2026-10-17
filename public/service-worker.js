@@ -1,9 +1,11 @@
-const CACHE_NAME = "brew-day-shell-v13";
+const CACHE_NAME = "brew-day-shell-v14";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./app-icon.svg",
+  "./app-icon-192.png",
+  "./app-icon-512.png",
+  "./apple-touch-icon.png",
   "./brewday_seaotter.png",
   "./coffee-icons-20-transparent/01-coffee-bean.png",
   "./coffee-icons-20-transparent/02-hot-mug.png",
