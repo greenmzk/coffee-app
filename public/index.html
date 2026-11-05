@@ -3069,7 +3069,8 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         const radar=profile?.querySelector(".taste-radar-wrap");
         if(radar)radar.innerHTML=tasteRadar(scores);
         profile?.querySelectorAll("[data-taste-score]").forEach(scoreButton=>{
-          scoreButton.classList.toggle("on",scoreButton.dataset.tasteAxis===btn.dataset.tasteAxis&&Number(scoreButton.dataset.tasteScore)===scores[btn.dataset.tasteAxis]);
+          const axis=scoreButton.dataset.tasteAxis;
+          scoreButton.classList.toggle("on",Number(scoreButton.dataset.tasteScore)===scores[axis]);
         });
       }));
 
