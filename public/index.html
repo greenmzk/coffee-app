@@ -977,28 +977,16 @@
       background:#173d70;color:#fffaf3;font-size:12px;font-weight:900;
     }
     .premium-benefit span:last-child{font-size:10.5px;line-height:1.45;font-weight:750}
-    .premium-plan-primary,.premium-plan-secondary{
+    .premium-purchase-button{
       width:100%;min-height:47px;border-radius:13px;font-size:11px;font-weight:900;letter-spacing:.01em;
       transition:transform .16s ease,box-shadow .16s ease;
     }
-    .premium-plan-primary{
-      border:1px solid rgba(23,61,112,.16);background:#fff;color:#173d70;
-      box-shadow:0 11px 25px rgba(23,61,112,.13);
-    }
-    .premium-plan-secondary{
-      position:relative;margin-top:8px;border:1px solid rgba(166,119,45,.46);background:linear-gradient(135deg,#dcbf78,#ad7d31);color:#17324d;
+    .premium-purchase-button{
+      border:1px solid rgba(166,119,45,.46);background:linear-gradient(135deg,#dcbf78,#ad7d31);color:#17324d;
       box-shadow:0 10px 23px rgba(104,72,22,.13);
-      display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding:8px 54px 8px 14px;
+      display:flex;align-items:center;justify-content:center;padding:8px 14px;
     }
-    .premium-plan-secondary .annual-badge{
-      position:absolute;right:8px;top:50%;transform:translateY(-50%);
-      display:inline-flex;align-items:center;justify-content:center;
-      min-height:23px;padding:0 8px;border-radius:999px;
-      background:#173d70;color:#fffaf3;border:1px solid rgba(255,255,255,.28);
-      font-size:7.5px;font-weight:950;letter-spacing:.03em;white-space:nowrap;
-      box-shadow:0 5px 12px rgba(23,61,112,.18);
-    }
-    .premium-plan-primary:active,.premium-plan-secondary:active{transform:translateY(1px)}
+    .premium-purchase-button:active{transform:translateY(1px)}
     .premium-restore{
       display:block;margin:15px auto 0;padding:4px 8px;border:0;background:transparent;color:#5b6f81;
       font-size:9.5px;font-weight:800;text-decoration:underline;text-underline-offset:3px;
@@ -1009,8 +997,6 @@
       .welcome h1{font-size:45px}
       .premium-catchcopy.en{font-size:clamp(14px,4.55vw,17px);letter-spacing:-.045em}
       .premium-catchcopy.ja{font-size:23px}
-      .premium-plan-secondary{padding-right:14px;padding-top:29px}
-      .premium-plan-secondary .annual-badge{right:50%;top:7px;transform:translateX(50%)}
     }
 
   </style>
@@ -1064,7 +1050,7 @@
         brewStyle:"抽出スタイル", brewStyleHelp:"Hot / Ice を選択",
         iceHint:"ICEでは、ドリップに使うお湯とは別にサーバーやグラスへ入れる「氷の量」を記録できます。",
         iceAmount:"氷の量", beanAmount:"豆の量", grindSize:"挽いた豆の粗さ",
-        waterTemp:"お湯の温度", pourMethod:"抽出時間 / 湯量 (g)", total:"合計",
+        waterTemp:"お湯の温度", brewTime:"抽出時間", pourMethod:"抽出時間 / 湯量 (g)", total:"合計",
         bloom:"蒸らし", pourNth:n=>`${n}回目`, addPour:"＋ 注ぎを追加",
         pourUnitNote:"左：湯量 g　右：注ぎ開始の目安時間",
         bloomTime:"蒸らし時間",
@@ -1074,7 +1060,7 @@
         tastingPlaceholder:"香り、酸味、甘さ、後味、次回調整したいことなど",
         tasteProfile:"テイストプロファイル", acidity:"酸味", aftertaste:"後味", aroma:"アロマ", balance:"バランス", body:"ボディ",
         tasteScoreAria:(axis,n)=>`${axis} ${n}/5`,
-        shareRecipe:"レシピカードをシェア", preparingRecipeCard:"レシピカードを作成中…", recipeCardDownloaded:"レシピカードをダウンロードしました。InstagramやXにアップロードできます。", shareError:"レシピカードを作成できませんでした。",
+        shareRecipe:"レシピ画像をダウンロード", preparingRecipeCard:"レシピカードを作成中…", recipeCardDownloaded:"レシピカードをダウンロードしました。InstagramやXにアップロードできます。", shareError:"レシピカードを作成できませんでした。",
         update:"更新する", saveRecipe:"保存",
         satisfactionAria:n=>`満足度 ${n}`,
         recipeDetail:"レシピ詳細", beanSection:"Bean", equipmentSection:"Equipment",
@@ -1123,12 +1109,10 @@
         premiumTestToggle:"Plus切り替えスイッチ（テスト用）", premiumTestToggleHelpLine1:"開発・動作確認用です。", premiumTestToggleHelpLine2:"ONにするとPlus機能のロックを解除します。",
         premiumFeatureTitle:"Brew Day Plusについて詳しく知る", premiumFeatureHelp:"",
         premiumFeatureOpen:"AI抽出アシスタントを開く", premiumFeatureUnlocked:"Plus機能はテストモードで利用可能です。",
-        premiumDialogTitle:"Brew Day Plus", premiumCatchcopyLine1:"コーヒー１杯の価格で", premiumCatchcopyLine2:"コーヒー１杯以上の体験を。",
-        premiumBenefitAI:"AI抽出アシスタント & トラブルシューティング機能",
+        premiumDialogTitle:"Brew Day Plus", premiumCatchcopy:"あなたのオリジナルコーヒーレシピを残しましょう",
         premiumBenefitAnalytics:"レシピ無限保存 & 詳細アナリティクス",
         premiumBenefitCustom:"カスタムギア & 豆カードの無制限作成",
-        premiumBenefitAds:"広告の完全非表示",
-        premiumMonthly:"月額プランで始める（$5.99/€5.99）", premiumYearly:"年額でお得に始める（$39.9/€39.9）", premiumAnnualBadge:"約44%OFF", premiumRestore:"購入を復元",
+        premiumLifetime:"買い切りで始める（$19.9）", premiumRestore:"購入を復元",
         premiumPurchaseDemo:"購入機能はデモ版では接続されていません。設定のテスト用トグルでPlus状態を確認できます。",
         premiumRestoreDemo:"復元機能はデモ版では接続されていません。",
         premiumDialogClose:"閉じる",
@@ -1205,7 +1189,7 @@
         brewStyle:"Brew Style", brewStyleHelp:"Choose Hot or Ice",
         iceHint:"For iced coffee, record the ice placed in the server or glass separately from the brewing water.",
         iceAmount:"Ice amount", beanAmount:"Coffee dose", grindSize:"Grind size",
-        waterTemp:"Water Temperature", pourMethod:"Brew Time / Yield (g)", total:"Total",
+        waterTemp:"Water Temperature", brewTime:"Brew Time", pourMethod:"Brew Time / Yield (g)", total:"Total",
         bloom:"Bloom", pourNth:n=>`Pour ${n}`, addPour:"+ Add Pour",
         pourUnitNote:"Left: yield (g) · Right: pour start time",
         bloomTime:"Bloom Time",
@@ -1215,7 +1199,7 @@
         tastingPlaceholder:"Aroma, acidity, sweetness, finish, and what to adjust next time",
         tasteProfile:"Taste Profile", acidity:"Acidity", aftertaste:"Aftertaste", aroma:"Aroma", balance:"Balance", body:"Body",
         tasteScoreAria:(axis,n)=>`${axis} ${n}/5`,
-        shareRecipe:"Share recipe card", preparingRecipeCard:"Preparing recipe card…", recipeCardDownloaded:"Recipe card downloaded. Upload it to Instagram or X.", shareError:"Could not create the recipe card.",
+        shareRecipe:"Download recipe image", preparingRecipeCard:"Preparing recipe card…", recipeCardDownloaded:"Recipe card downloaded. Upload it to Instagram or X.", shareError:"Could not create the recipe card.",
         update:"Update", saveRecipe:"Save Recipe",
         satisfactionAria:n=>`Rating ${n}`,
         recipeDetail:"Recipe Detail", beanSection:"Bean", equipmentSection:"Equipment",
@@ -1264,12 +1248,10 @@
         premiumTestToggle:"Plus test switch", premiumTestToggleHelp:"For development and testing. Turn it on to unlock Plus-only interactions.",
         premiumFeatureTitle:"Learn more about Brew Day Plus", premiumFeatureHelp:"",
         premiumFeatureOpen:"Open AI Brew Assistant", premiumFeatureUnlocked:"Plus feature is available in test mode.",
-        premiumDialogTitle:"Brew Day Plus", premiumCatchcopy:"More worth than one cup of coffee",
-        premiumBenefitAI:"AI Brew Assistant & Troubleshooting",
+        premiumDialogTitle:"Brew Day Plus", premiumCatchcopy:"Save your original coffee recipes",
         premiumBenefitAnalytics:"Unlimited recipe storage & detailed analytics",
         premiumBenefitCustom:"Unlimited custom gear & bean cards",
-        premiumBenefitAds:"Completely ad-free",
-        premiumMonthly:"Start Monthly Plan ($5.99/€5.99)", premiumYearly:"Start Annual Plan ($39.9/€39.9)", premiumAnnualBadge:"Save ~44%", premiumRestore:"Restore Purchase",
+        premiumLifetime:"Buy once ($19.9)", premiumRestore:"Restore Purchase",
         premiumPurchaseDemo:"Purchases are not connected in this demo. Use the Plus test switch in Settings to test the Plus state.",
         premiumRestoreDemo:"Purchase restore is not connected in this demo.",
         premiumDialogClose:"Close",
@@ -1928,6 +1910,39 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       }
       return lines;
     }
+    function canvasFittedText(ctx,text,maxWidth,startSize,minSize=16,weight=700,family="system-ui, sans-serif"){
+      let size=startSize;const value=String(text||"");
+      while(size>minSize){ctx.font=`${weight} ${size}px ${family}`;if(ctx.measureText(value).width<=maxWidth)break;size-=2}
+      return size;
+    }
+    function canvasOneLine(ctx,text,maxWidth){
+      let value=String(text||"—");
+      if(ctx.measureText(value).width<=maxWidth)return value;
+      while(value.length>1&&ctx.measureText(`${value}…`).width>maxWidth)value=value.slice(0,-1);
+      return `${value}…`;
+    }
+    const RECIPE_CARD_ICON_PATHS={
+      bean:"./coffee-icons-20-transparent/01-coffee-bean.png",
+      dripper:"./coffee-icons-20-transparent/04-dripper.png",
+      grinder:"./coffee-icons-20-transparent/07-coffee-grinder.png",
+      timer:"./coffee-icons-20-transparent/09-timer.png",
+      temperature:"./coffee-icons-20-transparent/10-thermometer.png",
+      water:"./coffee-icons-20-transparent/11-water-drop.png",
+      tasting:"./coffee-icons-20-transparent/15-aroma.png"
+    };
+    const recipeCardIconCache=new Map();
+    function loadRecipeCardIcon(name){
+      if(recipeCardIconCache.has(name))return recipeCardIconCache.get(name);
+      const promise=new Promise((resolve,reject)=>{
+        const image=new Image();image.decoding="async";image.onload=()=>resolve(image);image.onerror=reject;
+        image.src=new URL(RECIPE_CARD_ICON_PATHS[name],document.baseURI).href;
+      });
+      recipeCardIconCache.set(name,promise);return promise;
+    }
+    function drawRecipeCardIcon(ctx,image,x,y,size=48){
+      ctx.save();ctx.fillStyle="#f7f2ea";canvasRoundRect(ctx,x,y,size,size,14);ctx.fill();
+      ctx.drawImage(image,x+9,y+9,size-18,size-18);ctx.restore();
+    }
     function drawRecipeRadar(ctx,scores,cx,cy,radius){
       const normalized=normalizedTasteScores(scores);
       const point=(value,index)=>{
@@ -1942,36 +1957,75 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       ctx.beginPath();TASTE_AXES.forEach((axis,index)=>{const [x,y]=point(normalized[axis],index);index?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();ctx.fillStyle="rgba(235,201,125,.38)";ctx.fill();ctx.strokeStyle="#f5dc9d";ctx.lineWidth=5;ctx.stroke();
       TASTE_AXES.forEach((axis,index)=>{const [x,y]=point(normalized[axis],index);ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fillStyle="#fff9ee";ctx.fill()});
     }
-    function createRecipeCardImage(recipe){
+    async function createRecipeCardImage(recipe){
       const canvas=document.createElement("canvas"),ctx=canvas.getContext("2d"),width=1080,height=1350;
       if(!ctx)throw new Error("Canvas unavailable");
       canvas.width=width;canvas.height=height;
+      const iconEntries=await Promise.all(Object.keys(RECIPE_CARD_ICON_PATHS).map(async name=>[name,await loadRecipeCardIcon(name)]));
+      const cardIcons=Object.fromEntries(iconEntries);
       const background=ctx.createLinearGradient(0,0,width,height);background.addColorStop(0,"#0c559d");background.addColorStop(.52,"#083d79");background.addColorStop(1,"#05264f");ctx.fillStyle=background;ctx.fillRect(0,0,width,height);
       const glow=ctx.createRadialGradient(900,150,0,900,150,520);glow.addColorStop(0,"rgba(235,195,108,.34)");glow.addColorStop(1,"rgba(235,195,108,0)");ctx.fillStyle=glow;ctx.fillRect(0,0,width,height);
-      ctx.strokeStyle="rgba(255,255,255,.16)";ctx.lineWidth=2;canvasRoundRect(ctx,52,52,976,1246,42);ctx.stroke();
-      ctx.fillStyle="#f9f0df";ctx.font="700 28px system-ui, sans-serif";ctx.fillText("BREW DAY",96,118);
-      ctx.fillStyle="rgba(255,255,255,.65)";ctx.font="700 18px system-ui, sans-serif";ctx.textAlign="right";ctx.fillText(formatDate(recipe.date).toUpperCase(),984,116);ctx.textAlign="left";
-      ctx.fillStyle="#f6d993";ctx.fillRect(96,150,72,5);
-      const title=recipe.beanOrigin||t("unnamedCoffee");ctx.fillStyle="#fffaf1";ctx.font="700 68px Georgia, serif";
-      const titleLines=canvasTextLines(ctx,title,840,2);titleLines.forEach((line,index)=>ctx.fillText(line,96,255+index*77));
-      const titleBottom=255+(titleLines.length-1)*77;
-      ctx.fillStyle="rgba(255,255,255,.72)";ctx.font="500 27px system-ui, sans-serif";ctx.fillText(recipe.roasterName||"Brew Day Recipe",96,titleBottom+57);
-      ctx.fillStyle="rgba(255,255,255,.12)";canvasRoundRect(ctx,96,titleBottom+105,888,304,28);ctx.fill();
-      const fields=[[t("extractionStyle"),(recipe.beverageType||"Hot")==="Ice"?"ICE":"HOT"],[t("groundsAmount"),`${num(recipe.beanWeight)} g`],[t("totalWater"),`${num(totalWater(recipe))} g`],[t("waterTemp"),recipe.waterTemp!==""?`${temperatureForDisplay(recipe.waterTemp)}${tempUnitSymbol()}`:"—"],[t("brewTime"),recipe.brewTime||"—"],[t("dripper"),equipmentLabel(equipmentItem(recipe.dripper))]];
-      fields.forEach(([label,value],index)=>{
-        const column=index%2,row=Math.floor(index/2),x=130+column*425,y=titleBottom+159+row*91;
-        ctx.fillStyle="rgba(255,255,255,.56)";ctx.font="700 16px system-ui, sans-serif";ctx.fillText(String(label).toUpperCase(),x,y);
-        ctx.fillStyle="#fffaf1";ctx.font="700 27px system-ui, sans-serif";ctx.fillText(canvasTextLines(ctx,String(value||"—"),340,1)[0]||"—",x,y+35);
+      ctx.strokeStyle="rgba(255,255,255,.18)";ctx.lineWidth=2;canvasRoundRect(ctx,48,48,984,1254,42);ctx.stroke();
+
+      ctx.fillStyle="#f9f0df";ctx.font="800 28px system-ui, sans-serif";ctx.fillText("BREW DAY",88,112);
+      const brewType=(recipe.beverageType||"Hot")==="Ice"?"ICE":"HOT";
+      ctx.fillStyle="rgba(247,242,234,.16)";canvasRoundRect(ctx,858,76,126,48,24);ctx.fill();
+      ctx.fillStyle="#fffaf1";ctx.font="800 18px system-ui, sans-serif";ctx.textAlign="center";ctx.fillText(brewType,921,107);ctx.textAlign="left";
+      ctx.fillStyle="rgba(255,255,255,.62)";ctx.font="700 18px system-ui, sans-serif";ctx.fillText(formatDate(recipe.date).toUpperCase(),88,148);
+
+      const title=recipe.beanOrigin||t("unnamedCoffee");ctx.fillStyle="#fffaf1";
+      const titleSize=canvasFittedText(ctx,title,904,66,42,750,'Georgia, "Yu Mincho", serif');
+      ctx.font=`750 ${titleSize}px Georgia, "Yu Mincho", serif`;
+      const titleLines=canvasTextLines(ctx,title,904,2);const titleLineHeight=titleSize+8;
+      titleLines.forEach((line,index)=>ctx.fillText(line,88,222+index*titleLineHeight));
+      const titleBottom=222+(titleLines.length-1)*titleLineHeight;
+      ctx.fillStyle="rgba(255,255,255,.72)";ctx.font="600 25px system-ui, sans-serif";
+      ctx.fillText(canvasOneLine(ctx,recipe.roasterName||"Brew Day Recipe",904),88,titleBottom+43);
+
+      const metricTop=titleBottom+76,metricGap=16,metricWidth=(904-metricGap*2)/3,metricHeight=126;
+      const metrics=[
+        ["bean",t("groundsAmount"),`${num(recipe.beanWeight)} g`],
+        ["water",t("totalWater"),`${num(totalWater(recipe))} g`],
+        ["temperature",t("waterTemp"),recipe.waterTemp!==""?`${temperatureForDisplay(recipe.waterTemp)}${tempUnitSymbol()}`:"—"]
+      ];
+      metrics.forEach(([iconName,label,value],index)=>{
+        const x=88+index*(metricWidth+metricGap);ctx.fillStyle="rgba(255,255,255,.11)";canvasRoundRect(ctx,x,metricTop,metricWidth,metricHeight,24);ctx.fill();
+        drawRecipeCardIcon(ctx,cardIcons[iconName],x+18,metricTop+20,52);
+        ctx.fillStyle="rgba(255,255,255,.6)";ctx.font="750 14px system-ui, sans-serif";ctx.fillText(String(label).toUpperCase(),x+84,metricTop+42);
+        ctx.fillStyle="#fffaf1";ctx.font="800 28px system-ui, sans-serif";ctx.fillText(canvasOneLine(ctx,value,metricWidth-102),x+84,metricTop+80);
       });
-      const radarTop=titleBottom+505;ctx.fillStyle="#fffaf1";ctx.font="700 32px Georgia, serif";ctx.fillText(t("tasteProfile"),96,radarTop);
-      drawRecipeRadar(ctx,recipe.tasteScores,540,radarTop+190,152);
-      ctx.fillStyle="rgba(255,255,255,.68)";ctx.font="700 16px system-ui, sans-serif";
-      const scores=normalizedTasteScores(recipe.tasteScores);TASTE_AXES.forEach((axis,index)=>{const angle=-Math.PI/2+(Math.PI*2*index/TASTE_AXES.length),x=540+Math.cos(angle)*220,y=radarTop+190+Math.sin(angle)*220;ctx.textAlign="center";ctx.fillText(`${t(axis)}  ${scores[axis]}/5`,x,y)});ctx.textAlign="left";
-      const noteTop=radarTop+438;ctx.fillStyle="rgba(255,255,255,.12)";canvasRoundRect(ctx,96,noteTop,888,164,24);ctx.fill();
-      ctx.fillStyle="rgba(255,255,255,.58)";ctx.font="700 15px system-ui, sans-serif";ctx.fillText(t("tastingNotes").toUpperCase(),126,noteTop+39);
-      ctx.fillStyle="#fffaf1";ctx.font="500 24px system-ui, sans-serif";canvasTextLines(ctx,recipe.notes||t("noMemo"),800,3).forEach((line,index)=>ctx.fillText(line,126,noteTop+78+index*30));
-      ctx.fillStyle="rgba(255,255,255,.56)";ctx.font="600 18px system-ui, sans-serif";ctx.fillText("brewday",96,1245);
-      return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error("Image encoding failed")),"image/png"));
+
+      const toolsTop=metricTop+148;ctx.fillStyle="rgba(255,255,255,.075)";canvasRoundRect(ctx,88,toolsTop,904,118,24);ctx.fill();
+      const toolItems=[
+        ["dripper",t("dripper"),equipmentLabel(equipmentItem(recipe.dripper))],
+        ["grinder",t("grindSize"),grindLabel(recipe.grind||"")],
+        ["timer",t("brewTime"),recipe.brewTime||"—"]
+      ];
+      toolItems.forEach(([iconName,label,value],index)=>{
+        const x=108+index*294;if(index){ctx.fillStyle="rgba(255,255,255,.14)";ctx.fillRect(x-14,toolsTop+24,1,70)}
+        drawRecipeCardIcon(ctx,cardIcons[iconName],x,toolsTop+31,48);
+        ctx.fillStyle="rgba(255,255,255,.58)";ctx.font="750 13px system-ui, sans-serif";ctx.fillText(String(label).toUpperCase(),x+62,toolsTop+50);
+        ctx.fillStyle="#fffaf1";ctx.font="750 20px system-ui, sans-serif";ctx.fillText(canvasOneLine(ctx,value,202),x+62,toolsTop+79);
+      });
+
+      const tasteTop=toolsTop+144;drawRecipeCardIcon(ctx,cardIcons.tasting,88,tasteTop-7,50);
+      ctx.fillStyle="#fffaf1";ctx.font="750 30px Georgia, serif";ctx.fillText(t("tasteProfile"),154,tasteTop+28);
+      drawRecipeRadar(ctx,recipe.tasteScores,322,tasteTop+205,136);
+      const scores=normalizedTasteScores(recipe.tasteScores);
+      TASTE_AXES.forEach((axis,index)=>{
+        const rowY=tasteTop+82+index*61;
+        ctx.fillStyle="rgba(255,255,255,.72)";ctx.font="700 20px system-ui, sans-serif";ctx.fillText(t(axis),558,rowY);
+        for(let score=1;score<=5;score++){
+          const x=742+(score-1)*48;ctx.fillStyle=score<=scores[axis]?"#f7f2ea":"rgba(255,255,255,.12)";ctx.beginPath();ctx.arc(x,rowY-7,16,0,Math.PI*2);ctx.fill();
+          ctx.fillStyle=score<=scores[axis]?"#0b4f9c":"rgba(255,255,255,.55)";ctx.font="800 14px system-ui, sans-serif";ctx.textAlign="center";ctx.fillText(String(score),x,rowY-2);ctx.textAlign="left";
+        }
+      });
+
+      const noteTop=tasteTop+386;ctx.fillStyle="rgba(255,255,255,.1)";canvasRoundRect(ctx,88,noteTop,904,132,22);ctx.fill();
+      ctx.fillStyle="rgba(255,255,255,.58)";ctx.font="750 14px system-ui, sans-serif";ctx.fillText(t("tastingNotes").toUpperCase(),114,noteTop+31);
+      ctx.fillStyle="#fffaf1";ctx.font="500 21px system-ui, sans-serif";canvasTextLines(ctx,recipe.notes||t("noMemo"),852,3).forEach((line,index)=>ctx.fillText(line,114,noteTop+63+index*25));
+      ctx.fillStyle="rgba(255,255,255,.5)";ctx.font="650 16px system-ui, sans-serif";ctx.fillText("BREW DAY  ·  COFFEE RECIPE JOURNAL",88,1270);
+      return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error("Image encoding failed")),"image/png"));
     }
     function recipeSort(a,b){
       const c=String(b.date||"").localeCompare(String(a.date||""));
@@ -2012,7 +2066,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         : `<button class="icon-btn" data-action="settings" aria-label="${escapeAttr(t("settingsAria"))}">${icon("settings")}</button>`;
       let right=`<span></span>`;
       if(opts.save)right=`<button class="text-btn" data-action="save-recipe">${escapeHTML(t("save"))}</button>`;
-      else if(opts.share)right=`<button class="icon-btn" data-action="share-recipe" aria-label="${escapeAttr(t("shareRecipe"))}">${icon("share2")}</button>`;
+      else if(opts.share)right=`<button class="icon-btn" data-action="share-recipe" aria-label="${escapeAttr(t("shareRecipe"))}">${icon("download")}</button>`;
       else if(opts.add)right=`<button class="round-btn" data-action="new-recipe" aria-label="${escapeAttr(t("newRecipeAria"))}">＋</button>`;
       return `<header class="topbar ${opts.bordered?"bordered":""}">${left}<div class="${opts.brand?"brand":"topbar-title"}">${escapeHTML(title)}</div>${right}</header>`;
     }
@@ -2879,22 +2933,12 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
             <button class="premium-x" type="button" data-premium-close aria-label="${escapeAttr(t("premiumDialogClose"))}">×</button>
           </div>
           <div class="premium-modal-content">
-            <div class="premium-catchcopy ${state.lang==="ja"?"ja":"en"}">${
-              state.lang==="ja"
-                ? `${escapeHTML(t("premiumCatchcopyLine1"))}<br>${escapeHTML(t("premiumCatchcopyLine2"))}`
-                : escapeHTML(t("premiumCatchcopy"))
-            }</div>
+            <div class="premium-catchcopy ${state.lang==="ja"?"ja":"en"}">${escapeHTML(t("premiumCatchcopy"))}</div>
             <ul class="premium-benefits">
-              <li class="premium-benefit"><span class="premium-check">✓</span><span>${escapeHTML(t("premiumBenefitAI"))}</span></li>
               <li class="premium-benefit"><span class="premium-check">✓</span><span>${escapeHTML(t("premiumBenefitAnalytics"))}</span></li>
               <li class="premium-benefit"><span class="premium-check">✓</span><span>${escapeHTML(t("premiumBenefitCustom"))}</span></li>
-              <li class="premium-benefit"><span class="premium-check">✓</span><span>${escapeHTML(t("premiumBenefitAds"))}</span></li>
             </ul>
-            <button class="premium-plan-primary" type="button" data-premium-plan="monthly">${escapeHTML(t("premiumMonthly"))}</button>
-            <button class="premium-plan-secondary" type="button" data-premium-plan="yearly">
-              <span>${escapeHTML(t("premiumYearly"))}</span>
-              <span class="annual-badge">${escapeHTML(t("premiumAnnualBadge"))}</span>
-            </button>
+            <button class="premium-purchase-button" type="button" data-premium-plan="lifetime">${escapeHTML(t("premiumLifetime"))}</button>
             <button class="premium-restore" type="button" data-premium-restore>${escapeHTML(t("premiumRestore"))}</button>
           </div>
         </div>
