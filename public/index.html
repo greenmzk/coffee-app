@@ -811,6 +811,8 @@
     .home-rank-copy small{display:block;margin-top:7px;color:var(--muted);font-size:9px}
     .home-ranking-empty{min-height:170px;margin-top:10px;padding:20px}
     .home-ranking .home-cta{margin-top:auto;padding-top:0;flex:0 0 auto}
+    .home-stats-card{margin-top:18px;margin-bottom:0;flex:0 0 auto}
+    .home-stats-card .field-grid{margin-bottom:0}
 
     /* History */
     .history-intro{padding:12px 2px 16px}
@@ -2168,6 +2170,21 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       </section>`;
     }
 
+    function brewDayStatsCard(){
+      const count=state.recipes.length;
+      const days=new Set(state.recipes.map(r=>r.date)).size;
+      return `<section class="profile-card home-stats-card">
+        <h3>Brew Day</h3>
+        <p class="${state.lang==="ja"?"ja-single-line":""}" ${state.lang==="ja"?'data-fit-one-line="storage"':""}>${escapeHTML(t("settingsIntro"))}</p>
+        <div class="field-grid">
+          <div class="field-card"><label>${escapeHTML(t("savedRecipes"))}</label><strong>${count}</strong></div>
+          <div class="field-card"><label>${escapeHTML(t("recordedDays"))}</label><strong>${days}</strong></div>
+          <div class="field-card"><label>${escapeHTML(t("customGear"))}</label><strong>${customEquipment.length}</strong></div>
+          <div class="field-card"><label>${escapeHTML(t("customMilk"))}</label><strong>${customMilks.length}</strong></div>
+        </div>
+      </section>`;
+    }
+
     function renderHome(){
       app.innerHTML=shell(`
         <section class="home-ranking">
@@ -2194,6 +2211,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
             </div>
           `:""}
 
+          ${brewDayStatsCard()}
         </section>
       `,"home",topbar("Brew Day",{brand:true,premiumStatus:true}));
       bindGlobal();
@@ -2656,19 +2674,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
     }
 
     function renderProfile(){
-      const count=state.recipes.length,days=new Set(state.recipes.map(r=>r.date)).size;
       app.innerHTML=shell(`
-        <div class="profile-card">
-          <h3>Brew Day</h3>
-          <p class="${state.lang==="ja"?"ja-single-line":""}" ${state.lang==="ja"?'data-fit-one-line="storage"':""}>${escapeHTML(t("settingsIntro"))}</p>
-          <div class="field-grid" style="margin-bottom:0">
-            <div class="field-card"><label>${escapeHTML(t("savedRecipes"))}</label><strong>${count}</strong></div>
-            <div class="field-card"><label>${escapeHTML(t("recordedDays"))}</label><strong>${days}</strong></div>
-            <div class="field-card"><label>${escapeHTML(t("customGear"))}</label><strong>${customEquipment.length}</strong></div>
-            <div class="field-card"><label>${escapeHTML(t("customMilk"))}</label><strong>${customMilks.length}</strong></div>
-          </div>
-        </div>
-
         <div class="profile-card">
           <div class="settings-row">
             <div class="copy"><h3>${escapeHTML(t("language"))}</h3><p class="${state.lang==="en"?"en-single-line":"ja-single-line"}" data-fit-one-line="${state.lang==="en"?"language":"jaLanguage"}">${escapeHTML(t("languageHelp"))}</p></div>
