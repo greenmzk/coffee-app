@@ -246,6 +246,7 @@
     .form-coffee-icon.beans{background-image:url("./coffee-icons-20-transparent/01-coffee-bean.png")}
     .form-coffee-icon.notebook{background-image:url("./coffee-icons-20-transparent/12-recipe-notebook.png")}
     .form-coffee-icon.dripper{background-image:url("./coffee-icons-20-transparent/04-dripper.png")}
+    .form-coffee-icon.filter{background-image:url("./coffee-icons-20-transparent/05-paper-filter.png")}
     .form-coffee-icon.kettle{background-image:url("./coffee-icons-20-transparent/06-gooseneck-kettle.png")}
     .form-coffee-icon.grinder{background-image:url("./coffee-icons-20-transparent/07-coffee-grinder.png")}
     .form-coffee-icon.scale{background-image:url("./coffee-icons-20-transparent/08-coffee-scale.png")}
@@ -2194,7 +2195,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           `:""}
 
         </section>
-      `,"home",topbar("Brew Day",{brand:true}));
+      `,"home",topbar("Brew Day",{brand:true,premiumStatus:true}));
       bindGlobal();
     }
 
@@ -2328,8 +2329,9 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
 
     function equipmentRow(label,type,id){
       const item=equipmentItem(id);
+      const iconName={dripper:"dripper",filter:"filter",mill:"grinder"}[type];
       return `<button class="row-btn" data-equipment="${type}"><div class="form-row equipment-row">
-        <div></div>
+        <div class="form-icon">${formCoffeeIcon(iconName)}</div>
         <div class="field-stack">
           <div class="form-label">${escapeHTML(label)}</div>
           ${item&&!item.special&&(item.source==="custom"||item.sku)?`<div class="subline">${item.source==="custom"?"CUSTOM":""}${item.source==="custom"&&item.sku?" · ":""}${item.sku?escapeHTML(item.sku):""}</div>`:""}
