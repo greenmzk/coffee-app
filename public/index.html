@@ -40,7 +40,8 @@
       --radius-sm:13px;
       --danger:#ffddd7;
       --success:#dff7e7;
-      --nav-h:60px;
+      --accent-glow:rgba(244,210,138,.72);
+      --nav-h:70px;
       --max-w:440px;
     }
 
@@ -114,8 +115,9 @@
     .mini-note{font-size:10px;line-height:1.55;color:var(--muted)}
 
     .bottom-nav{
-      height:calc(var(--nav-h) + env(safe-area-inset-bottom));padding:4px 8px calc(4px + env(safe-area-inset-bottom));
-      display:grid;grid-template-columns:repeat(4,1fr);flex:0 0 auto;border-top:1px solid var(--line);
+      position:relative;z-index:5;
+      height:calc(var(--nav-h) + env(safe-area-inset-bottom));padding:6px 8px calc(5px + env(safe-area-inset-bottom));
+      display:grid;grid-template-columns:repeat(5,1fr);flex:0 0 auto;border-top:1px solid var(--line);
       background:rgba(5,44,91,.47);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
     }
     .nav-btn{
@@ -129,6 +131,18 @@
     .nav-btn.active .coffee-set-icon{opacity:1}
     .nav-dot{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:0}
     .nav-btn.active .nav-dot{opacity:1}
+    .nav-add-wrap{display:flex;align-items:flex-start;justify-content:center;position:relative}
+    .nav-add{
+      width:66px;height:66px;margin-top:-23px;border:5px solid var(--cream);border-radius:50%;padding:0;
+      display:flex;align-items:center;justify-content:center;color:var(--cream);
+      background:linear-gradient(145deg,var(--blue),var(--blue-deep));
+      box-shadow:0 8px 0 var(--blue-darker),0 12px 24px rgba(2,31,69,.32);
+      transition:transform .16s ease,box-shadow .16s ease;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .nav-add:active{transform:translateY(3px);box-shadow:0 5px 0 var(--blue-darker),0 9px 18px rgba(2,31,69,.26)}
+    .nav-add:focus-visible{outline:3px solid var(--accent-glow);outline-offset:3px}
+    .nav-add svg{width:31px;height:31px;stroke:currentColor;stroke-width:2.7;stroke-linecap:round}
 
     svg.stroke{stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
@@ -859,9 +873,26 @@
       position:absolute;right:10px;top:8px;z-index:1;width:42px;height:42px;border:0;border-radius:999px;
       display:flex;align-items:center;justify-content:center;background:transparent;color:#8fa1b1;font-size:25px;opacity:.72;
     }
+    .topbar .premium-corner-action{position:relative;right:auto;top:auto;justify-self:end}
     .premium-corner-action:not(:disabled):active{background:rgba(255,255,255,.08);transform:scale(.94)}
     .premium-corner-action.active{color:#d8b66f;opacity:1;text-shadow:0 0 16px rgba(216,182,111,.34)}
     .premium-corner-action:disabled{cursor:default}
+    .premium-corner-action.glow-pulse .premium-corner-glyph{
+      animation:premiumIconGlowPulse 1200ms cubic-bezier(.37,0,.63,1) infinite alternate;
+      animation-play-state:paused;
+    }
+    .premium-corner-action.glow-pulse.is-in-view .premium-corner-glyph{animation-play-state:running}
+    @keyframes premiumIconGlowPulse{
+      from{text-shadow:0 0 0 transparent}
+      to{text-shadow:0 0 8px var(--accent-glow),0 0 18px var(--accent-glow),0 0 24px var(--accent-glow)}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .premium-corner-action.glow-pulse .premium-corner-glyph,
+      .premium-corner-action.glow-pulse.is-in-view .premium-corner-glyph{
+        animation:none;
+        text-shadow:0 0 8px var(--accent-glow),0 0 18px var(--accent-glow),0 0 24px var(--accent-glow);
+      }
+    }
     .premium-kicker{font-size:8px;letter-spacing:.2em;color:#d9bd83;font-weight:900;margin-bottom:5px}
     .premium-button{
       min-height:39px;margin-top:13px;padding:0 14px;border:1px solid rgba(255,250,242,.88);border-radius:10px;
@@ -1021,7 +1052,7 @@
         startRecording:"記録をはじめる", login:"ログイン",
         recipes:"RECIPES", beansSummary:"BEANS / g", ratingSummary:"RATING",
         recentRecipes:"最近のレシピ", noRecipesTitle:"まだ記録がありません",
-        noRecipesBody:"右上の＋から、最初の一杯を記録できます。",
+        noRecipesBody:"ナビゲーション中央の＋から、最初の一杯を記録できます。",
         viewAllRecipes:"すべてのレシピを見る",
         homeHeroEyebrow:"BREW JOURNAL", homeHeroTitle:"今日の一杯を、記録する。", homeHeroSub:"器具、豆、抽出レシピ、味わいまで。自分だけのコーヒーログを丁寧に残せます。",
         rankingTitle:"ランキング", rankingIntro:"これまでの記録から、最もよく使っている豆と器具をまとめました。",
@@ -1080,7 +1111,7 @@
         doNotSelect:"選択しない", noPaperFilterDescription:"ペーパーフィルターを使用しない",
         useDripBag:"ドリップパックを使用", dripBagDescription:"ドリップパックで抽出する",
         calendarTitle:"カレンダー", recordsOnDate:"の記録",
-        noDayRecipesTitle:"この日の記録はありません", noDayRecipesBody:"右上の＋からレシピを追加できます。",
+        noDayRecipesTitle:"この日の記録はありません", noDayRecipesBody:"ナビゲーション中央の＋からレシピを追加できます。",
         all:"すべて", gearList:"器具一覧", searchGear:"器具名・メーカー名・品番で検索",
         addMissingGear:"リストにない器具を追加する", showing:"表示中", items:"件",
         noGearTitle:"該当する器具がありません", noGearBody:"検索条件を変更するか、器具を追加してください。",
@@ -1159,7 +1190,7 @@
         startRecording:"Start a brew log", login:"Log in",
         recipes:"RECIPES", beansSummary:"BEANS / g", ratingSummary:"RATING",
         recentRecipes:"Recent recipes", noRecipesTitle:"No recipes yet",
-        noRecipesBody:"Tap + in the top-right corner to record your first brew.",
+        noRecipesBody:"Tap + in the center of the navigation bar to record your first brew.",
         viewAllRecipes:"View all recipes",
         homeHeroEyebrow:"BREW JOURNAL", homeHeroTitle:"Make every cup worth remembering.", homeHeroSub:"Keep a refined record of your beans, gear, brew recipe and tasting notes.",
         rankingTitle:"Ranking", rankingIntro:"Your most-used beans and brewing gear, calculated from all saved recipes.",
@@ -1218,7 +1249,7 @@
         doNotSelect:"Do not select", noPaperFilterDescription:"Brew without a paper filter",
         useDripBag:"Use a drip bag", dripBagDescription:"Brew using a drip bag",
         calendarTitle:"Calendar", recordsOnDate:"records",
-        noDayRecipesTitle:"No brews on this date", noDayRecipesBody:"Tap + in the top-right corner to add a recipe.",
+        noDayRecipesTitle:"No brews on this date", noDayRecipesBody:"Tap + in the center of the navigation bar to add a recipe.",
         all:"All", gearList:"Gear List", searchGear:"Search gear, maker, or SKU",
         addMissingGear:"Add a gear not in the list", showing:"Showing", items:"items",
         noGearTitle:"No matching gear", noGearBody:"Change your search or add a custom item.",
@@ -2059,6 +2090,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       if(opts.save)right=`<button class="text-btn" data-action="save-recipe">${escapeHTML(t("save"))}</button>`;
       else if(opts.share)right=`<button class="icon-btn" data-action="share-recipe" aria-label="${escapeAttr(t("shareRecipe"))}">${icon("download")}</button>`;
       else if(opts.add)right=`<button class="round-btn" data-action="new-recipe" aria-label="${escapeAttr(t("newRecipeAria"))}">＋</button>`;
+      else if(opts.premiumStatus)right=`<button class="premium-corner-action ${state.isPremium?"active glow-pulse":""}" ${state.isPremium?'disabled data-glow-pulse': 'data-action="premium"'} aria-label="${escapeAttr(state.isPremium?t("premiumActive"):t("premiumTitle"))}"><span class="premium-corner-glyph" aria-hidden="true">✦</span></button>`;
       return `<header class="topbar ${opts.bordered?"bordered":""}">${left}<div class="${opts.brand?"brand":"topbar-title"}">${escapeHTML(title)}</div>${right}</header>`;
     }
     function bottomNav(active){
@@ -2066,7 +2098,12 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         ["home",t("navHome"),"home"],["calendar",t("navCalendar"),"calendar"],
         ["gear",t("navGear"),"gear"],["history",t("navHistory"),"history"]
       ];
-      return `<nav class="bottom-nav">${items.map(([s,label,ic])=>`<button class="nav-btn ${active===s?"active":""}" data-nav="${s}" aria-label="${escapeAttr(label)}"${active===s?' aria-current="page"':""}>${s==="home"?coffeeSetIcon("aroma"):s==="calendar"?coffeeSetIcon("calendar"):s==="gear"?coffeeSetIcon("dripper"):s==="history"?coffeeSetIcon("history"):icon(ic)}<i class="nav-dot"></i></button>`).join("")}</nav>`;
+      const navButton=([s,label,ic])=>`<button class="nav-btn ${active===s?"active":""}" data-nav="${s}" aria-label="${escapeAttr(label)}"${active===s?' aria-current="page"':""}>${s==="home"?coffeeSetIcon("aroma"):s==="calendar"?coffeeSetIcon("calendar"):s==="gear"?coffeeSetIcon("dripper"):s==="history"?coffeeSetIcon("history"):icon(ic)}<i class="nav-dot"></i></button>`;
+      return `<nav class="bottom-nav" aria-label="${escapeAttr(t("menu"))}">
+        ${navButton(items[0])}${navButton(items[1])}
+        <div class="nav-add-wrap"><button class="nav-add" type="button" data-action="new-recipe" aria-label="${escapeAttr(t("newRecipeAria"))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg></button></div>
+        ${navButton(items[2])}${navButton(items[3])}
+      </nav>`;
     }
 
     /* ---------- Screens ---------- */
@@ -2157,7 +2194,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
           `:""}
 
         </section>
-      `,"home",topbar("Brew Day",{brand:true,add:true}));
+      `,"home",topbar("Brew Day",{brand:true}));
       bindGlobal();
     }
 
@@ -2442,7 +2479,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         </div>
         <div class="calendar-list-title">${formatDate(state.selectedCalendar)} ${escapeHTML(t("recordsOnDate"))}</div>
         ${selected.length?selected.map(recipeCard).join(""):`<div class="empty"><strong>${escapeHTML(t("noDayRecipesTitle"))}</strong>${escapeHTML(t("noDayRecipesBody"))}</div>`}
-      `,"calendar",topbar(t("calendarTitle"),{add:true}));
+      `,"calendar",topbar(t("calendarTitle")));
       bindGlobal();
     }
 
@@ -2540,7 +2577,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
             </div>
           `}
         </div>
-      `,"history",topbar(t("historyTitle"),{add:true}));
+      `,"history",topbar(t("historyTitle")));
       bindGlobal();
     }
 
@@ -2659,7 +2696,6 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
         </div>
 
         <div class="profile-card premium-card">
-          <button class="premium-corner-action ${state.isPremium?"active":""}" ${state.isPremium?"disabled":"data-action=\"premium\""} aria-label="${escapeAttr(state.isPremium?t("premiumActive"):t("premiumTitle"))}">✦</button>
           <div class="premium-kicker">BREW DAY</div>
           <div class="settings-row">
             <div class="copy">
@@ -2735,7 +2771,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
             ${isInstalledPWA()?`<button class="outline-btn" type="button" disabled>${escapeHTML(t("installedApp"))}</button>`:`<button class="cream-btn" type="button" data-action="install-app">${escapeHTML(t("installApp"))}</button>`}
           </div>
         </div>
-      `,"profile",topbar(t("settingsTitle"),{back:true}));
+      `,"profile",topbar(t("settingsTitle"),{back:true,premiumStatus:true}));
       bindGlobal();
     }
 
@@ -3052,6 +3088,22 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
     }
 
     /* ---------- Events ---------- */
+    let glowPulseObserver=null;
+    function bindGlowPulseVisibility(){
+      glowPulseObserver?.disconnect();
+      glowPulseObserver=null;
+      const targets=app.querySelectorAll("[data-glow-pulse]");
+      if(!targets.length)return;
+      if(!("IntersectionObserver" in window)){
+        targets.forEach(target=>target.classList.add("is-in-view"));
+        return;
+      }
+      glowPulseObserver=new IntersectionObserver(entries=>{
+        entries.forEach(entry=>entry.target.classList.toggle("is-in-view",entry.isIntersecting));
+      },{threshold:.01});
+      targets.forEach(target=>glowPulseObserver.observe(target));
+    }
+
     function bindGlobal(){
       app.querySelectorAll("[data-nav]").forEach(btn=>btn.addEventListener("click",()=>navigate(btn.dataset.nav)));
       app.querySelectorAll("[data-detail]").forEach(btn=>btn.addEventListener("click",()=>openDetail(btn.dataset.detail)));
@@ -3172,6 +3224,7 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       const input=document.getElementById("importFile");
       if(input&&!input.dataset.bound){input.dataset.bound="1";input.addEventListener("change",importData)}
 
+      bindGlowPulseVisibility();
       fitEnglishSingleLines();
     }
 
