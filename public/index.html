@@ -17,6 +17,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="app-icon-192.png" type="image/png" sizes="192x192">
   <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+  <script async src="https://js.stripe.com/v3/buy-button.js"></script>
   <style>
     :root{
       --display-serif:"Cormorant Garamond", Georgia, "Times New Roman", serif;
@@ -977,16 +978,8 @@
       background:#173d70;color:#fffaf3;font-size:12px;font-weight:900;
     }
     .premium-benefit span:last-child{font-size:10.5px;line-height:1.45;font-weight:750}
-    .premium-purchase-button{
-      width:100%;min-height:47px;border-radius:13px;font-size:11px;font-weight:900;letter-spacing:.01em;
-      transition:transform .16s ease,box-shadow .16s ease;
-    }
-    .premium-purchase-button{
-      border:1px solid rgba(166,119,45,.46);background:linear-gradient(135deg,#dcbf78,#ad7d31);color:#17324d;
-      box-shadow:0 10px 23px rgba(104,72,22,.13);
-      display:flex;align-items:center;justify-content:center;padding:8px 14px;
-    }
-    .premium-purchase-button:active{transform:translateY(1px)}
+    .stripe-buy-button-wrap{display:grid;place-items:center;width:100%;min-height:47px;text-align:center}
+    .stripe-buy-button-wrap stripe-buy-button{display:block;width:min(100%,288px);margin-inline:auto}
     .premium-restore{
       display:block;margin:15px auto 0;padding:4px 8px;border:0;background:transparent;color:#5b6f81;
       font-size:9.5px;font-weight:800;text-decoration:underline;text-underline-offset:3px;
@@ -1112,8 +1105,7 @@
         premiumDialogTitle:"Brew Day Plus", premiumCatchcopy:"あなたのオリジナルコーヒーレシピを残しましょう",
         premiumBenefitAnalytics:"レシピ無限保存 & 詳細アナリティクス",
         premiumBenefitCustom:"カスタムギア & 豆カードの無制限作成",
-        premiumLifetime:"買い切りで始める（$19.9）", premiumRestore:"購入を復元",
-        premiumPurchaseDemo:"購入機能はデモ版では接続されていません。設定のテスト用トグルでPlus状態を確認できます。",
+        premiumRestore:"購入を復元",
         premiumRestoreDemo:"復元機能はデモ版では接続されていません。",
         premiumDialogClose:"閉じる",
         bugReport:"バグを報告・リクエストの送信", bugReportHelp:"不具合や改善してほしい点をGoogleフォームから送信できます。", pwaAbout:"アプリについて",
@@ -1251,8 +1243,7 @@
         premiumDialogTitle:"Brew Day Plus", premiumCatchcopy:"Save your original coffee recipes",
         premiumBenefitAnalytics:"Unlimited recipe storage & detailed analytics",
         premiumBenefitCustom:"Unlimited custom gear & bean cards",
-        premiumLifetime:"Buy once ($19.9)", premiumRestore:"Restore Purchase",
-        premiumPurchaseDemo:"Purchases are not connected in this demo. Use the Plus test switch in Settings to test the Plus state.",
+        premiumRestore:"Restore Purchase",
         premiumRestoreDemo:"Purchase restore is not connected in this demo.",
         premiumDialogClose:"Close",
         bugReport:"Report a Bug", bugReportHelp:"Send bugs or improvement requests through the Google Form.", pwaAbout:"About this app",
@@ -2938,7 +2929,12 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
               <li class="premium-benefit"><span class="premium-check">✓</span><span>${escapeHTML(t("premiumBenefitAnalytics"))}</span></li>
               <li class="premium-benefit"><span class="premium-check">✓</span><span>${escapeHTML(t("premiumBenefitCustom"))}</span></li>
             </ul>
-            <button class="premium-purchase-button" type="button" data-premium-plan="lifetime">${escapeHTML(t("premiumLifetime"))}</button>
+            <div class="stripe-buy-button-wrap">
+              <stripe-buy-button
+                buy-button-id="buy_btn_1UZNFPIMbcz3Mc5Y4IYNZV3v"
+                publishable-key="pk_live_51U9wa1IMbcz3Mc5YpC4IlGX7dE1kOWgwsg9HHaQW038ziZmGZADufpCGzKv9O6AYQGVOsLLtsPcE7EKx2Yfgvyqd00lNKW8PoD"
+              ></stripe-buy-button>
+            </div>
             <button class="premium-restore" type="button" data-premium-restore>${escapeHTML(t("premiumRestore"))}</button>
           </div>
         </div>
@@ -2946,9 +2942,6 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
 
       host.querySelector("[data-premium-close]")?.addEventListener("click",closePremiumModal);
       host.querySelector(".premium-modal")?.addEventListener("click",e=>{if(e.target===e.currentTarget)closePremiumModal()});
-      host.querySelectorAll("[data-premium-plan]").forEach(btn=>btn.addEventListener("click",()=>{
-        toast(t("premiumPurchaseDemo"));
-      }));
       host.querySelector("[data-premium-restore]")?.addEventListener("click",()=>{
         toast(t("premiumRestoreDemo"));
       });
