@@ -1,0 +1,92 @@
+{
+  "ja": {
+    "title": "Ethiopia Yirgacheffe",
+    "date": "2026-11-17",
+    "roaster": "サンプルロースター",
+    "roasted": "2026-11-05",
+    "duration": "2:45",
+    "dripper": "HARIO V60 01",
+    "filter": "V60 ペーパー",
+    "grinder": "TIMEMORE C5",
+    "grind": "中細挽き",
+    "beans": 15,
+    "water": 250,
+    "temperature": 93,
+    "serving": "hot",
+    "note": "ジャスミンの香り。レモンの明るい酸味と、紅茶のような余韻。",
+    "flavor": {
+      "aroma": 5,
+      "acidity": 4,
+      "sweetness": 3,
+      "body": 2,
+      "finish": 4
+    },
+    "pours": [
+      {
+        "time": "0:00",
+        "grams": 40
+      },
+      {
+        "time": "0:30",
+        "grams": 40
+      },
+      {
+        "time": "0:45",
+        "grams": 40
+      },
+      {
+        "time": "1:00",
+        "grams": 70
+      },
+      {
+        "time": "1:30",
+        "grams": 60
+      }
+    ]
+  },
+  "en": {
+    "title": "Ethiopia Yirgacheffe",
+    "date": "2026-11-17",
+    "roaster": "Sample Roaster",
+    "roasted": "2026-11-05",
+    "duration": "2:45",
+    "dripper": "HARIO V60 01",
+    "filter": "V60 Paper",
+    "grinder": "TIMEMORE C5",
+    "grind": "Medium-fine",
+    "beans": 15,
+    "water": 250,
+    "temperature": 93,
+    "serving": "hot",
+    "note": "Jasmine aroma, bright lemon acidity and a black tea finish.",
+    "flavor": {
+      "aroma": 5,
+      "acidity": 4,
+      "sweetness": 3,
+      "body": 2,
+      "finish": 4
+    },
+    "pours": [
+      {
+        "time": "0:00",
+        "grams": 40
+      },
+      {
+        "time": "0:30",
+        "grams": 40
+      },
+      {
+        "time": "0:45",
+        "grams": 40
+      },
+      {
+        "time": "1:00",
+        "grams": 70
+      },
+      {
+        "time": "1:30",
+        "grams": 60
+      }
+    ]
+  }
+}

@@ -1031,7 +1031,9 @@
 <body>
   <main id="app"></main>
 
-  <script>
+  <script type="module">
+  import { createRecipeCardPng } from "./brew-day-recipe-card.mjs";
+
   (() => {
     "use strict";
 
@@ -1087,7 +1089,7 @@
         tastingPlaceholder:"香り、酸味、甘さ、後味、次回調整したいことなど",
         tasteProfile:"テイストプロファイル", acidity:"酸味", aftertaste:"後味", aroma:"アロマ", balance:"バランス", body:"ボディ",
         tasteScoreAria:(axis,n)=>`${axis} ${n}/5`,
-        shareRecipe:"レシピ画像をダウンロード", preparingRecipeCard:"レシピカードを作成中…", recipeCardDownloaded:"レシピカードをダウンロードしました。InstagramやXにアップロードできます。", shareError:"レシピカードを作成できませんでした。",
+        shareRecipe:"画像を保存", preparingRecipeCard:"レシピカードを作成中…", recipeCardDownloaded:"レシピカードを保存しました。InstagramやXにアップロードできます。", shareError:"レシピカードを作成できませんでした。",
         update:"更新する", saveRecipe:"保存",
         satisfactionAria:n=>`満足度 ${n}`,
         recipeDetail:"レシピ詳細", beanSection:"Bean", equipmentSection:"Equipment",
@@ -1225,7 +1227,7 @@
         tastingPlaceholder:"Aroma, acidity, sweetness, finish, and what to adjust next time",
         tasteProfile:"Taste Profile", acidity:"Acidity", aftertaste:"Aftertaste", aroma:"Aroma", balance:"Balance", body:"Body",
         tasteScoreAria:(axis,n)=>`${axis} ${n}/5`,
-        shareRecipe:"Download recipe image", preparingRecipeCard:"Preparing recipe card…", recipeCardDownloaded:"Recipe card downloaded. Upload it to Instagram or X.", shareError:"Could not create the recipe card.",
+        shareRecipe:"Save image", preparingRecipeCard:"Preparing recipe card…", recipeCardDownloaded:"Recipe card saved. Upload it to Instagram or X.", shareError:"Could not create the recipe card.",
         update:"Update", saveRecipe:"Save Recipe",
         satisfactionAria:n=>`Rating ${n}`,
         recipeDetail:"Recipe Detail", beanSection:"Bean", equipmentSection:"Equipment",
@@ -1914,144 +1916,6 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       const normalized=normalizedTasteScores(scores);
       return TASTE_AXES.map(axis=>`<div class="taste-score-row"><span>${escapeHTML(t(axis))}</span><div class="taste-score-actions" role="group" aria-label="${escapeAttr(t(axis))}">${[1,2,3,4,5].map(score=>`<button type="button" class="${normalized[axis]===score?"on":""}" data-taste-axis="${axis}" data-taste-score="${score}" aria-label="${escapeAttr(t("tasteScoreAria",t(axis),score))}">${score}</button>`).join("")}</div></div>`).join("");
     }
-    function canvasRoundRect(ctx,x,y,width,height,radius){
-      const r=Math.min(radius,width/2,height/2);
-      ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+width,y,x+width,y+height,r);ctx.arcTo(x+width,y+height,x,y+height,r);ctx.arcTo(x,y+height,x,y,r);ctx.arcTo(x,y,x+width,y,r);ctx.closePath();
-    }
-    function canvasTextLines(ctx,text,maxWidth,maxLines=3){
-      const source=String(text||"").trim();if(!source)return [];
-      const hasSpaces=/\s/.test(source),tokens=hasSpaces?source.split(/\s+/):Array.from(source),joiner=hasSpaces?" ":"";
-      const lines=[];let current="";
-      for(const token of tokens){
-        const candidate=current?current+joiner+token:token;
-        if(ctx.measureText(candidate).width<=maxWidth){current=candidate;continue;}
-        if(current)lines.push(current);current=token;
-        if(lines.length===maxLines-1)break;
-      }
-      if(current&&lines.length<maxLines)lines.push(current);
-      if(lines.length===maxLines&&source!==lines.join(joiner)){
-        while(ctx.measureText(`${lines[maxLines-1]}…`).width>maxWidth&&lines[maxLines-1].length>1)lines[maxLines-1]=lines[maxLines-1].slice(0,-1);
-        lines[maxLines-1]+="…";
-      }
-      return lines;
-    }
-    function canvasFittedText(ctx,text,maxWidth,startSize,minSize=16,weight=700,family="system-ui, sans-serif"){
-      let size=startSize;const value=String(text||"");
-      while(size>minSize){ctx.font=`${weight} ${size}px ${family}`;if(ctx.measureText(value).width<=maxWidth)break;size-=2}
-      return size;
-    }
-    function canvasOneLine(ctx,text,maxWidth){
-      let value=String(text||"—");
-      if(ctx.measureText(value).width<=maxWidth)return value;
-      while(value.length>1&&ctx.measureText(`${value}…`).width>maxWidth)value=value.slice(0,-1);
-      return `${value}…`;
-    }
-    const RECIPE_CARD_ICON_PATHS={
-      bean:"./coffee-icons-20-transparent/01-coffee-bean.png",
-      dripper:"./coffee-icons-20-transparent/04-dripper.png",
-      grinder:"./coffee-icons-20-transparent/07-coffee-grinder.png",
-      timer:"./coffee-icons-20-transparent/09-timer.png",
-      temperature:"./coffee-icons-20-transparent/10-thermometer.png",
-      water:"./coffee-icons-20-transparent/11-water-drop.png",
-      tasting:"./coffee-icons-20-transparent/15-aroma.png"
-    };
-    const recipeCardIconCache=new Map();
-    function loadRecipeCardIcon(name){
-      if(recipeCardIconCache.has(name))return recipeCardIconCache.get(name);
-      const promise=new Promise((resolve,reject)=>{
-        const image=new Image();image.decoding="async";image.onload=()=>resolve(image);image.onerror=reject;
-        image.src=new URL(RECIPE_CARD_ICON_PATHS[name],document.baseURI).href;
-      });
-      recipeCardIconCache.set(name,promise);return promise;
-    }
-    function drawRecipeCardIcon(ctx,image,x,y,size=48){
-      ctx.save();ctx.fillStyle="#f7f2ea";canvasRoundRect(ctx,x,y,size,size,14);ctx.fill();
-      ctx.drawImage(image,x+9,y+9,size-18,size-18);ctx.restore();
-    }
-    function drawRecipeRadar(ctx,scores,cx,cy,radius){
-      const normalized=normalizedTasteScores(scores);
-      const point=(value,index)=>{
-        const angle=-Math.PI/2+(Math.PI*2*index/TASTE_AXES.length),distance=radius*(value/5);
-        return [cx+Math.cos(angle)*distance,cy+Math.sin(angle)*distance];
-      };
-      ctx.lineWidth=2;ctx.strokeStyle="rgba(255,255,255,.22)";
-      for(let level=1;level<=5;level++){
-        ctx.beginPath();TASTE_AXES.forEach((_,index)=>{const [x,y]=point(level,index);index?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();ctx.stroke();
-      }
-      TASTE_AXES.forEach((_,index)=>{const [x,y]=point(5,index);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(x,y);ctx.stroke()});
-      ctx.beginPath();TASTE_AXES.forEach((axis,index)=>{const [x,y]=point(normalized[axis],index);index?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();ctx.fillStyle="rgba(235,201,125,.38)";ctx.fill();ctx.strokeStyle="#f5dc9d";ctx.lineWidth=5;ctx.stroke();
-      TASTE_AXES.forEach((axis,index)=>{const [x,y]=point(normalized[axis],index);ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fillStyle="#fff9ee";ctx.fill()});
-    }
-    async function createRecipeCardImage(recipe){
-      const canvas=document.createElement("canvas"),ctx=canvas.getContext("2d"),width=1080,height=1350;
-      if(!ctx)throw new Error("Canvas unavailable");
-      canvas.width=width;canvas.height=height;
-      const iconEntries=await Promise.all(Object.keys(RECIPE_CARD_ICON_PATHS).map(async name=>[name,await loadRecipeCardIcon(name)]));
-      const cardIcons=Object.fromEntries(iconEntries);
-      const background=ctx.createLinearGradient(0,0,width,height);background.addColorStop(0,"#0c559d");background.addColorStop(.52,"#083d79");background.addColorStop(1,"#05264f");ctx.fillStyle=background;ctx.fillRect(0,0,width,height);
-      const glow=ctx.createRadialGradient(900,150,0,900,150,520);glow.addColorStop(0,"rgba(235,195,108,.34)");glow.addColorStop(1,"rgba(235,195,108,0)");ctx.fillStyle=glow;ctx.fillRect(0,0,width,height);
-      ctx.strokeStyle="rgba(255,255,255,.18)";ctx.lineWidth=2;canvasRoundRect(ctx,48,48,984,1254,42);ctx.stroke();
-
-      ctx.fillStyle="#f9f0df";ctx.font="800 28px system-ui, sans-serif";ctx.fillText("BREW DAY",88,112);
-      const brewType=(recipe.beverageType||"Hot")==="Ice"?"ICE":"HOT";
-      ctx.fillStyle="rgba(247,242,234,.16)";canvasRoundRect(ctx,858,76,126,48,24);ctx.fill();
-      ctx.fillStyle="#fffaf1";ctx.font="800 18px system-ui, sans-serif";ctx.textAlign="center";ctx.fillText(brewType,921,107);ctx.textAlign="left";
-      ctx.fillStyle="rgba(255,255,255,.62)";ctx.font="700 18px system-ui, sans-serif";ctx.fillText(formatDate(recipe.date).toUpperCase(),88,148);
-
-      const title=recipe.beanOrigin||t("unnamedCoffee");ctx.fillStyle="#fffaf1";
-      const titleSize=canvasFittedText(ctx,title,904,66,42,750,'Georgia, "Yu Mincho", serif');
-      ctx.font=`750 ${titleSize}px Georgia, "Yu Mincho", serif`;
-      const titleLines=canvasTextLines(ctx,title,904,2);const titleLineHeight=titleSize+8;
-      titleLines.forEach((line,index)=>ctx.fillText(line,88,222+index*titleLineHeight));
-      const titleBottom=222+(titleLines.length-1)*titleLineHeight;
-      ctx.fillStyle="rgba(255,255,255,.72)";ctx.font="600 25px system-ui, sans-serif";
-      ctx.fillText(canvasOneLine(ctx,recipe.roasterName||"Brew Day Recipe",904),88,titleBottom+43);
-
-      const metricTop=titleBottom+76,metricGap=16,metricWidth=(904-metricGap*2)/3,metricHeight=126;
-      const metrics=[
-        ["bean",t("groundsAmount"),`${num(recipe.beanWeight)} g`],
-        ["water",t("totalWater"),`${num(totalWater(recipe))} g`],
-        ["temperature",t("waterTemp"),recipe.waterTemp!==""?`${temperatureForDisplay(recipe.waterTemp)}${tempUnitSymbol()}`:"—"]
-      ];
-      metrics.forEach(([iconName,label,value],index)=>{
-        const x=88+index*(metricWidth+metricGap);ctx.fillStyle="rgba(255,255,255,.11)";canvasRoundRect(ctx,x,metricTop,metricWidth,metricHeight,24);ctx.fill();
-        drawRecipeCardIcon(ctx,cardIcons[iconName],x+18,metricTop+20,52);
-        ctx.fillStyle="rgba(255,255,255,.6)";ctx.font="750 14px system-ui, sans-serif";ctx.fillText(String(label).toUpperCase(),x+84,metricTop+42);
-        ctx.fillStyle="#fffaf1";ctx.font="800 28px system-ui, sans-serif";ctx.fillText(canvasOneLine(ctx,value,metricWidth-102),x+84,metricTop+80);
-      });
-
-      const toolsTop=metricTop+148;ctx.fillStyle="rgba(255,255,255,.075)";canvasRoundRect(ctx,88,toolsTop,904,118,24);ctx.fill();
-      const toolItems=[
-        ["dripper",t("dripper"),equipmentLabel(equipmentItem(recipe.dripper))],
-        ["grinder",t("grindSize"),grindLabel(recipe.grind||"")],
-        ["timer",t("brewTime"),recipe.brewTime||"—"]
-      ];
-      toolItems.forEach(([iconName,label,value],index)=>{
-        const x=108+index*294;if(index){ctx.fillStyle="rgba(255,255,255,.14)";ctx.fillRect(x-14,toolsTop+24,1,70)}
-        drawRecipeCardIcon(ctx,cardIcons[iconName],x,toolsTop+31,48);
-        ctx.fillStyle="rgba(255,255,255,.58)";ctx.font="750 13px system-ui, sans-serif";ctx.fillText(String(label).toUpperCase(),x+62,toolsTop+50);
-        ctx.fillStyle="#fffaf1";ctx.font="750 20px system-ui, sans-serif";ctx.fillText(canvasOneLine(ctx,value,202),x+62,toolsTop+79);
-      });
-
-      const tasteTop=toolsTop+144;drawRecipeCardIcon(ctx,cardIcons.tasting,88,tasteTop-7,50);
-      ctx.fillStyle="#fffaf1";ctx.font="750 30px Georgia, serif";ctx.fillText(t("tasteProfile"),154,tasteTop+28);
-      drawRecipeRadar(ctx,recipe.tasteScores,322,tasteTop+205,136);
-      const scores=normalizedTasteScores(recipe.tasteScores);
-      TASTE_AXES.forEach((axis,index)=>{
-        const rowY=tasteTop+82+index*61;
-        ctx.fillStyle="rgba(255,255,255,.72)";ctx.font="700 20px system-ui, sans-serif";ctx.fillText(t(axis),558,rowY);
-        for(let score=1;score<=5;score++){
-          const x=742+(score-1)*48;ctx.fillStyle=score<=scores[axis]?"#f7f2ea":"rgba(255,255,255,.12)";ctx.beginPath();ctx.arc(x,rowY-7,16,0,Math.PI*2);ctx.fill();
-          ctx.fillStyle=score<=scores[axis]?"#0b4f9c":"rgba(255,255,255,.55)";ctx.font="800 14px system-ui, sans-serif";ctx.textAlign="center";ctx.fillText(String(score),x,rowY-2);ctx.textAlign="left";
-        }
-      });
-
-      const noteTop=tasteTop+386;ctx.fillStyle="rgba(255,255,255,.1)";canvasRoundRect(ctx,88,noteTop,904,132,22);ctx.fill();
-      ctx.fillStyle="rgba(255,255,255,.58)";ctx.font="750 14px system-ui, sans-serif";ctx.fillText(t("tastingNotes").toUpperCase(),114,noteTop+31);
-      ctx.fillStyle="#fffaf1";ctx.font="500 21px system-ui, sans-serif";canvasTextLines(ctx,recipe.notes||t("noMemo"),852,3).forEach((line,index)=>ctx.fillText(line,114,noteTop+63+index*25));
-      ctx.fillStyle="rgba(255,255,255,.5)";ctx.font="650 16px system-ui, sans-serif";ctx.fillText("BREW DAY  ·  COFFEE RECIPE JOURNAL",88,1270);
-      return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error("Image encoding failed")),"image/png"));
-    }
     function recipeSort(a,b){
       const c=String(b.date||"").localeCompare(String(a.date||""));
       if(c)return c;
@@ -2080,6 +1944,64 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       if(!x)return t("none");
       if(x.special)return localizeGearName(x.name);
       return `${x.maker} · ${localizeGearName(x.name)}${x.source==="custom"?" · CUSTOM":""}`;
+    }
+
+    function recipeCardEquipmentName(id){
+      const item=equipmentItem(id);
+      if(!item)return "";
+      if(item.special)return localizeGearName(item.name);
+      return [item.maker,localizeGearName(item.name)].filter(Boolean).join(" ");
+    }
+
+    function recipeCardData(recipe){
+      const hasValue=value=>value!==""&&value!==null&&value!==undefined;
+      const toGrams=value=>hasValue(value)&&Number.isFinite(Number(value))?Number(value):value;
+      const pours=[];
+      if(hasValue(recipe.bloomWater)){
+        pours.push({time:"0:00",grams:toGrams(recipe.bloomWater)});
+      }
+      (Array.isArray(recipe.pours)?recipe.pours:[]).forEach(step=>{
+        if(!hasValue(step?.time)&&!hasValue(step?.water))return;
+        const grams=toGrams(step?.water);
+        const isDuplicateBloom=pours.length===1&&step?.time==="0:00"&&grams===pours[0].grams;
+        if(!isDuplicateBloom)pours.push({time:String(step?.time||"").trim(),grams});
+      });
+
+      const scores=recipe.tasteScores||{};
+      const flavor={
+        aroma:scores.aroma,
+        acidity:scores.acidity,
+        sweetness:scores.sweetness??scores.balance,
+        body:scores.body,
+        finish:scores.finish??scores.aftertaste
+      };
+      Object.keys(flavor).forEach(key=>{
+        const value=Number(flavor[key]);
+        if(!Number.isInteger(value)||value<1||value>5)delete flavor[key];
+        else flavor[key]=value;
+      });
+
+      const milk=recipe.milk&&recipe.milk!=="なし"?milkLabel(recipe.milk):"";
+      return {
+        title:recipe.beanOrigin||t("unnamedCoffee"),
+        date:recipe.date||"",
+        roaster:recipe.roasterName||"",
+        roasted:recipe.roastDate||"",
+        serving:(recipe.beverageType||"Hot")==="Ice"?"iced":"hot",
+        beans:toGrams(recipe.beanWeight),
+        water:totalWater(recipe),
+        ice:(recipe.beverageType||"Hot")==="Ice"?toGrams(recipe.iceWeight):"",
+        temperature:hasValue(recipe.waterTemp)?recipe.waterTemp:"",
+        duration:recipe.brewTime||"",
+        dripper:recipeCardEquipmentName(recipe.dripper),
+        filter:recipeCardEquipmentName(recipe.filter),
+        grinder:recipeCardEquipmentName(recipe.mill),
+        grind:grindLabel(recipe.grind||""),
+        milk,
+        pours,
+        flavor,
+        note:recipe.notes||""
+      };
     }
 
     function shell(content,active="home",bar=""){
@@ -3370,8 +3292,8 @@ COMANDANTE,コーヒーミル,C40 LAB TS,C40 LAB Series Tigershark,,,手挽き�
       toast(t("preparingRecipeCard"));
       try{
         await document.fonts?.ready;
-        const blob=await createRecipeCardImage(recipe);
-        const slug=String(recipe.beanOrigin||"brew-day-recipe").trim().replace(/[^a-z0-9_-]+/gi,"-").replace(/^-|-$/g,"").toLowerCase()||"brew-day-recipe";
+        const blob=await createRecipeCardPng(recipeCardData(recipe),{language:state.lang});
+        const slug=String(recipe.beanOrigin||"brew-day-recipe").normalize("NFKC").trim().replace(/[^\p{Letter}\p{Number}_-]+/gu,"-").replace(/^-|-$/g,"").toLowerCase()||"brew-day-recipe";
         const file=new File([blob],`${slug}-recipe-card.png`,{type:"image/png"});
         const shareData={title:recipe.beanOrigin||"Brew Day",text:"My Brew Day recipe",files:[file]};
         if(navigator.share&&(!navigator.canShare||navigator.canShare(shareData))){
